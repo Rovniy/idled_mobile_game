@@ -17,7 +17,13 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 	engine.enemies.forEach((enemy, index) => {
 		if (!engine.player) return
 
+		// Вычисляем угол поворота к игроку
 		const angle = Math.atan2(engine.player.y - enemy.y, engine.player.x - enemy.x);
+		const wobbleAmount = Math.sin(enemy.wobble.offset) * enemy.wobble.intensity;
+		enemy.rotate = angle + Math.PI / 2 + wobbleAmount
+
+		enemy.wobble.offset += enemy.wobble.speed;
+
 		enemy.x += Math.cos(angle) * enemy.speed;
 		enemy.y += Math.sin(angle) * enemy.speed;
 

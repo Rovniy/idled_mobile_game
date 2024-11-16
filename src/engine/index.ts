@@ -8,6 +8,7 @@ import {handleCanvasClick} from './input'
 import {initAudion} from './audio'
 import {IBuffManager, IEngine, IGameState, IInitGame} from '@/types'
 import { Ref } from 'vue'
+import { ENEMY_DEBUG } from '@/database/enemies'
 
 import backgroundImageSrc from '../assets/images/background.png'
 
@@ -57,7 +58,19 @@ export async function initGame(params: TInitGames) : IInitGame {
 		}
 		engine.spawnTimeout = setTimeout(spawnEnemies, engine.spawnInterval)
 	}
-	spawnEnemies()
+
+	/**
+	 * DEBUG ENEMY SESSION
+	 */
+	const isDebugSpawn = debugSpawnEnemies({
+		engine,
+		must_spawn: ENEMY_DEBUG.enable,
+		enemy_id: ENEMY_DEBUG.enemy_id,
+		count: ENEMY_DEBUG.count
+	})
+	if (!isDebugSpawn) {
+		spawnEnemies()
+	}
 
 	// Наблюдаем за изменением уровня
 	watch(gameState.level, () => {
@@ -99,4 +112,30 @@ export async function initGame(params: TInitGames) : IInitGame {
 			handleCanvasClick({ coords, engine, gameState, buff })
 		},
 	}
+}
+
+type TDebugSpawnEnemies = {
+	engine: IEngine,
+	must_spawn: boolean,
+	enemy_id: string,
+	count: number,
+}
+function debugSpawnEnemies(params: TDebugSpawnEnemies) {
+	const {
+		engine,
+		must_spawn = false,
+		enemy_id = 'boss1',
+		count = 10
+	} = params
+	const TIMEOUT = 2_000
+
+	if (!must_spawn) return
+
+	setTimeout(() => {
+		for (let i = 0; i < count; i++) {
+			spawnEnemy({ engine, enemy_id })
+		}
+	}, TIMEOUT)
+
+	return true
 }

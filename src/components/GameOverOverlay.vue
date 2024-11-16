@@ -1,19 +1,18 @@
 <template>
-  <div id="game-over-overlay">
-    <div id="game-over-message">
-      <h1>Игра окончена</h1>
-      <p>Ваш счет: {{ finalScore }}</p>
-      <button @click="shareResult">Поделиться результатом</button>
-      <button @click="restartGame">Начать заново</button>
-    </div>
+  <div class="game_over_overlay">
+    <h1 class="title">Game Over</h1>
+    <p class="desc">Score: <b>{{ finalScore }}</b></p>
+    <Button text="Share" size="small" color="share" :callback="shareResult" />
+    <Button text="Play" size="large" :callback="restartGame" />
   </div>
 </template>
 
 <script setup lang="ts">
+import Button from "@/components/Ui/Button.vue";
 import {computed} from 'vue'
 
 const props = defineProps({
-  experience: String,
+  experience: Number,
 });
 
 const emit = defineEmits(['share', 'restart']);
@@ -31,53 +30,36 @@ function restartGame() {
 }
 </script>
 
-<style scoped>
-#game-over-overlay {
+<style scoped lang="scss">
+@import '@/assets/style/vars';
+
+.game_over_overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный фон */
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 2000; /* Поверх всех элементов */
+  gap: 20px;
+  z-index: 2000;
 
-  #game-over-message {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 10px;
-    text-align: center;
-    color: #000;
+  .title {
+    margin-top: 0;
+    font: 700 36px/36px $main_font;
+    color: $color_white;
+  }
 
-    h1 {
-      margin-top: 0;
-      font-size: 36px;
-    }
+  .desc {
+    font: 700 24px/24px $main_font;
+    color: $color_white;
 
-    p {
-      font-size: 24px;
-    }
-
-    button {
-      width: 200px;
-      padding: 10px;
-      margin-top: 15px;
-      font-size: 18px;
-      cursor: pointer;
-      border: none;
-      border-radius: 5px;
-    }
-
-    button:first-of-type {
-      background-color: #4CAF50; /* Зеленый */
-      color: white;
-    }
-
-    button:last-of-type {
-      background-color: #f44336; /* Красный */
-      color: white;
+    b {
+      font: 700 24px/24px $main_font;
+      color: $color_orange
     }
   }
 }

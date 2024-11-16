@@ -1,6 +1,6 @@
 <template>
   <div class="pause-screen">
-    <h1>Pause...</h1>
+    <h1 class="title">Pause...</h1>
     <Button text="Resume" :callback="() => $emit('resumeGame')" size="medium" />
   </div>
 </template>
@@ -10,7 +10,9 @@
 import Button from "@/components/Ui/Button.vue";
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/style/vars';
+
 .pause-screen {
   position: absolute;
   top: 0;
@@ -22,18 +24,12 @@ import Button from "@/components/Ui/Button.vue";
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 20;
-}
+  z-index: 10;
+  gap: 20px;
 
-.pause-screen h1 {
-  color: white;
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.pause-screen button {
-  font-size: 24px;
-  padding: 10px 20px;
-  cursor: pointer;
+  .title {
+    font: 700 48px/48px $main_font;
+    color: $color_white
+  }
 }
 </style>

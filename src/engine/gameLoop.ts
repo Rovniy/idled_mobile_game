@@ -41,7 +41,7 @@ export function gameLoop(params: TGameLoopParams) {
 		}, 1000)
 
 		drawPlayer({ engine, gameState });
-		drawEnemies({ engine });
+		drawEnemies({ engine, gameState });
 		drawBullets({ engine });
 		drawDrops({ engine });
 		drawFloatingTexts({ engine });

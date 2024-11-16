@@ -32,7 +32,7 @@ const userAvatar = computed(() => {
 
     <div class="exp_bar">
       <div class="exp_progress" :style="{ width: experiencePercentage + '%' }" />
-      <div class="exp_text">{{ props.experience }} / {{ props.experienceToNextLevel }}</div>
+      <div class="exp_text">Exp: {{ props.experience }} / {{ props.experienceToNextLevel }}</div>
     </div>
   </div>
 </template>

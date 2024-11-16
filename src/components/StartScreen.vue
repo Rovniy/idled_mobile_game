@@ -1,6 +1,7 @@
 <template>
   <div class="start-screen">
-    <h1>Hello, Andrei</h1>
+    <h2 class="title">Welcome to</h2>
+    <h1 class="username">IDLE-D!</h1>
     <Button text="Play" :callback="() => $emit('startGame')" size="large" />
   </div>
 </template>
@@ -11,7 +12,9 @@ import Button from "@/components/Ui/Button.vue";
 // Нет необходимости в скриптовой части
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '@/assets/style/vars';
+
 .start-screen {
   position: absolute;
   top: 0;
@@ -24,11 +27,16 @@ import Button from "@/components/Ui/Button.vue";
   align-items: center;
   justify-content: center;
   z-index: 10;
-}
+  gap: 20px;
 
-.start-screen h1 {
-  color: white;
-  font-size: 48px;
-  margin-bottom: 20px;
+  .title {
+    font: 700 36px/36px $main_font;
+    color: $color_white
+  }
+  .username {
+    font: 700 80px/80px $main_font;
+    color: $color_white;
+    text-shadow: 5px 5px 10px rgba($color_bg, .5);
+  }
 }
 </style>

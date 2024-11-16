@@ -37,6 +37,7 @@ export interface IEnemy {
     x?: number,
     y?: number,
     id: string,
+    boss?: boolean,
     name: string,
     hp: number,
     damage: number,
@@ -46,6 +47,7 @@ export interface IEnemy {
     imageLoaded?: boolean,
     width?: number,
     height?: number,
+    rotate?: number,
     drops: TEnemyDrop[],
     wobble?: {
         offset: number,

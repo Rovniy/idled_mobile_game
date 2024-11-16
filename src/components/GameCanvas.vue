@@ -25,7 +25,7 @@
     <Userplate :experience="gameState.experience.value" :experience-to-next-level="gameState.experienceToNextLevel.value" :level="gameState.level.value" :username="'MainKoon'"/>
 
     <!-- Buff Selection Window -->
-    <div v-if="gameState.levelUpOptions.value" id="level-up-overlay">
+    <div v-if="gameState.levelUpOptions.value && !gameState.isGameOver.value" id="level-up-overlay">
       <BuffCard
           v-for="item in buff.levelUpBuffs.value"
           :key="item.id"
@@ -42,7 +42,7 @@
         @restart="restartGame"
     />
 
-    <PauseScreen v-if="showPauseScreen" @resumeGame="handleResumeGame" />
+    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame" />
   </div>
 </template>
 

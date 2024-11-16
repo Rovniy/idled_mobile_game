@@ -1,23 +1,7 @@
-// src/engine/enemy.js
-
 import enemiesData from '../database/enemies';
 import {IEnemy, IEngine} from "@/types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
-
-// Enemy assets
-import enemyBallSrc from '@/assets/images/enemies/enemy_ball.png';
-import enemyBlueSrc from '@/assets/images/enemies/enemy_blue.png';
-import enemyDiabloSrc from '@/assets/images/enemies/enemy_diablo.png';
-import enemyEyeSrc from '@/assets/images/enemies/enemy_eye.png';
-import enemyFastSrc from '@/assets/images/enemies/enemy_fast.png';
-import enemyLightSrc from '@/assets/images/enemies/enemy_light.png';
-import enemyOrangeSrc from '@/assets/images/enemies/enemy_orange.png';
-import enemyRedSrc from '@/assets/images/enemies/enemy_red.png';
-import enemyScarySrc from '@/assets/images/enemies/enemy_scary.png';
-import enemySimpleSrc from '@/assets/images/enemies/enemy_simple.png';
-import enemySpiderSrc from '@/assets/images/enemies/enemy_spider.png';
-import enemyTreeSrc from '@/assets/images/enemies/enemy_tree.png';
 
 // Enemy vfx
 import poofVfx1 from '@/assets/images/vfx/poof_1.png';
@@ -32,25 +16,10 @@ const VFX_DEATH = [
 	poofVfx4,
 ]
 
-const IMAGE_MAP = {
-	'enemy_ball': enemyBallSrc,
-	'enemy_blue': enemyBlueSrc,
-	'enemy_diablo': enemyDiabloSrc,
-	'enemy_eye': enemyEyeSrc,
-	'enemy_fast': enemyFastSrc,
-	'enemy_light': enemyLightSrc,
-	'enemy_orange': enemyOrangeSrc,
-	'enemy_red': enemyRedSrc,
-	'enemy_scary': enemyScarySrc,
-	'enemy_simple': enemySimpleSrc,
-	'enemy_spider': enemySpiderSrc,
-	'enemy_tree': enemyTreeSrc,
-}
-
 export function loadEnemiesData() : IEnemy[] {
 	return enemiesData.map((enemy: IEnemy) : IEnemy => {
 		const img = new Image();
-		img.src = IMAGE_MAP[enemy.image];
+		img.src = enemy.image;
 
 		const loadedEnemy : IEnemy = {
 			...enemy,
@@ -67,17 +36,15 @@ export function loadEnemiesData() : IEnemy[] {
 }
 
 type TSpawnEnemy = {
-	engine: IEngine
+	engine: IEngine,
+	enemy_id?: string
 }
 export function spawnEnemy(params: TSpawnEnemy) {
 	const DEFAULT_SIZE = 40;
-	const { engine } = params
+	const { engine, enemy_id } = params
 	const { enemies, player, canvas, loadedEnemies } = engine
 
-	// Выбираем случайный тип врага
-	const enemyType = loadedEnemies[Math.floor(Math.random() * loadedEnemies.length)];
-
-	// Вычисляем позицию появления врага
+	const enemyType = getEnemy({ engine, enemy_id })
 	const side = Math.floor(Math.random() * 4);
 
 	let x, y;
@@ -136,4 +103,27 @@ export function handleEnemyDeathAudio(params: THandleEnemyDeathAudioParams) {
 	const { engine} = params
 
 	engine.audioManager.playSound(AUDIO.ENEMY_DEATH)
+}
+
+
+type TGetRandomEnemyParams = {
+	engine: IEngine,
+	boss?: boolean,
+	enemy_id?: string
+}
+function getEnemy(params: TGetRandomEnemyParams) {
+	const { engine, boss, enemy_id } = params
+	const { loadedEnemies } = engine
+
+	if (enemy_id) {
+		return loadedEnemies.find(e => e.id === enemy_id);
+	}
+
+	if (boss) {
+		const bossList = loadedEnemies.filter(e => e.boss)
+		return bossList[Math.floor(Math.random() * bossList.length)];
+	}
+
+	return loadedEnemies[Math.floor(Math.random() * loadedEnemies.length)];
+
 }

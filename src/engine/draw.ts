@@ -1,6 +1,6 @@
 // src/engine/draw.js
 
-import {IEngine, IFloatingText, IGameState} from "@/types";
+import {IEnemy, IEngine, IFloatingText, IGameState} from "@/types";
 
 type TDrawPlayer = {
 	engine: IEngine,
@@ -47,7 +47,7 @@ export function drawPlayer(params: TDrawPlayer) {
 }
 
 type TDrawEnemies = {
-	engine: IEngine
+	engine: IEngine,
 }
 export function drawEnemies(params: TDrawEnemies) {
 	const { engine } = params;
@@ -56,7 +56,7 @@ export function drawEnemies(params: TDrawEnemies) {
 	if (!ctx) return
 	if (!player) return
 
-	enemies.forEach((enemy) => {
+	enemies.forEach((enemy: IEnemy) => {
 		// Проверяем, загружено ли изображение врага
 		if (!enemy.imageLoaded ||
 			!enemy?.width ||
@@ -66,21 +66,12 @@ export function drawEnemies(params: TDrawEnemies) {
 			!enemy?.wobble?.speed
 		) return;
 
-		// Вычисляем угол поворота к игроку
-		const angle = Math.atan2(player.y - enemy.y, player.x - enemy.x);
-
 		ctx.save();
 		ctx.translate(enemy.x, enemy.y);
+		ctx.rotate(enemy.rotate);
 
-		// Добавление эффекта переваливания
-		const wobbleAmount = Math.sin(enemy.wobble.offset) * enemy.wobble.intensity;
-		const targetAngle = angle + Math.PI / 2 + wobbleAmount
-
-		ctx.rotate(targetAngle);
-
-		const picture = enemy.image as HTMLImageElement
 		ctx.drawImage(
-			picture,
+			enemy.image,
 			-enemy.width / 2,
 			-enemy.height / 2,
 			enemy.width,
@@ -88,8 +79,6 @@ export function drawEnemies(params: TDrawEnemies) {
 		);
 
 		ctx.restore();
-
-		enemy.wobble.offset += enemy.wobble.speed;
 	});
 }
 

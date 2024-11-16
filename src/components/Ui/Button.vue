@@ -2,12 +2,14 @@
 type TProps = {
   text: string,
   callback: () => void,
-  size: 'small'|'medium'|'large'
+  size: 'small' | 'medium' | 'large',
+  color?: 'default' | 'share'
 }
 const props = withDefaults(defineProps<TProps>(), {
   text: '',
   callback: () => null,
   size: 'medium',
+  color: 'default'
 })
 
 function doCallback() {
@@ -16,7 +18,7 @@ function doCallback() {
 </script>
 
 <template>
-  <button :class="[ 'btn', props.size ]" @click="doCallback">
+  <button :class="[ 'btn', props.size, `${props.color}_color` ]" @click="doCallback">
     {{ props.text }}
   </button>
 </template>
@@ -25,9 +27,16 @@ function doCallback() {
 @import "@/assets/style/vars";
 
 .btn {
-  background: url('@/assets/images/ui/button.png') no-repeat 0 0 / cover;
   border: none;
   color: $color_white;
+
+  &.default_color {
+    background: url('@/assets/images/ui/button.png') no-repeat 0 0 / cover;
+  }
+  &.share_color {
+    background: url('@/assets/images/ui/button_share.png') no-repeat 0 0 / cover;
+  }
+
 
   &.small {
     width: 150px;
