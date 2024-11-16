@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#gameCanvas {
+    display: block;
+    background: #222;
+}
+
+#experience {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    font-size: 24px;
+    font-family: Arial, sans-serif;
+}
+
+#toggle-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+
+    label {
+        cursor: pointer;
+
+        input {
+            margin-right: 5px;
+        }
+    }
+}
