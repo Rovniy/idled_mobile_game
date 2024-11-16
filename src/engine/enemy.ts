@@ -42,7 +42,7 @@ type TSpawnEnemy = {
 export function spawnEnemy(params: TSpawnEnemy) {
 	const DEFAULT_SIZE = 40;
 	const { engine, enemy_id } = params
-	const { enemies, player, canvas, loadedEnemies } = engine
+	const { enemies, player, canvas } = engine
 
 	const enemyType = getEnemy({ engine, enemy_id })
 	const side = Math.floor(Math.random() * 4);

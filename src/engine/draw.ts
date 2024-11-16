@@ -9,7 +9,6 @@ type TDrawPlayer = {
 export function drawPlayer(params: TDrawPlayer) {
 	const { engine, gameState } = params;
 	const { ctx, player } = engine;
-	const { level } = gameState;
 
 	if (!ctx) return
 	if (!player) return

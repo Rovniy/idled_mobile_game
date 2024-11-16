@@ -1,5 +1,4 @@
 import {ComputedRef, Ref} from "vue";
-import {initGame} from "@/engine";
 
 export interface IDrop {
     x?: number,
