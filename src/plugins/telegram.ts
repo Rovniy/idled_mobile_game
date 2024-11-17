@@ -2,6 +2,7 @@ import { FunctionPlugin, App } from 'vue'
 
 export interface TelegramWebApp {
 	expand: () => void;
+	openTelegramLink(link: string): void;
 	initDataUnsafe: {
 		user: {
 			id: number;

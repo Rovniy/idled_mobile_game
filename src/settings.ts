@@ -5,5 +5,8 @@ export const settings = {
 	},
 	drop: {
 		blinkStartBefore: 3000
+	},
+	telegram: {
+		shareUrl: 'https://t.me/share/url?url=&text='
 	}
 }

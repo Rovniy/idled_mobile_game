@@ -11,9 +11,9 @@ import { useUserStore } from './store/user'
 const userStore = useUserStore()
 
 onMounted(() => {
-  const telegram = useTelegram();
+  const { instance } = useTelegram();
 
-  userStore.initTelegramData(telegram);
+  userStore.initTelegramData(instance);
 })
 </script>
 

@@ -66,11 +66,11 @@ import {initGame} from '@/engine';
 import {useBuffManager} from '@/engine/buffManager';
 import {IGameState, IInitGame} from '@/types.js'
 import {useUserStore} from "@/store/user";
+import {useTelegram} from "@/composable/telegram";
 
 let gameInstance: IInitGame,
     pauseStartTime = null;
 
-const userStore = useUserStore()
 
 const gameState: IGameState = {
   level: ref(1),
@@ -85,6 +85,8 @@ const gameCanvas = ref(null);
 const showStartScreen = ref(true);
 const showPauseScreen = ref(false);
 
+const userStore = useUserStore()
+const telegram = useTelegram()
 const buff = useBuffManager(gameState.isPaused);
 
 function handleStartGame() {
@@ -93,7 +95,7 @@ function handleStartGame() {
 }
 
 function shareResult() {
-  console.log('Количество опыта:', gameState.experience.value);
+  telegram.shareResult(gameState.experience.value)
 }
 
 function handleSelectUpgrade(buffId) {
