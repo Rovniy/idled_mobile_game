@@ -114,7 +114,6 @@ export function drawDrops(params: TDrawDropsParams) {
 	const DEFAULT_SIZE = 50
 	const { engine } = params;
 	const { ctx, drops } = engine;
-
 	if (!ctx) return
 
 	drops.forEach((drop) => {

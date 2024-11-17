@@ -1,7 +1,6 @@
-// src/engine/player.js
-
 import playerImageSrc from '../assets/images/player.png';
 import {IPlayer} from "@/types";
+import {settings} from "@/settings";
 
 export function initPlayer(canvas : HTMLCanvasElement) : IPlayer {
 	const playerImage = new Image();
@@ -16,7 +15,7 @@ export function initPlayer(canvas : HTMLCanvasElement) : IPlayer {
 		color: 'white',
 		shootInterval: 500, // Стреляет каждые 500мс
 		lastShotTime: 0,
-		attackRadius: 150, // Начальный радиус атаки
+		attackRadius: settings.player.attackRadius, // Начальный радиус атаки
 		image: playerImage,
 		imageLoaded: false,
 		angle: 0,

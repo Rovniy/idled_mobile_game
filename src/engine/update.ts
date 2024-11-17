@@ -1,6 +1,9 @@
 import { checkCollision } from './collision.js';
 import {IBuffManager, IBullet, IEngine, IGameState} from "@/types";
 import {handleEnemyDeathAudio, handleEnemyDeathVfx} from "@/engine/enemy";
+import {BUFF_PROP} from "@/database/buffs";
+import { settings } from "@/settings";
+import { getRandomLoot } from "@/utils/helpers";
 
 type TUpdateEnemiesParams = {
 	engine: IEngine,
@@ -29,9 +32,13 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 
 		// Проверка столкновения с игроком
 		if (checkCollision(engine.player, enemy)) {
-			if (!buff.isInvincible.value) {
+			if (!buff.selectedUpgradesValue.value[BUFF_PROP.PLAYER_INVINCIBLE]) {
 				// Отнимаем HP у игрока
-				gameState.playerHP.value -= enemy.damage;
+				const finalDamage = enemy.damage * (1 / (1 + Math.log(1 + buff.selectedUpgradesValue.value[BUFF_PROP.PLAYER_ARMOR])));
+				gameState.playerHP.value -= finalDamage;
+				if (gameState.playerHP.value < 0) {
+					gameState.playerHP.value = 0;
+				}
 			}
 			// Удаляем врага после столкновения
 			engine.enemies.splice(index, 1);
@@ -76,7 +83,7 @@ export function updateBullets(params: TUpdateBulletsParams) {
 		if (bullet.target) {
 			const enemy = bullet.target;
 			if (enemy && checkCollision(bullet, enemy)) {
-				enemy.hp -= 1 + buff.damageIncrease.value;
+				enemy.hp -= 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
 				engine.bullets.splice(index, 1);
 
 				if (enemy.hp <= 0) {
@@ -94,7 +101,7 @@ export function updateBullets(params: TUpdateBulletsParams) {
 			for (let i = 0; i < engine.enemies.length; i++) {
 				const enemy = engine.enemies[i];
 				if (checkCollision(bullet, enemy)) {
-					enemy.hp -= 1 + buff.damageIncrease.value;
+					enemy.hp -= buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
 					engine.bullets.splice(index, 1);
 
 					if (enemy.hp <= 0) {
@@ -123,29 +130,19 @@ function handleEnemyDrop(params: THandleEnemyDropParams) {
 	const { enemy, engine} = params
 	if (!enemy?.drops || enemy.drops.length === 0) return;
 
-	const { drops, allDrops } = engine
+	const drop = getRandomLoot({ enemy, engine })
+	if (!drop) return;
 
-	for (const dropInfo of enemy.drops) {
-		const chance = Math.random();
-
-		if (chance <= dropInfo.chance) {
-			const dropData = allDrops.find((drop) => drop.id === dropInfo.id);
-			if (!dropData || !dropData?.duration) break
-
-			drops.push({
-				id: dropData.id,
-				x: enemy.x,
-				y: enemy.y,
-				iconImage: dropData.iconImage,
-				effect: dropData.effect,
-				remainingTime: dropData.duration * 1000, // Оставшееся время в миллисекундах
-				isBlinking: false, // Флаг мигания
-				pickupText: dropData.pickupText,
-			});
-
-			break
-		}
-	}
+	engine.drops.push({
+		id: drop.id,
+		x: enemy.x,
+		y: enemy.y,
+		iconImage: drop.iconImage,
+		effect: drop.effect,
+		remainingTime: drop.duration * 1000, // Оставшееся время в миллисекундах
+		isBlinking: false, // Флаг мигания
+		pickupText: drop.pickupText,
+	});
 }
 
 type TCheckLevelUpParams = {
@@ -189,7 +186,7 @@ export function updateDrops(params: TUpdateDropsParams) {
 		if (drop.remainingTime <= 0) {
 			// Удаляем дроп из массива
 			engine.drops.splice(i, 1);
-		} else if (drop.remainingTime <= 3000) {
+		} else if (drop.remainingTime <= settings.drop.blinkStartBefore) {
 			// Если до исчезновения осталось меньше или равно 3 секундам, начинаем мигание
 			drop.isBlinking = true;
 		} else {

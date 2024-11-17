@@ -1,15 +1,6 @@
 import dropsData, { DROP_EFFECT } from '@/database/drops';
-import HpIcon from '@/assets/images/drops/hp.png'
-import ExperienceIcon from '@/assets/images/drops/experience.png'
-import MeteorIcon from '@/assets/images/drops/meteor.png'
 import {IBuffManager, IDrop, IEngine, IGameState} from "@/types";
-import { DROP_IDS } from "@/database/drops";
-
-const IMAGE_MAP = {
-	[DROP_IDS.HEALTH_ELIXIR_SMALL]: HpIcon,
-	[DROP_IDS.EXPERIENCE_ELIXIR_SMALL]: ExperienceIcon,
-	[DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP]: MeteorIcon,
-}
+import {BUFF_PROP, BUFFS_IDS} from "@/database/buffs";
 
 /**
  * Загрузка данных дропа и их иконок
@@ -17,8 +8,7 @@ const IMAGE_MAP = {
 export function loadDrops() : IDrop[] {
 	return dropsData.map((drop: IDrop)=> {
 		const icon : HTMLImageElement = new Image();
-
-		icon.src = IMAGE_MAP[drop.icon]
+		icon.src = drop.icon
 
 		drop.iconImage = icon;
 
@@ -43,31 +33,36 @@ type TApplyDropEffectParams = {
 export function applyDropEffect(params : TApplyDropEffectParams) {
 	const { drop, engine, gameState, buff} = params
 	const { player } = engine;
-	const { playerHP, experience } = gameState;
-	const { addTemporaryBuff } = buff;
-
 	if (!player) return
 
-	const effect = drop.effect;
+	const { playerHP, experience } = gameState;
+	const { addTemporaryBuff } = buff;
+	let targetBuff = null
 
-	switch (effect.type) {
-		case DROP_EFFECT.PLAYER_INCREASE_HP:
-			player.hp = Math.min(player.maxHp, player.hp + effect.value);
-			playerHP.value = player.hp;
-			break;
-		case DROP_EFFECT.PLAYER_ADD_EXP:
-			experience.value += effect.value;
-			break;
-		case DROP_EFFECT.PLAYER_DO_INVINCIBILITY:
-			const targetBuff = buff.buffs.value.find(i => i.id === 'invincibility')
-			if (!targetBuff) break;
+	if (drop.effect.buff) {
+		targetBuff = buff.buffs.value.find(i => i.id === drop.effect.buff)
 
-			targetBuff.duration = effect.duration
+		buff.selectedUpgrades[drop.effect.type] += 1;
+		if (typeof drop.effect.value === 'number') {
+			buff.selectedUpgradesValue[drop.effect.type] += drop.effect.value;
+		} else {
+			buff.selectedUpgradesValue[drop.effect.type] = drop.effect.value;
+		}
+	} else {
+		switch (drop.effect.type) {
+			case DROP_EFFECT.PLAYER_INCREASE_HP:
+				player.hp = Math.min(player.maxHp, player.hp + drop.effect.value);
+				playerHP.value = player.hp;
+				break;
+			case DROP_EFFECT.PLAYER_ADD_EXP:
+				experience.value += drop.effect.value;
+				break;
+		}
+	}
 
-			addTemporaryBuff(targetBuff);
-			break;
-		default:
-			break;
+	if (targetBuff && drop.effect.duration) {
+		targetBuff.duration = drop.effect.duration;
+		addTemporaryBuff(targetBuff);
 	}
 }
 
@@ -75,7 +70,6 @@ type TCreateFloatingTextParams = {
 	drop: IDrop,
 	engine: IEngine,
 }
-
 /**
  * Создаем всплывающий текст
  * @param {TCreateFloatingTextParams} params

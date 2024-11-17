@@ -1,4 +1,5 @@
 import {ComputedRef, Ref} from "vue";
+import { BUFF_PROP } from "@/database/buffs";
 
 export interface IDrop {
     x?: number,
@@ -11,7 +12,8 @@ export interface IDrop {
     duration?: number,
     effect: {
         type: string,
-        value: number,
+        value: number|boolean,
+        buff?: string,
         duration?: number
     },
     pickupText?: string,
@@ -128,30 +130,34 @@ export interface IPuffEffect {
 }
 
 export interface ISelectedUpgrades {
-    shootSpeed: number,
-    damage: number,
-    targets: number,
-    attackRadius: number,
-    bulletSpeed: number,
-    coneShot: number,
-    accuracy: number,
+    [BUFF_PROP.SHOOT_ACCURACY]: number,
+    [BUFF_PROP.SHOOT_BULLET_SPEED]: number,
+    [BUFF_PROP.SHOOT_IN_CON_FORWARD]: number,
+    [BUFF_PROP.SHOOT_SPEED]: number,
+    [BUFF_PROP.PLAYER_INVINCIBLE]: number,
+    [BUFF_PROP.ENEMY_DETECTION_RADIUS]: number,
+    [BUFF_PROP.SHOOT_TARGETS]: number,
+    [BUFF_PROP.SHOOT_DAMAGE]: number,
+}
+
+export interface ISelectedUpgradesValue {
+    [BUFF_PROP.SHOOT_ACCURACY]: number,
+    [BUFF_PROP.SHOOT_BULLET_SPEED]: number,
+    [BUFF_PROP.SHOOT_IN_CON_FORWARD]: number,
+    [BUFF_PROP.SHOOT_SPEED]: number,
+    [BUFF_PROP.PLAYER_INVINCIBLE]: boolean,
+    [BUFF_PROP.ENEMY_DETECTION_RADIUS]: number,
+    [BUFF_PROP.SHOOT_TARGETS]: number,
+    [BUFF_PROP.SHOOT_DAMAGE]: number,
 }
 
 export interface IBuffManager {
     buffs: Ref<IBuff[]>,
     levelUpBuffs: Ref<IBuff[]>,
     selectedUpgrades: Ref<ISelectedUpgrades>,
+    selectedUpgradesValue: Ref<ISelectedUpgradesValue>,
     selectedUpgradeIcons: ComputedRef<IActiveBuff[]>,
-    shootSpeedIncrease: Ref<number>,
-    damageIncrease: Ref<number>,
-    additionalTargets: Ref<number>,
-    attackRadiusIncrease: Ref<number>,
-    bulletSpeedIncrease: Ref<number>,
-    coneShotLevel: Ref<number>,
-    playerSpeedMultiplier: Ref<number>,
-    isInvincible: Ref<boolean>,
     activeTemporaryBuffs: Ref<IBuff[]>,
-    accuracyIncrease: Ref<number>,
     getRandomBuffs: (count: number) => IBuff[],
     selectUpgrade: (buffId: string) => unknown,
     resetBuffs: () => unknown,

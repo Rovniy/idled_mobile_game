@@ -103,6 +103,9 @@ export async function initGame(params: TInitGames) : IInitGame {
 
 			gameState.playerHP.value = 100
 
+			// Очищаем дров с карты
+			engine.drops = []
+
 			// Сбрасываем интервал спавна и перезапускаем спавн врагов
 			engine.spawnInterval = 1000
 			clearTimeout(engine.spawnTimeout)

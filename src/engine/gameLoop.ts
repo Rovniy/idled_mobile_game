@@ -4,6 +4,8 @@ import { shootBullet } from './shooting';
 import { updateEnemies, updateBullets, checkLevelUp, updateDrops, updateFloatingTexts  } from './update';
 import {drawPlayer, drawEnemies, drawBullets, drawDrops, drawFloatingTexts, drawPuffEffect} from './draw.js';
 import {IBuffManager, IEngine, IGameState} from "@/types";
+import {BUFF_PROP} from "@/database/buffs";
+import {settings} from "@/settings";
 
 type TGameLoopParams = {
 	engine : IEngine,
@@ -16,7 +18,7 @@ export function gameLoop(params: TGameLoopParams) {
 	function update() {
 		if (!gameState.isPaused.value && !gameState.isGameOver.value && engine?.player) {
 			// Обновляем радиус атаки игрока с учётом бафов
-			engine.player.attackRadius = 150 * (1 + buff.attackRadiusIncrease.value);
+			engine.player.attackRadius = settings.player.attackRadius * (1 + buff.selectedUpgradesValue.value[BUFF_PROP.ENEMY_DETECTION_RADIUS]);
 
 			updateEnemies({ engine, gameState, buff });
 			updateBullets({ engine, gameState, buff });

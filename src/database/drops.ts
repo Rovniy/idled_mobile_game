@@ -1,21 +1,35 @@
+import {BUFF_PROP, BUFFS_IDS} from "@/database/buffs";
+
+import HpIcon from "@/assets/images/drops/hp.png";
+import ExperienceIcon from "@/assets/images/drops/experience.png";
+import MeteorIcon from "@/assets/images/drops/meteor.png";
+import ArmorIcon from "@/assets/images/drops/armor.png";
+
 export const DROP_IDS = {
 	HEALTH_ELIXIR_SMALL: 'HEALTH_ELIXIR_SMALL',
 	EXPERIENCE_ELIXIR_SMALL: 'EXPERIENCE_ELIXIR_SMALL',
+	ARMOR_HEAVY_TEMP: 'ARMOR_HEAVY_TEMP',
 	INVINCIBILITY_BUFF_SMALL_TEMP: 'INVINCIBILITY_BUFF_SMALL_TEMP',
 }
-
 export const DROP_EFFECT = {
 	PLAYER_INCREASE_HP: 'PLAYER_INCREASE_HP',
 	PLAYER_ADD_EXP: 'PLAYER_ADD_EXP',
+	PLAYER_ADD_ARMOR: 'PLAYER_ADD_ARMOR',
 	PLAYER_DO_INVINCIBILITY: 'PLAYER_DO_INVINCIBILITY',
+}
+const DROP_ICON = {
+	[DROP_IDS.HEALTH_ELIXIR_SMALL]: HpIcon,
+	[DROP_IDS.EXPERIENCE_ELIXIR_SMALL]: ExperienceIcon,
+	[DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP]: MeteorIcon,
+	[DROP_IDS.ARMOR_HEAVY_TEMP]: ArmorIcon,
 }
 
 export default [
 	{
 		id: DROP_IDS.HEALTH_ELIXIR_SMALL,
-		name: "Эликсир здоровья",
-		description: "Восстанавливает 20 HP",
-		icon: DROP_IDS.HEALTH_ELIXIR_SMALL,
+		name: "HP Potion",
+		description: "Restore 20 HP",
+		icon: DROP_ICON[DROP_IDS.HEALTH_ELIXIR_SMALL],
 		duration: 10,
 		effect: {
 			type: DROP_EFFECT.PLAYER_INCREASE_HP,
@@ -24,28 +38,43 @@ export default [
 		pickupText: "+20 HP"
 	},
 	{
+		id: DROP_IDS.ARMOR_HEAVY_TEMP,
+		name: "Heavy armor",
+		description: "Add 5 armor for 10 seconds",
+		icon: DROP_ICON[DROP_IDS.ARMOR_HEAVY_TEMP],
+		duration: 10,
+		effect: {
+			type: BUFF_PROP.PLAYER_ARMOR,
+			buff: BUFFS_IDS.PLAYER_ARMOR_HEAVY,
+			value: 5,
+			duration: 10
+		},
+		pickupText: "+5 Armor for 10 sec."
+	},
+	{
 		id: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
-		name: "Эликсир опыта",
-		description: "Дает 50 опыта",
-		icon: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
-		duration: 15,
+		name: "Experience elixir",
+		description: "Increase experience by 50",
+		icon:  DROP_ICON[DROP_IDS.EXPERIENCE_ELIXIR_SMALL],
+		duration: 10,
 		effect: {
 			type: DROP_EFFECT.PLAYER_ADD_EXP,
 			value: 50
 		},
-		pickupText: "+50 EXP"
+		pickupText: "+50 Exp"
 	},
 	{
 		id: DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP,
-		name: "Бафф неуязвимости",
-		description: "Делает вас неуязвимым на 5 секунд",
-		icon: DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP,
-		duration: 8,
+		name: "Invincibility",
+		description: "Gain Invincibility for 5 seconds",
+		icon: DROP_ICON[DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP],
+		duration: 10,
 		effect: {
-			type: DROP_EFFECT.PLAYER_DO_INVINCIBILITY,
+			type: BUFF_PROP.PLAYER_INVINCIBLE,
+			buff: BUFFS_IDS.PLAYER_INVINCIBILITY,
 			value: true,
 			duration: 5
 		},
-		pickupText: "Неуязвимость!"
+		pickupText: "Invincibility!"
 	}
 ]

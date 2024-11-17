@@ -28,6 +28,9 @@ import iconIcePilons from '@/assets/images/buffs/ice_pilons.png';
 import iconRocket11 from '@/assets/images/buffs/rocket_1.png';
 import iconTarget1 from '@/assets/images/buffs/target_1.png';
 import iconTarget2 from '@/assets/images/buffs/target_2.png';
+import iconArmorLight from '@/assets/images/buffs/armor_light.png';
+import iconArmorMedium from '@/assets/images/buffs/armor_medium.png';
+import iconArmorHeavy from '@/assets/images/buffs/armor_heavy.png';
 
 export const BUFFS_IDS = {
 	SHOOT_SPEED: 'SHOOT_SPEED',
@@ -38,6 +41,9 @@ export const BUFFS_IDS = {
 	SHOOT_IN_CON_FORWARD: 'SHOT_IN_CON_FORWARD',
 	SHOOT_BULLET_SPEED: 'SHOT_BULLET_SPEED',
 	PLAYER_INVINCIBILITY: 'PLAYER_INVINCIBILITY',
+	PLAYER_ARMOR_LIGHT: 'PLAYER_ARMOR_LIGHT',
+	PLAYER_ARMOR_MEDIUM: 'PLAYER_ARMOR_MEDIUM',
+	PLAYER_ARMOR_HEAVY: 'PLAYER_ARMOR_HEAVY',
 }
 export const BUFF_ICONS = {
 	[BUFFS_IDS.SHOOT_SPEED]: iconAutoGun2,
@@ -48,27 +54,55 @@ export const BUFF_ICONS = {
 	[BUFFS_IDS.SHOOT_BULLET_SPEED]: iconBullet2,
 	[BUFFS_IDS.SHOOT_ACCURACY]: iconTarget2,
 	[BUFFS_IDS.PLAYER_INVINCIBILITY]: iconHearth2,
+	[BUFFS_IDS.PLAYER_ARMOR_LIGHT]: iconArmorLight,
+	[BUFFS_IDS.PLAYER_ARMOR_MEDIUM]: iconArmorMedium,
+	[BUFFS_IDS.PLAYER_ARMOR_HEAVY]: iconArmorHeavy,
 }
 
 export const BUFF_PROP = {
-	SHOOT_SPEED: 'SHOOT_SPEED',
-	SHOOT_DAMAGE: 'SHOOT_DAMAGE',
-	SHOOT_TARGETS: 'SHOOT_TARGETS',
-	ENEMY_DETECTION_RADIUS: 'ENEMY_DETECTION_RADIUS',
-	SHOOT_BULLET_SPEED: 'SHOOT_BULLET_SPEED',
-	SHOOT_IN_CON_FORWARD: 'SHOOT_IN_CON_FORWARD',
-	SHOOT_ACCURACY: 'SHOOT_ACCURACY',
-	PLAYER_INVINCIBLE: 'PLAYER_INVINCIBLE',
+	SHOOT_SPEED: 'SHOOT_SPEED', // Скорость полета пуль
+	SHOOT_DAMAGE: 'SHOOT_DAMAGE', // Урон от выстрела
+	SHOOT_TARGETS: 'SHOOT_TARGETS', // Количество атакуемых целей
+	ENEMY_DETECTION_RADIUS: 'ENEMY_DETECTION_RADIUS', // Радиус обнаружения врагов
+	SHOOT_BULLET_SPEED: 'SHOOT_BULLET_SPEED', // Скорость полета пули
+	SHOOT_IN_CON_FORWARD: 'SHOOT_IN_CON_FORWARD', // Стрельба в конусе перед собой
+	SHOOT_AROUND_PLAYER: 'SHOOT_AROUND_PLAYER', // Стрельба во все стороны
+	SHOOT_ACCURACY: 'SHOOT_ACCURACY', // Точность стрельбы
+	PLAYER_INVINCIBLE: 'PLAYER_INVINCIBLE', // Неуязвимость игрока
+	PLAYER_ARMOR: 'PLAYER_ARMOR', // Броня игрока
+	PLAYER_BULLET_PENETRATION: 'PLAYER_BULLET_PENETRATION', // шанс пули не исчезнуть и пройти через врага
+	PLAYER_BULLET_CRITICAL_CHANCE: 'PLAYER_BULLET_CRITICAL_CHANCE',
+	PLAYER_BULLET_CRITICAL_DAMAGE: 'PLAYER_BULLET_CRITICAL_DAMAGE',
+	TIME_SLOW_MOTION: 'TIME_SLOW_MOTION', // Замедление времени
+	ENEMY_FREEZE_MOVEMENT: 'ENEMY_FREEZE_MOVEMENT', // Замедление задетых врагов
+	PLAYER_DOUBLE_EXPERIENCE: 'PLAYER_DOUBLE_EXPERIENCE', // Регулярное восстановление здоровья игрока
+	PLAYER_DODGE_CHANCE: 'PLAYER_DODGE_CHANCE', // Шанс уклониться от атаки врага
+	PLAYER_LIFE_STEAL: 'PLAYER_LIFE_STEAL', // Игрок восстанавливает здоровье, нанося урон врагам
+	PLAYER_FIRE_SHIELD: 'PLAYER_FIRE_SHIELD', // Огонь, наносящий урон врагам рядом с игроком
+	ENEMY_POISON: 'ENEMY_POISON', // Враги получают урон от яда в течение времени
+	PLAYER_RESURRECTION: 'PLAYER_RESURRECTION', // Возможность один раз воскреснуть после смерти
 }
 export const BUFF_PROP_ICONS = {
 	[BUFF_PROP.SHOOT_SPEED]: iconAutoGun2,
 	[BUFF_PROP.SHOOT_DAMAGE]: iconBullet1,
 	[BUFF_PROP.SHOOT_TARGETS]: iconTarget1,
 	[BUFF_PROP.ENEMY_DETECTION_RADIUS]: iconCrosshair1,
-	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: iconBullet4,
 	[BUFF_PROP.SHOOT_BULLET_SPEED]: iconBullet2,
+	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: iconBullet4,
 	[BUFF_PROP.SHOOT_ACCURACY]: iconTarget2,
 	[BUFF_PROP.PLAYER_INVINCIBLE]: iconHearth2,
+	[BUFF_PROP.PLAYER_ARMOR]: iconArmorLight,
+}
+export const BUFF_PROP_TEXT = {
+	[BUFF_PROP.SHOOT_SPEED]: 'Shoot speed',
+	[BUFF_PROP.SHOOT_DAMAGE]: 'Damage deal',
+	[BUFF_PROP.SHOOT_TARGETS]: 'Targets count',
+	[BUFF_PROP.ENEMY_DETECTION_RADIUS]: 'Detect radius',
+	[BUFF_PROP.SHOOT_BULLET_SPEED]: 'Bullet speed',
+	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 'Shoot in con',
+	[BUFF_PROP.SHOOT_ACCURACY]: 'Accuracy',
+	[BUFF_PROP.PLAYER_INVINCIBLE]: 'Player invincible',
+	[BUFF_PROP.PLAYER_ARMOR]: 'Armor'
 }
 
 export default [
@@ -81,6 +115,39 @@ export default [
 		effect: {
 			type: BUFF_PROP.SHOOT_SPEED,
 			value: 1
+		}
+	},
+	{
+		id: BUFFS_IDS.PLAYER_ARMOR_LIGHT,
+		name: "Light Armor",
+		description: "Increase armor by 1",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_ARMOR_LIGHT],
+		rarity: RARE.UNCOMMON,
+		effect: {
+			type: BUFF_PROP.PLAYER_ARMOR,
+			value: 1
+		}
+	},
+	{
+		id: BUFFS_IDS.PLAYER_ARMOR_MEDIUM,
+		name: "Medium Armor",
+		description: "Increase armor by 2",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_ARMOR_MEDIUM],
+		rarity: RARE.COMMON,
+		effect: {
+			type: BUFF_PROP.PLAYER_ARMOR,
+			value: 2
+		}
+	},
+	{
+		id: BUFFS_IDS.PLAYER_ARMOR_HEAVY,
+		name: "Heavy Armor",
+		description: "Increase armor by 5",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_ARMOR_HEAVY],
+		rarity: RARE.LEGENDARY,
+		effect: {
+			type: BUFF_PROP.PLAYER_ARMOR,
+			value: 5
 		}
 	},
 	{

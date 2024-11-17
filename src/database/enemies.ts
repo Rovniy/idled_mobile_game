@@ -14,6 +14,10 @@ import enemySimpleSrc from '@/assets/images/enemies/enemy_simple.png';
 import enemySpiderSrc from '@/assets/images/enemies/enemy_spider.png';
 import enemyTreeSrc from '@/assets/images/enemies/enemy_tree.png';
 
+const ENEMY_IDS = {
+	RED: 'RED',
+}
+
 const ENEMY = {
 	MOB_SIMPLE: enemySimpleSrc,
 	MOB_BLUE: enemyBlueSrc,
@@ -30,14 +34,14 @@ const ENEMY = {
 }
 
 export const ENEMY_DEBUG = {
-	enable: true,
-	enemy_id: 'enemy2',
+	enable: false,
+	enemy_id: ENEMY_IDS.RED,
 	count: 5
 }
 
 export default [
 	{
-		id: "enemy1",
+		id: ENEMY_IDS.RED,
 		name: "Красный враг",
 		hp: 1,
 		damage: 10,
@@ -46,12 +50,16 @@ export default [
 		image: ENEMY.MOB_SIMPLE,
 		drops: [
 			{
+				id: DROP_IDS.ARMOR_HEAVY_TEMP,
+				chance: 1
+			},
+			{
 				id: DROP_IDS.HEALTH_ELIXIR_SMALL,
 				chance: 0.3
 			},
 			{
 				id: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
-				chance: 1
+				chance: 0.5
 			}
 		],
 		width: 50,
@@ -72,12 +80,16 @@ export default [
 		image: ENEMY.MOB_BLUE,
 		drops: [
 			{
+				id: DROP_IDS.ARMOR_HEAVY_TEMP,
+				chance: 1
+			},
+			{
 				id: DROP_IDS.HEALTH_ELIXIR_SMALL,
 				chance: 0.3
 			},
 			{
 				id: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
-				chance: 1
+				chance: 0.2
 			},
 			{
 				id: DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP,
@@ -102,8 +114,12 @@ export default [
 		image: ENEMY.MOB_DIABLO,
 		drops: [
 			{
-				id: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
+				id: DROP_IDS.ARMOR_HEAVY_TEMP,
 				chance: 1
+			},
+			{
+				id: DROP_IDS.EXPERIENCE_ELIXIR_SMALL,
+				chance: 0.5
 			},
 			{
 				id: DROP_IDS.INVINCIBILITY_BUFF_SMALL_TEMP,

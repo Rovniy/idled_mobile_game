@@ -1,4 +1,6 @@
 import {IBuffManager, IEnemy, IEngine} from "@/types";
+import {BUFF_PROP} from "@/database/buffs";
+import {settings} from "@/settings";
 
 type TShootBulletParams = {
 	engine: IEngine,
@@ -7,18 +9,11 @@ type TShootBulletParams = {
 export function shootBullet(params: TShootBulletParams) {
 	const { engine, buff } = params
 	const { player, enemies, bullets } = engine
-	const {
-		additionalTargets,
-		shootSpeedIncrease,
-		bulletSpeedIncrease,
-		coneShotLevel,
-		accuracyIncrease
-	} = buff
 
 	if (!player) return;
 
 	const now = Date.now();
-	const adjustedShootInterval = player.shootInterval / (1 + shootSpeedIncrease.value);
+	const adjustedShootInterval = player.shootInterval / (1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_SPEED]);
 	if (now - player.lastShotTime < adjustedShootInterval) return;
 
 	// Фильтруем врагов, находящихся в радиусе атаки
@@ -43,7 +38,7 @@ export function shootBullet(params: TShootBulletParams) {
 	});
 
 	// Определяем количество целей
-	const numTargets = 1 + additionalTargets.value;
+	const numTargets = 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_TARGETS];
 
 	// Выбираем ближайших врагов
 	const targets = sortedEnemies.slice(0, numTargets);
@@ -57,7 +52,7 @@ export function shootBullet(params: TShootBulletParams) {
 
 	player.angle = angleToTarget;
 
-	player.accuracy = Math.min(1, player.accuracy + accuracyIncrease.value);
+	player.accuracy = Math.min(1, player.accuracy + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_ACCURACY]);
 
 	// Добавляем погрешность к углу стрельбы
 	const accuracy = player.accuracy; // Значение от 0 до 1
@@ -66,11 +61,11 @@ export function shootBullet(params: TShootBulletParams) {
 
 	angleToTarget += randomDeviation;
 
-	const totalProjectiles = 1 + coneShotLevel.value * 2; // Общее количество снарядов
-	const angleSpread = 0.2 + 0.05 * coneShotLevel.value; // Общий угол разброса в радианах (можно настроить)
+	const totalProjectiles = 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_IN_CON_FORWARD] * 2; // Общее количество снарядов
+	const angleSpread = 0.2 + 0.05 * buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_IN_CON_FORWARD]; // Общий угол разброса в радианах (можно настроить)
 	const angleStep = angleSpread / (totalProjectiles - 1);
 
-	if (coneShotLevel.value > 0) {
+	if (buff.selectedUpgrades.value[BUFF_PROP.SHOOT_IN_CON_FORWARD] > 0) {
 		// Генерируем углы для каждого снаряда
 		const startAngle = angleToTarget - angleSpread / 2;
 
@@ -86,7 +81,7 @@ export function shootBullet(params: TShootBulletParams) {
 				y: player.y,
 				width: 11,
 				height: 22,
-				speed: 5 + bulletSpeedIncrease.value,
+				speed: settings.player.shootingSpeed + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_BULLET_SPEED],
 				angle: finalAngle,
 				color: 'cyan',
 				radius: 5, // Для проверки столкновений
@@ -108,7 +103,7 @@ export function shootBullet(params: TShootBulletParams) {
 				y: player.y,
 				width: 11,
 				height: 22,
-				speed: 5 + bulletSpeedIncrease.value,
+				speed: settings.player.shootingSpeed + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_BULLET_SPEED],
 				angle,
 				color: 'cyan',
 				radius: 2, // Для проверки столкновений

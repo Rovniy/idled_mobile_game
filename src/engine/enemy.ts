@@ -42,7 +42,7 @@ type TSpawnEnemy = {
 export function spawnEnemy(params: TSpawnEnemy) {
 	const DEFAULT_SIZE = 40;
 	const { engine, enemy_id } = params
-	const { enemies, player, canvas } = engine
+	const { enemies, canvas } = engine
 
 	const enemyType = getEnemy({ engine, enemy_id })
 	const side = Math.floor(Math.random() * 4);
@@ -124,6 +124,7 @@ function getEnemy(params: TGetRandomEnemyParams) {
 		return bossList[Math.floor(Math.random() * bossList.length)];
 	}
 
-	return loadedEnemies[Math.floor(Math.random() * loadedEnemies.length)];
+	const mobs = loadedEnemies.filter(e => !e.boss)
+	return mobs[Math.floor(Math.random() * mobs.length)];
 
 }

@@ -42,7 +42,7 @@
         @restart="restartGame"
     />
 
-    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame" />
+    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame" :buffs="buff.selectedUpgradesValue.value" />
   </div>
 </template>
 
@@ -99,6 +99,8 @@ function restartGame() {
   gameState.level.value = 1;
   gameState.experience.value = 0;
   gameState.experienceToNextLevel.value = 100;
+  showPauseScreen.value = false;
+  showStartScreen.value = false;
 
   buff.resetBuffs();
   gameInstance.resetGame();
@@ -114,6 +116,8 @@ function handleVisibilityChange() {
 
 function pauseGame() {
   if (gameState.isPaused.value) return;
+
+  console.log('buff.selectedUpgradesValue', buff.selectedUpgradesValue.value);
 
   gameState.isPaused.value = true;
   showPauseScreen.value = true;

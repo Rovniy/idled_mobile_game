@@ -4,32 +4,36 @@ import {IActiveBuff, IBuff, IBuffManager} from "@/types";
 import { RARE_WEIGHT } from '@/database/rare'
 import { BUFFS_IDS, BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
 
+const SELECTED_UPGRADES_COUNT = {
+	[BUFF_PROP.SHOOT_SPEED]: 0,
+	[BUFF_PROP.SHOOT_DAMAGE]: 0,
+	[BUFF_PROP.SHOOT_TARGETS]: 0,
+	[BUFF_PROP.ENEMY_DETECTION_RADIUS]: 0,
+	[BUFF_PROP.SHOOT_BULLET_SPEED]: 0,
+	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 0,
+	[BUFF_PROP.SHOOT_ACCURACY]: 0,
+	[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
+	[BUFF_PROP.PLAYER_ARMOR]: 0,
+}
+const SELECTED_UPGRADES_VALUE = {
+	[BUFF_PROP.SHOOT_SPEED]: 0,
+	[BUFF_PROP.SHOOT_DAMAGE]: 0,
+	[BUFF_PROP.SHOOT_TARGETS]: 0,
+	[BUFF_PROP.ENEMY_DETECTION_RADIUS]: 0,
+	[BUFF_PROP.SHOOT_BULLET_SPEED]: 0,
+	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 0,
+	[BUFF_PROP.SHOOT_ACCURACY]: 0,
+	[BUFF_PROP.PLAYER_INVINCIBLE]: false,
+	[BUFF_PROP.PLAYER_ARMOR]: 0,
+}
+
 export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 	// Реактивные переменные
-	const buffs : Ref<IBuff[]> = ref([]);
+	const buffs : Ref<IBuff[]> = ref(buffsData);
 	const levelUpBuffs = ref([]);
-	const selectedUpgrades = ref({
-		[BUFF_PROP.SHOOT_SPEED]: 0,
-		[BUFF_PROP.SHOOT_DAMAGE]: 0,
-		[BUFF_PROP.SHOOT_TARGETS]: 0,
-		[BUFF_PROP.ENEMY_DETECTION_RADIUS]: 0,
-		[BUFF_PROP.SHOOT_BULLET_SPEED]: 0,
-		[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 0,
-		[BUFF_PROP.SHOOT_ACCURACY]: 0,
-		[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
-	});
+	const selectedUpgrades = ref(SELECTED_UPGRADES_COUNT);
+	const selectedUpgradesValue = ref(SELECTED_UPGRADES_VALUE)
 	const activeTemporaryBuffs : Ref<IBuff[]> = ref([]);
-
-	// Значения бафов
-	const shootSpeedIncrease = ref(0);
-	const damageIncrease = ref(0);
-	const additionalTargets = ref(0);
-	const attackRadiusIncrease = ref(0);
-	const bulletSpeedIncrease = ref(0);
-	const coneShotLevel = ref(0);
-	const playerSpeedMultiplier = ref(1);
-	const isInvincible = ref(false);
-	const accuracyIncrease = ref(0);
 
 	/**
 	 * Бафы и их влияние не игровой процесс
@@ -37,42 +41,16 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 	function applyBuff(buff: IBuff) {
 		const { effect, duration } = buff;
 
-		switch (effect.type) {
-			case BUFFS_IDS.SHOOT_SPEED:
-				if (typeof effect.value === 'number') shootSpeedIncrease.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_SPEED] += 1;
-				break;
-			case BUFFS_IDS.SHOOT_DAMAGE:
-				if (typeof effect.value === 'number') damageIncrease.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_DAMAGE] += 1;
-				break;
-			case BUFFS_IDS.SHOOT_MULTIPLE_TARGETS:
-				if (typeof effect.value === 'number') additionalTargets.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_TARGETS] += 1;
-				break;
-			case BUFFS_IDS.ENEMY_DETECTION_RADIUS:
-				if (typeof effect.value === 'number') attackRadiusIncrease.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.ENEMY_DETECTION_RADIUS] += 1;
-				break;
-			case BUFFS_IDS.SHOOT_BULLET_SPEED:
-				if (typeof effect.value === 'number') bulletSpeedIncrease.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_BULLET_SPEED] += 1;
-				break;
-			case BUFFS_IDS.SHOOT_IN_CON_FORWARD:
-				if (typeof effect.value === 'number') coneShotLevel.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_IN_CON_FORWARD] = coneShotLevel.value;
-				break;
-			case BUFFS_IDS.SHOOT_ACCURACY:
-				if (typeof effect.value === 'number') accuracyIncrease.value += effect.value;
-				selectedUpgrades.value[BUFF_PROP.SHOOT_ACCURACY] += 1;
-				break;
-			// Добавьте обработку других бафов
-			default:
-				break;
-		}
-
 		if (duration) {
 			addTemporaryBuff(buff);
+		} else {
+			selectedUpgrades.value[effect.type] += 1;
+			if (typeof effect.value === 'number') {
+				selectedUpgradesValue.value[effect.type] += effect.value
+			}
+			if (typeof effect.value === 'boolean') {
+				selectedUpgradesValue.value[effect.type] = effect.value
+			}
 		}
 	}
 
@@ -82,40 +60,35 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 	function removeBuffEffect(buff : IBuff) {
 		const { effect } = buff;
 
-		switch (effect.type) {
-			// Отменяем эффекты временных бафов
-			case BUFFS_IDS.SHOOT_SPEED:
-				if (typeof effect.value === 'number') playerSpeedMultiplier.value -= effect.value;
-				break;
-			case BUFFS_IDS.PLAYER_INVINCIBILITY:
-				isInvincible.value = false;
-				break;
-			default:
-				break;
+		selectedUpgrades.value[effect.type] -= 1;
+		if (selectedUpgrades.value[effect.type] < 0) {
+			selectedUpgrades.value[effect.type] = 0
+		}
+
+		if (typeof selectedUpgradesValue.value[effect.type] === 'number') {
+			selectedUpgradesValue.value[effect.type] -= effect.value;
+			if (selectedUpgradesValue.value[effect.type] < 0) {
+				selectedUpgradesValue.value[effect.type] = 0
+			}
+		} else if (typeof selectedUpgradesValue.value[effect.type] === 'boolean') {
+			selectedUpgradesValue.value[effect.type] = !effect.value;
 		}
 	}
-
-	// Загрузка бафов
-	function loadBuffs() {
-		buffs.value = buffsData.map((buff : IBuff) => {
-			return {
-				...buff,
-				icon: `../assets/icons/${buff.icon}`,
-			}
-		});
-	}
-	loadBuffs();
 
 	const selectedUpgradeIcons : ComputedRef<IActiveBuff[]> = computed(() => {
 		const buffsArray = [];
 
+		// Рисуем постоянные улучшения
 		for (const item in selectedUpgrades.value) {
-			if (selectedUpgrades.value[item] === 0) continue;
+			if (selectedUpgrades.value[item] <= 0) continue;
 
-			buffsArray.push({
+			const preparedUpgradeBuff = {
+				id: item,
 				icon: BUFF_PROP_ICONS[item],
 				count: selectedUpgrades.value[item],
-			});
+				isTemporary: false,
+			}
+			buffsArray.push(preparedUpgradeBuff);
 		}
 
 		// Добавляем временные бафы
@@ -124,35 +97,21 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 
 			const remainingTime = Math.ceil((buff.expirationTime - Date.now()) / 1000);
 
-			buffsArray.push({
+			const preparedActiveBuff = {
+				id: buff.id,
 				icon: buff.icon,
 				count: remainingTime,
 				isTemporary: true,
-			});
+			}
+			buffsArray.push(preparedActiveBuff);
 		});
 
 		return buffsArray;
 	});
 
 	function resetBuffs() {
-		selectedUpgrades.value = {
-			[BUFF_PROP.SHOOT_SPEED]: 0,
-			[BUFF_PROP.SHOOT_DAMAGE]: 0,
-			[BUFF_PROP.SHOOT_TARGETS]: 0,
-			[BUFF_PROP.ENEMY_DETECTION_RADIUS]: 0,
-			[BUFF_PROP.SHOOT_BULLET_SPEED]: 0,
-			[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 0,
-			[BUFF_PROP.SHOOT_ACCURACY]: 0,
-			[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
-		};
-
-		shootSpeedIncrease.value = 0;
-		damageIncrease.value = 0;
-		additionalTargets.value = 0;
-		attackRadiusIncrease.value = 0;
-		bulletSpeedIncrease.value = 0;
-		coneShotLevel.value = 0;
-		accuracyIncrease.value = 0;
+		selectedUpgrades.value = SELECTED_UPGRADES_COUNT
+		selectedUpgradesValue.value = SELECTED_UPGRADES_VALUE
 		activeTemporaryBuffs.value = [];
 	}
 
@@ -189,6 +148,10 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 		return selectedBuffs;
 	}
 
+	/**
+	 * Выбора апгрейда из карточек при лвлапе
+	 * @param buffId
+	 */
 	function selectUpgrade(buffId: string) {
 		const buff = levelUpBuffs.value.find((b: IBuff) => b.id === buffId);
 		if (!buff) return;
@@ -199,8 +162,10 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 		isPaused.value = false;
 	}
 
-
-
+	/**
+	 * Добавление бафа при клике на выпавший дроп
+	 * @param buff - Объект бафа из database
+	 */
 	function addTemporaryBuff(buff : IBuff) {
 		const existingBuff : IBuff|undefined = activeTemporaryBuffs.value.find((b : IBuff) => b.id === buff.id);
 		if (!buff?.duration) return
@@ -237,6 +202,7 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 			if (!buff?.expirationTime) return
 
 			if (now >= buff.expirationTime) {
+				activeTemporaryBuffs.value.filter((_b: IBuff) => _b.id !== buff.id);
 				removeBuffEffect(buff);
 				return false; // Удаляем баф из массива
 			}
@@ -251,17 +217,9 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 		buffs,
 		levelUpBuffs,
 		selectedUpgrades,
+		selectedUpgradesValue,
 		selectedUpgradeIcons,
-		shootSpeedIncrease,
-		damageIncrease,
-		additionalTargets,
-		attackRadiusIncrease,
-		bulletSpeedIncrease,
-		coneShotLevel,
-		playerSpeedMultiplier,
-		isInvincible,
 		activeTemporaryBuffs,
-		accuracyIncrease,
 		getRandomBuffs,
 		selectUpgrade,
 		resetBuffs,
