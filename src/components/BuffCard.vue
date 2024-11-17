@@ -109,8 +109,8 @@ const props = defineProps({
     $icon_size: 60px;
 
     position: absolute;
-    left: -$icon_size / 3;
-    top: -$icon_size / 3;
+    left: calc(-#{$icon_size} / 3);
+    top: calc(-#{$icon_size} / 3);
 
     .icon_clock {
       width: $icon_size;

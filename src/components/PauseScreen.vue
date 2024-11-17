@@ -6,8 +6,8 @@
     <hs class="stats_title">Stats:</hs>
 
     <div class="stats_area">
-      <div class="stats" v-for="value in statsPreparedList" :key="value.at()">
-        <div class="text">{{ value.at() }}</div>
+      <div class="stats" v-for="value in statsPreparedList" :key="value.at(0)">
+        <div class="text">{{ value.at(0) }}</div>
         <div class="separator" />
         <div class="value">{{ value.at(1) }}</div>
       </div>
@@ -25,7 +25,7 @@ type TProps = {
   buffs: Object,
 }
 const props = withDefaults(defineProps<TProps>(), {
-  buffs: () => {}
+  buffs: () => ({})
 })
 
 const statsPreparedList = computed(() => {
@@ -34,7 +34,7 @@ const statsPreparedList = computed(() => {
       .sort((a, b) => a[0].localeCompare(b[0]));
 })
 function getBuffTitle(buffKey: string) : string {
-  return BUFF_PROP_TEXT[buffKey] || BUFF_PROP_TEXT
+  return BUFF_PROP_TEXT[buffKey] || buffKey
 }
 function getBuffValue(value: number|boolean) : string {
   if (typeof value === "boolean") {

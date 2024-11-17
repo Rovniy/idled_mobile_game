@@ -119,8 +119,8 @@ $exp_bar_height: 15px;
       background-color: $color_orange;
       width: 0;
       transition: width 1s;
-      border-top-right-radius: $exp_bar_height / 2;
-      border-bottom-right-radius: $exp_bar_height / 2;
+      border-top-right-radius: calc($exp_bar_height / 2);
+      border-bottom-right-radius: calc($exp_bar_height / 2);
     }
 
     .exp_text {
