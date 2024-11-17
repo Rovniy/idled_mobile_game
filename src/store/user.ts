@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { TelegramWebApp } from '@/plugins/telegram'
+import { parseInitData } from '@telegram-apps/sdk';
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
@@ -15,8 +15,8 @@ export const useUserStore = defineStore('user', {
 		getAvatar: (state) => state.photo_url,
 	},
 	actions: {
-		initTelegramData(tg: TelegramWebApp) {
-			const _u = tg.initDataUnsafe?.user
+		initTelegramData() {
+			const _u = parseInitData('user');
 			if (!_u) return
 
 			this.first_name = _u.first_name

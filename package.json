@@ -12,6 +12,7 @@
   "author": "Andrei (Ravy)",
   "license": "MIT",
   "dependencies": {
+    "@telegram-apps/sdk-vue": "^1.0.4",
     "pinia": "^2.2.6",
     "vue": "^3.5.12"
   },
