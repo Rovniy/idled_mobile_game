@@ -43,7 +43,7 @@ export default [
 	{
 		id: ENEMY_IDS.RED,
 		name: "Красный враг",
-		hp: 1,
+		hp: 10,
 		damage: 10,
 		speed: 2,
 		experience: 11,
@@ -73,7 +73,7 @@ export default [
 	{
 		id: "enemy2",
 		name: "Желтый враг",
-		hp: 1,
+		hp: 5,
 		damage: 5,
 		speed: 1,
 		experience: 1,
@@ -107,7 +107,7 @@ export default [
 	{
 		id: "enemy3",
 		name: "Зеленый враг",
-		hp: 1,
+		hp: 4,
 		damage: 20,
 		speed: 0.3,
 		experience: 1,
