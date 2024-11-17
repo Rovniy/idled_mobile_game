@@ -11,6 +11,8 @@ const props = defineProps({
 })
 
 const experiencePercentage = computed(() => {
+  if (!props.experience || !props.experienceToNextLevel) return 0
+
   return (props.experience / props.experienceToNextLevel) * 100;
 });
 const userAvatar = computed(() => {

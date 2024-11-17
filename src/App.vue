@@ -6,13 +6,14 @@
 import GameCanvas from './components/GameCanvas.vue';
 import {onMounted } from 'vue'
 import { useTelegram } from './composable/telegram'
+import { useUserStore } from './store/user'
+
+const userStore = useUserStore()
 
 onMounted(() => {
   const telegram = useTelegram();
-  console.log('telegram', telegram)
-  console.log('telegram.initDataUnsafe', telegram.initDataUnsafe)
-  console.log('window.location.hash', window.location.hash)
-  console.log('window.location.host', window.location.host)
+
+  userStore.initTelegramData(telegram);
 })
 </script>
 

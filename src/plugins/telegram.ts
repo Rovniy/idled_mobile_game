@@ -1,6 +1,6 @@
 import { FunctionPlugin, App } from 'vue'
 
-interface TelegramWebApp {
+export interface TelegramWebApp {
 	expand: () => void;
 	initDataUnsafe: {
 		user: {
@@ -8,6 +8,8 @@ interface TelegramWebApp {
 			first_name: string;
 			last_name?: string;
 			username?: string;
+			language_code?: string;
+			photo_url?: string;
 		}
 	};
 }

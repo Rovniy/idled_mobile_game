@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- Добавляем StartScreen -->
-    <StartScreen v-if="showStartScreen" @startGame="handleStartGame" />
+    <StartScreen v-if="showStartScreen" @startGame="handleStartGame"/>
 
     <!-- Полоса HP -->
-    <HpBar :player-h-p="gameState.playerHP.value" />
+    <HpBar :player-h-p="gameState.playerHP.value"/>
 
     <!-- Кнопка паузы -->
-    <Button text="Stats" :callback="pauseGame" size="small" class="pause_button" />
+    <Button text="Stats" :callback="pauseGame" size="small" class="pause_button"/>
 
     <!-- Иконки бафов под полосой HP -->
     <div class="upgrades_container">
@@ -20,9 +20,13 @@
       />
     </div>
 
-    <canvas ref="gameCanvas" @click="handleCanvasClick" />
+    <canvas ref="gameCanvas" @click="handleCanvasClick"/>
 
-    <Userplate :experience="gameState.experience.value" :experience-to-next-level="gameState.experienceToNextLevel.value" :level="gameState.level.value" :username="'MainKoon'"/>
+    <Userplate :experience="gameState.experience.value"
+               :experience-to-next-level="gameState.experienceToNextLevel.value"
+               :level="gameState.level.value"
+               :username="userStore.getUsername"
+               :avatar="userStore.getAvatar"/>
 
     <!-- Buff Selection Window -->
     <div v-if="gameState.levelUpOptions.value && !gameState.isGameOver.value" id="level-up-overlay">
@@ -42,13 +46,14 @@
         @restart="restartGame"
     />
 
-    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame" :buffs="buff.selectedUpgradesValue.value" />
+    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame"
+                 :buffs="buff.selectedUpgradesValue.value"/>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
+import {onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import BuffCard from './BuffCard.vue';
 import BuffIcon from './BuffIcon.vue';
 import GameOverOverlay from './GameOverOverlay.vue';
@@ -57,14 +62,17 @@ import StartScreen from './StartScreen.vue';
 import PauseScreen from './PauseScreen.vue';
 import Userplate from './UserPlate.vue';
 import Button from "@/components/Ui/Button.vue";
-import { initGame } from '@/engine';
-import { useBuffManager } from '@/engine/buffManager';
-import { IGameState, IInitGame} from '@/types.js'
+import {initGame} from '@/engine';
+import {useBuffManager} from '@/engine/buffManager';
+import {IGameState, IInitGame} from '@/types.js'
+import {useUserStore} from "@/store/user";
 
-let gameInstance : IInitGame,
+let gameInstance: IInitGame,
     pauseStartTime = null;
 
-const gameState : IGameState = {
+const userStore = useUserStore()
+
+const gameState: IGameState = {
   level: ref(1),
   experience: ref(0),
   experienceToNextLevel: ref(50),
@@ -124,14 +132,14 @@ function pauseGame() {
   pauseStartTime = Date.now();
 }
 
-function handleCanvasClick(event : MouseEvent) {
+function handleCanvasClick(event: MouseEvent) {
   if (!gameCanvas.value || !gameInstance) return;
 
   const canvasRect = gameCanvas.value.getBoundingClientRect();
   const x = event.clientX - canvasRect.left;
   const y = event.clientY - canvasRect.top;
 
-  gameInstance.handleClick({ x, y });
+  gameInstance.handleClick({x, y});
 }
 
 function handleResumeGame() {
