@@ -16,7 +16,7 @@ export const useUserStore = defineStore('user', {
 	},
 	actions: {
 		initTelegramData() {
-			const _u = parseInitData('user');
+			const _u = parseInitData();
 			if (!_u) return
 
 			this.first_name = _u.first_name

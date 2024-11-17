@@ -3,7 +3,6 @@ import './assets/style/styles.scss'
 import { createApp } from 'vue';
 import { createPinia } from 'pinia'
 import { init } from '@telegram-apps/sdk-vue';
-import { parseInitData } from '@telegram-apps/sdk';
 
 init();
 
