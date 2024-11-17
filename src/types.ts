@@ -124,31 +124,19 @@ export interface IAudioManager {
 export interface IPuffEffect {
     x: number,
     y: number,
+    width?: number,
+    height?: number,
     image: HTMLImageElement,
     opacity: number,
     lifetime: number,
 }
 
 export interface ISelectedUpgrades {
-    [BUFF_PROP.SHOOT_ACCURACY]: number,
-    [BUFF_PROP.SHOOT_BULLET_SPEED]: number,
-    [BUFF_PROP.SHOOT_IN_CON_FORWARD]: number,
-    [BUFF_PROP.SHOOT_SPEED]: number,
-    [BUFF_PROP.PLAYER_INVINCIBLE]: number,
-    [BUFF_PROP.ENEMY_DETECTION_RADIUS]: number,
-    [BUFF_PROP.SHOOT_TARGETS]: number,
-    [BUFF_PROP.SHOOT_DAMAGE]: number,
+    [key: string]: number
 }
 
 export interface ISelectedUpgradesValue {
-    [BUFF_PROP.SHOOT_ACCURACY]: number,
-    [BUFF_PROP.SHOOT_BULLET_SPEED]: number,
-    [BUFF_PROP.SHOOT_IN_CON_FORWARD]: number,
-    [BUFF_PROP.SHOOT_SPEED]: number,
-    [BUFF_PROP.PLAYER_INVINCIBLE]: boolean,
-    [BUFF_PROP.ENEMY_DETECTION_RADIUS]: number,
-    [BUFF_PROP.SHOOT_TARGETS]: number,
-    [BUFF_PROP.SHOOT_DAMAGE]: number,
+    [key: string]: number | boolean,
 }
 
 export interface IBuffManager {

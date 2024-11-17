@@ -60,6 +60,10 @@ export function drawEnemies(params: TDrawEnemies) {
 		if (!enemy.imageLoaded ||
 			!enemy?.width ||
 			!enemy?.height ||
+			enemy.x === undefined ||
+			enemy.y === undefined ||
+			enemy.rotate === undefined ||
+			enemy.image === undefined ||
 			typeof enemy?.wobble?.offset === "undefined" ||
 			!enemy?.wobble?.intensity ||
 			!enemy?.wobble?.speed
@@ -70,7 +74,7 @@ export function drawEnemies(params: TDrawEnemies) {
 		ctx.rotate(enemy.rotate);
 
 		ctx.drawImage(
-			enemy.image,
+			enemy.image as CanvasImageSource,
 			-enemy.width / 2,
 			-enemy.height / 2,
 			enemy.width,
@@ -117,7 +121,7 @@ export function drawDrops(params: TDrawDropsParams) {
 	if (!ctx) return
 
 	drops.forEach((drop) => {
-		if (!drop?.remainingTime) return
+		if (!drop?.remainingTime || !drop?.iconImage) return
 
 		if (drop.iconImage.complete) {
 			let shouldDraw = true;
@@ -132,7 +136,7 @@ export function drawDrops(params: TDrawDropsParams) {
 				}
 			}
 
-			if (shouldDraw) {
+			if (shouldDraw && drop.x !== undefined && drop.y !== undefined) {
 				ctx.drawImage(
 					drop.iconImage,
 					drop.x - DEFAULT_SIZE / 2,
@@ -177,6 +181,8 @@ export function drawPuffEffect(params: TDrawPuffEffect) {
 	if (puffEffects.length === 0) return
 
 	puffEffects.forEach((puff, index) => {
+		if (puff?.width === undefined || puff?.height === undefined) return
+
 		ctx.save();
 		ctx.globalAlpha = puff.opacity;
 		ctx.translate(puff.x, puff.y);

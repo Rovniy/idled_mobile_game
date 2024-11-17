@@ -2,7 +2,7 @@ import {Ref, ref, computed, ComputedRef} from 'vue';
 import buffsData from '@/database/buffs';
 import {IActiveBuff, IBuff, IBuffManager} from "@/types";
 import { RARE_WEIGHT } from '@/database/rare'
-import { BUFFS_IDS, BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
+import { BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
 
 const SELECTED_UPGRADES_COUNT = {
 	[BUFF_PROP.SHOOT_SPEED]: 0,

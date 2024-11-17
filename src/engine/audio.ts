@@ -1,16 +1,18 @@
 class AudioManager {
+	sounds = {}
+
 	constructor() {
 		this.sounds = {};
 	}
 
-	loadSound(name, src) {
+	loadSound(name: string, src: string) {
 		const audio = new Audio(src)
 		audio.volume = .05;
 
 		this.sounds[name] = audio;
 	}
 
-	playSound(name) {
+	playSound(name: string) {
 		if (this.sounds[name]) {
 			this.sounds[name].currentTime = 0; // Перематываем в начало для повторного воспроизведения
 			this.sounds[name].play();

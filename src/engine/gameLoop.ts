@@ -18,7 +18,7 @@ export function gameLoop(params: TGameLoopParams) {
 	function update() {
 		if (!gameState.isPaused.value && !gameState.isGameOver.value && engine?.player) {
 			// Обновляем радиус атаки игрока с учётом бафов
-			engine.player.attackRadius = settings.player.attackRadius * (1 + buff.selectedUpgradesValue.value[BUFF_PROP.ENEMY_DETECTION_RADIUS]);
+			engine.player.attackRadius = settings.player.attackRadius * (1 + Number(buff.selectedUpgradesValue.value[BUFF_PROP.ENEMY_DETECTION_RADIUS]));
 
 			updateEnemies({ engine, gameState, buff });
 			updateBullets({ engine, gameState, buff });
@@ -43,7 +43,7 @@ export function gameLoop(params: TGameLoopParams) {
 		}, 1000)
 
 		drawPlayer({ engine, gameState });
-		drawEnemies({ engine, gameState });
+		drawEnemies({ engine });
 		drawBullets({ engine });
 		drawDrops({ engine });
 		drawFloatingTexts({ engine });

@@ -17,7 +17,7 @@ type TInitGames = {
 	gameState: IGameState,
 	buff: IBuffManager
 }
-export async function initGame(params: TInitGames) : IInitGame {
+export async function initGame(params: TInitGames) : Promise<IInitGame> {
 	const { gameCanvas, gameState, buff } = params
 	const { bullets, bulletImage, bulletImageLoaded } = await initBullets()
 
