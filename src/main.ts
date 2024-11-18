@@ -74,11 +74,6 @@ isTMA()
 			acceptCustomStyles: true
 		});
 
-		console.log('backButton.isSupported()', backButton.isSupported());
-
-		backButton.mount()
-		backButton.show()
-
 		expandViewport();
 
 		if (miniApp.mount.isAvailable()) {
@@ -90,5 +85,5 @@ isTMA()
 	.catch(err => {
 		console.log('err', err);
 		const debug = useDebugStore();
-		debug.log('isTMA not available');
+		debug.log('isTMA not available' + err);
 	})
