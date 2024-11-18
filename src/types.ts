@@ -34,12 +34,14 @@ type TEnemyDrop = {
     chance: number,
 }
 export interface IEnemy {
+    _id?: number, // Локальный ID. Ставится при создании врага в виде timestamp
     x?: number,
     y?: number,
     id?: string,
     boss?: boolean,
     name: string,
     hp: number,
+    maxHP?: number,
     damage: number,
     speed: number,
     experience: number,
@@ -65,7 +67,8 @@ export interface IBullet {
     radius: number,
     angle: number,
     speed: number,
-    target?: any
+    target?: any,
+    penetrateTargetId?: number | null
 }
 
 export interface IPlayer {
@@ -121,6 +124,16 @@ export interface IAudioManager {
 }
 
 export interface IPuffEffect {
+    x: number,
+    y: number,
+    width?: number,
+    height?: number,
+    image: HTMLImageElement,
+    opacity: number,
+    lifetime: number,
+}
+
+export interface ICriticalEffect {
     x: number,
     y: number,
     width?: number,
@@ -187,6 +200,7 @@ export interface IEngine {
     spawnTimeout: ReturnType<typeof setTimeout>|undefined,
     player: IPlayer|null,
     puffEffects: IPuffEffect[],
+    criticalEffect: ICriticalEffect[],
     enemyHPIncreaseCoefficient?: number,
     audioManager: IAudioManager
 }

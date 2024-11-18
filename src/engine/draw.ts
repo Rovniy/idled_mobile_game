@@ -80,6 +80,28 @@ export function drawEnemies(params: TDrawEnemies) {
 		);
 
 		ctx.restore();
+
+		if (!enemy.maxHP) return;
+
+		// Если здоровье врага меньше максимального, рисуем полоску здоровья
+		if (enemy.hp < enemy.maxHP) {
+			// Параметры для полоски здоровья
+			const hpBarWidth = enemy.width; // Ширина полоски, равная ширине врага
+			const hpBarHeight = 5; // Высота полоски
+			const hpBarX = enemy.x - hpBarWidth / 2; // Начало полоски по X
+			const hpBarY = enemy.y - enemy.height / 2 - hpBarHeight - 5; // Позиция полоски над врагом
+
+			// Вычисляем процент оставшегося здоровья
+			const hpPercent = enemy.hp / enemy.maxHP;
+
+			// Рисуем фон полоски здоровья (серый)
+			ctx.fillStyle = "#333";
+			ctx.fillRect(hpBarX, hpBarY, hpBarWidth, hpBarHeight);
+
+			// Рисуем заполненную часть полоски (красный цвет)
+			ctx.fillStyle = "#e74c3c";
+			ctx.fillRect(hpBarX, hpBarY, hpBarWidth * hpPercent, hpBarHeight);
+		}
 	});
 }
 
@@ -194,6 +216,35 @@ export function drawPuffEffect(params: TDrawPuffEffect) {
 		// Удаление эффекта после окончания времени жизни
 		if (puff.lifetime <= 0) {
 			puffEffects.splice(index, 1);
+		}
+	});
+
+}
+
+type TDrawCriticalHitEffect = {
+	engine: IEngine,
+}
+export function drawCriticalHitEffect(params: TDrawCriticalHitEffect) {
+	const { engine } = params;
+	const { criticalEffect, ctx } = engine;
+
+	if (!ctx) return
+	if (criticalEffect.length === 0) return
+
+	criticalEffect.forEach((puff, index) => {
+		if (puff?.width === undefined || puff?.height === undefined) return
+
+		ctx.save();
+		ctx.globalAlpha = puff.opacity;
+		ctx.translate(puff.x, puff.y);
+		ctx.drawImage(puff.image, -puff.width / 2, -puff.height / 2, puff.width, puff.height);
+		ctx.restore();
+
+		puff.opacity -= 0.03;
+		puff.lifetime--;
+
+		if (puff.lifetime <= 0) {
+			criticalEffect.splice(index, 1);
 		}
 	});
 

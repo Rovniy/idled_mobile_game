@@ -3,6 +3,7 @@ import buffsData from '@/database/buffs';
 import {IActiveBuff, IBuff, IBuffManager} from "@/types";
 import { RARE_WEIGHT } from '@/database/rare'
 import { BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
+import {settings} from "@/settings";
 
 const SELECTED_UPGRADES_COUNT = {
 	[BUFF_PROP.SHOOT_SPEED]: 0,
@@ -14,6 +15,9 @@ const SELECTED_UPGRADES_COUNT = {
 	[BUFF_PROP.SHOOT_ACCURACY]: 0,
 	[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
 	[BUFF_PROP.PLAYER_ARMOR]: 0,
+	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 0,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: 0,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: 0,
 }
 const SELECTED_UPGRADES_VALUE = {
 	[BUFF_PROP.SHOOT_SPEED]: 0,
@@ -25,6 +29,9 @@ const SELECTED_UPGRADES_VALUE = {
 	[BUFF_PROP.SHOOT_ACCURACY]: 0,
 	[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
 	[BUFF_PROP.PLAYER_ARMOR]: 0,
+	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 0,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: settings.player.baseCriticalChance,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: settings.player.baseCriticalPower,
 }
 
 export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {

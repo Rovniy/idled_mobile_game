@@ -11,6 +11,7 @@ import { Ref } from 'vue'
 import { ENEMY_DEBUG } from '@/database/enemies'
 
 import backgroundImageSrc from '../assets/images/background.png'
+import {settings} from "@/settings";
 
 type TInitGames = {
 	gameCanvas: Ref<HTMLCanvasElement|null>,
@@ -36,13 +37,14 @@ export async function initGame(params: TInitGames) : Promise<IInitGameResponse|n
 		bulletImage,
 		bulletImageLoaded,
 		loadedEnemies: loadEnemiesData(),
-		spawnInterval: 2000,
+		spawnInterval: settings.engine.enemySpawnInterval,
 		spawnTimeout: undefined,
 		progress: {
 			enemyHP: 1,
 			enemyDamage: 1
 		},
 		puffEffects: [],
+		criticalEffect: [],
 		audioManager: initAudion()
 	}
 	engine.ctx = engine.canvas.getContext('2d')
@@ -81,10 +83,10 @@ export async function initGame(params: TInitGames) : Promise<IInitGameResponse|n
 
 	// Наблюдаем за изменением уровня
 	watch(gameState.level, () => {
-		// Уменьшаем интервал спавна на 5% с каждым уровнем
-		engine.spawnInterval = engine.spawnInterval * 0.95 // Уменьшаем на 5%
-		if (engine.spawnInterval < 200) {
-			engine.spawnInterval = 200 // Устанавливаем минимальный интервал
+		engine.spawnInterval = engine.spawnInterval / settings.progress.spawn.enemyMultiplex
+
+		if (engine.spawnInterval < settings.engine.minEnemySpawnInterval) {
+			engine.spawnInterval = settings.engine.minEnemySpawnInterval // Устанавливаем минимальный интервал
 		}
 	})
 
@@ -115,7 +117,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGameResponse|n
 			engine.drops = []
 
 			// Сбрасываем интервал спавна и перезапускаем спавн врагов
-			engine.spawnInterval = 1000
+			engine.spawnInterval = settings.engine.enemySpawnInterval
 			clearTimeout(engine.spawnTimeout)
 			spawnEnemies()
 		},

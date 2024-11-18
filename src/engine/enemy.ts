@@ -2,19 +2,52 @@ import enemiesData from '../database/enemies';
 import {IEnemy, IEngine, IGameState} from "@/types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
+import {settings} from "@/settings";
 
 // Enemy vfx
 import poofVfx1 from '@/assets/images/vfx/poof_1.png';
 import poofVfx2 from '@/assets/images/vfx/poof_2.png';
 import poofVfx3 from '@/assets/images/vfx/poof_3.png';
 import poofVfx4 from '@/assets/images/vfx/poof_4.png';
-import {settings} from "@/settings";
+import poofVfx5 from '@/assets/images/vfx/poof_5.png';
+import poofVfx6 from '@/assets/images/vfx/poof_6.png';
+import poofVfx7 from '@/assets/images/vfx/poof_7.png';
+import poofVfx8 from '@/assets/images/vfx/poof_8.png';
+import poofVfx9 from '@/assets/images/vfx/poof_9.png';
+import poofVfx10 from '@/assets/images/vfx/poof_10.png';
+import poofVfx11 from '@/assets/images/vfx/poof_11.png';
+import poofVfx12 from '@/assets/images/vfx/poof_12.png';
+import poofVfx13 from '@/assets/images/vfx/poof_13.png';
+import poofVfx14 from '@/assets/images/vfx/poof_14.png';
+import poofVfx15 from '@/assets/images/vfx/poof_15.png';
+import poofVfx16 from '@/assets/images/vfx/poof_16.png';
+import poofVfx17 from '@/assets/images/vfx/poof_17.png';
+import poofVfx18 from '@/assets/images/vfx/poof_18.png';
+import poofVfx19 from '@/assets/images/vfx/poof_19.png';
+import poofVfx20 from '@/assets/images/vfx/poof_20.png';
+import criticalHit from '@/assets/images/vfx/criticalHit.png';
 
 const VFX_DEATH = [
 	poofVfx1,
 	poofVfx2,
 	poofVfx3,
 	poofVfx4,
+	poofVfx5,
+	poofVfx6,
+	poofVfx7,
+	poofVfx8,
+	poofVfx9,
+	poofVfx10,
+	poofVfx11,
+	poofVfx12,
+	poofVfx13,
+	poofVfx14,
+	poofVfx15,
+	poofVfx16,
+	poofVfx17,
+	poofVfx18,
+	poofVfx19,
+	poofVfx20,
 ]
 
 export function loadEnemiesData() : IEnemy[] {
@@ -72,10 +105,12 @@ export function spawnEnemy(params: TSpawnEnemy) {
 	const enemyGrows = growEnemyByLevel(enemyType, gameState.level.value)
 
 	enemy = {
+		_id: Date.now(),
 		...enemyType,
 		...enemyGrows,
 		x,
 		y,
+		maxHP: enemyType.hp,
 		width: enemyType?.width || DEFAULT_SIZE,
 		height: enemyType?.height || DEFAULT_SIZE,
 	};
@@ -92,7 +127,7 @@ function growEnemyByLevel(enemy: IEnemy, level: number) {
 	return {
 		hp:         scaleParams(enemy.hp,           level, _SE.hpMultiplex),
 		damage:     scaleParams(enemy.damage,       level, _SE.damageMultiplex),
-		experience: scaleParams(enemy.experience,   level, _SE.expMultiplex),
+		experience: Math.floor(scaleParams(enemy.experience,   level, _SE.expMultiplex)),
 		speed:      scaleParams(enemy.speed,        level, _SE.speedMultiplex)
 	}
 }
@@ -108,7 +143,7 @@ function scaleParams(baseValue: number, playerLevel: number, rate: number) {
 	const multiplier = Math.pow(rate, playerLevel - 1);
 
 	// Возвращаем увеличенное значение HP
-	return Math.round(baseValue * multiplier);
+	return +(baseValue * multiplier).toFixed(1)
 }
 
 
@@ -128,6 +163,29 @@ export function handleEnemyDeathVfx(params: THandlePoofParams) {
 		y: enemy.y,
 		width: 100,
 		height: 100,
+		opacity: 1,
+		lifetime: 30
+	});
+}
+
+
+type THandleEnemyCritHitVfxParams = {
+	enemy: any,
+	engine: IEngine
+}
+export function handleEnemyCritHitVfx(params: THandleEnemyCritHitVfxParams) {
+	console.log(123);
+	const { enemy, engine} = params
+
+	const image = new Image();
+	image.src = criticalHit;
+
+	engine.criticalEffect.push({
+		image,
+		x: enemy.x,
+		y: enemy.y,
+		width: 60,
+		height: 60,
 		opacity: 1,
 		lifetime: 30
 	});
@@ -164,5 +222,26 @@ function getEnemy(params: TGetRandomEnemyParams) {
 
 	const mobs = loadedEnemies.filter(e => !e.boss)
 	return mobs[Math.floor(Math.random() * mobs.length)];
+}
 
+
+type TGetRandomLootParams = {
+	enemy: IEnemy,
+	engine: IEngine
+}
+export function getRandomLoot(params: TGetRandomLootParams) {
+	const { enemy, engine } = params
+
+	const lootTable = enemy.drops;
+	const sortedLootTable = lootTable.sort((a, b) => a.chance - b.chance);
+
+	for (const drop of sortedLootTable) {
+		const dropChance = Math.random();
+
+		if (dropChance <= drop.chance) {
+			return engine.allDrops.find(d => d.id === drop.id);
+		}
+	}
+
+	return null; // Если ничего не выпало
 }

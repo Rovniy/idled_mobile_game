@@ -2,7 +2,15 @@
 
 import { shootBullet } from './shooting';
 import { updateEnemies, updateBullets, checkLevelUp, updateDrops, updateFloatingTexts  } from './update';
-import {drawPlayer, drawEnemies, drawBullets, drawDrops, drawFloatingTexts, drawPuffEffect} from './draw.js';
+import {
+	drawPlayer,
+	drawEnemies,
+	drawBullets,
+	drawDrops,
+	drawFloatingTexts,
+	drawPuffEffect,
+	drawCriticalHitEffect
+} from './draw.js';
 import {IBuffManager, IEngine, IGameState} from "@/types";
 import {BUFF_PROP} from "@/database/buffs";
 import {settings} from "@/settings";
@@ -48,6 +56,7 @@ export function gameLoop(params: TGameLoopParams) {
 		drawDrops({ engine });
 		drawFloatingTexts({ engine });
 		drawPuffEffect({ engine });
+		drawCriticalHitEffect({ engine });
 	}
 
 	// Цикл стрельбы

@@ -9,7 +9,7 @@ export function initPlayer(canvas : HTMLCanvasElement) : IPlayer {
 	const player = {
 		x: canvas.width / 2,
 		y: canvas.height / 2,
-		radius: 20,
+		radius: 1,
 		width: 60,
 		height: 60,
 		color: 'white',

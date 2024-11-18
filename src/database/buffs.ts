@@ -24,12 +24,14 @@ import iconHexagonIce from '@/assets/images/buffs/hexagon_ice.png';
 import iconIceCrystal from '@/assets/images/buffs/ice_crystal.png';
 import iconIceCube from '@/assets/images/buffs/ice_cube.png';
 import iconIcePilons from '@/assets/images/buffs/ice_pilons.png';
-import iconRocket11 from '@/assets/images/buffs/rocket_1.png';
+import iconRocket1 from '@/assets/images/buffs/rocket_1.png';
 import iconTarget1 from '@/assets/images/buffs/target_1.png';
 import iconTarget2 from '@/assets/images/buffs/target_2.png';
 import iconArmorLight from '@/assets/images/buffs/armor_light.png';
 import iconArmorMedium from '@/assets/images/buffs/armor_medium.png';
 import iconArmorHeavy from '@/assets/images/buffs/armor_heavy.png';
+import iconCriticalChance from '@/assets/images/buffs/crit_chance.png';
+import iconCriticalPower from '@/assets/images/buffs/crit_power.png';
 
 export const BUFFS_IDS = {
 	SHOOT_SPEED: 'SHOOT_SPEED',
@@ -43,6 +45,9 @@ export const BUFFS_IDS = {
 	PLAYER_ARMOR_LIGHT: 'PLAYER_ARMOR_LIGHT',
 	PLAYER_ARMOR_MEDIUM: 'PLAYER_ARMOR_MEDIUM',
 	PLAYER_ARMOR_HEAVY: 'PLAYER_ARMOR_HEAVY',
+	PLAYER_BULLET_PENETRATION: 'PLAYER_BULLET_PENETRATION',
+	PLAYER_BULLET_CRITICAL_CHANCE: 'PLAYER_BULLET_CRITICAL_CHANCE',
+	PLAYER_BULLET_CRITICAL_POWER: 'PLAYER_BULLET_CRITICAL_POWER',
 }
 export const BUFF_ICONS = {
 	[BUFFS_IDS.SHOOT_SPEED]: iconAutoGun2,
@@ -56,6 +61,9 @@ export const BUFF_ICONS = {
 	[BUFFS_IDS.PLAYER_ARMOR_LIGHT]: iconArmorLight,
 	[BUFFS_IDS.PLAYER_ARMOR_MEDIUM]: iconArmorMedium,
 	[BUFFS_IDS.PLAYER_ARMOR_HEAVY]: iconArmorHeavy,
+	[BUFFS_IDS.PLAYER_BULLET_PENETRATION]: iconRocket1,
+	[BUFFS_IDS.PLAYER_BULLET_CRITICAL_CHANCE]: iconCriticalChance,
+	[BUFFS_IDS.PLAYER_BULLET_CRITICAL_POWER]: iconCriticalPower,
 }
 
 export const BUFF_PROP = {
@@ -71,7 +79,7 @@ export const BUFF_PROP = {
 	PLAYER_ARMOR: 'PLAYER_ARMOR', // Броня игрока
 	PLAYER_BULLET_PENETRATION: 'PLAYER_BULLET_PENETRATION', // шанс пули не исчезнуть и пройти через врага
 	PLAYER_BULLET_CRITICAL_CHANCE: 'PLAYER_BULLET_CRITICAL_CHANCE',
-	PLAYER_BULLET_CRITICAL_DAMAGE: 'PLAYER_BULLET_CRITICAL_DAMAGE',
+	PLAYER_BULLET_CRITICAL_POWER: 'PLAYER_BULLET_CRITICAL_POWER',
 	TIME_SLOW_MOTION: 'TIME_SLOW_MOTION', // Замедление времени
 	ENEMY_FREEZE_MOVEMENT: 'ENEMY_FREEZE_MOVEMENT', // Замедление задетых врагов
 	PLAYER_DOUBLE_EXPERIENCE: 'PLAYER_DOUBLE_EXPERIENCE', // Регулярное восстановление здоровья игрока
@@ -91,6 +99,9 @@ export const BUFF_PROP_ICONS = {
 	[BUFF_PROP.SHOOT_ACCURACY]: iconTarget2,
 	[BUFF_PROP.PLAYER_INVINCIBLE]: iconHearth2,
 	[BUFF_PROP.PLAYER_ARMOR]: iconArmorLight,
+	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: iconRocket1,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: iconCriticalChance,
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: iconCriticalPower,
 }
 export const BUFF_PROP_TEXT = {
 	[BUFF_PROP.SHOOT_SPEED]: 'Shoot speed',
@@ -101,10 +112,46 @@ export const BUFF_PROP_TEXT = {
 	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 'Shoot in con',
 	[BUFF_PROP.SHOOT_ACCURACY]: 'Accuracy',
 	[BUFF_PROP.PLAYER_INVINCIBLE]: 'Player invincible',
-	[BUFF_PROP.PLAYER_ARMOR]: 'Armor'
+	[BUFF_PROP.PLAYER_ARMOR]: 'Armor',
+	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 'Bullet penetration',
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: 'Critical chance',
+	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: 'Critical hit power',
 }
 
 export default [
+	{
+		id: BUFFS_IDS.PLAYER_BULLET_CRITICAL_CHANCE,
+		name: BUFF_PROP_TEXT[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE],
+		description: "Gives you a chance to deal increased damage",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_BULLET_CRITICAL_CHANCE],
+		rarity: RARE.LEGENDARY,
+		effect: {
+			type: BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE,
+			value: 0.1
+		}
+	},
+	{
+		id: BUFFS_IDS.PLAYER_BULLET_CRITICAL_POWER,
+		name: BUFF_PROP_TEXT[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER],
+		description: "Increases the damage of critical hits",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_BULLET_CRITICAL_POWER],
+		rarity: RARE.RARE,
+		effect: {
+			type: BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER,
+			value: 0.1
+		}
+	},
+	{
+		id: BUFFS_IDS.PLAYER_BULLET_PENETRATION,
+		name: "Bullet penetration",
+		description: "Increases the chance to pierce through the enemy",
+		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_BULLET_PENETRATION],
+		rarity: RARE.RARE,
+		effect: {
+			type: BUFF_PROP.PLAYER_BULLET_PENETRATION,
+			value: 1
+		}
+	},
 	{
 		id: BUFFS_IDS.SHOOT_SPEED,
 		name: "Увеличить скорость стрельбы",

@@ -1,9 +1,9 @@
 import { checkCollision } from './collision.js';
 import {IBuffManager, IBullet, IEngine, IGameState} from "@/types";
-import {handleEnemyDeathAudio, handleEnemyDeathVfx} from "@/engine/enemy";
+import {handleEnemyDeathAudio, handleEnemyDeathVfx, getRandomLoot, handleEnemyCritHitVfx} from "@/engine/enemy";
 import {BUFF_PROP} from "@/database/buffs";
 import { settings } from "@/settings";
-import { getRandomLoot } from "@/utils/helpers";
+import { isThroughPenetration, calculateBulletDamage } from "@/engine/bullet";
 
 type TUpdateEnemiesParams = {
 	engine: IEngine,
@@ -37,12 +37,14 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 				// Отнимаем HP у игрока
 				const finalDamage = enemy.damage * (1 / (1 + Math.log(1 + buff.selectedUpgradesValue.value[BUFF_PROP.PLAYER_ARMOR])));
 				gameState.playerHP.value -= Math.floor(finalDamage);
+
 				if (gameState.playerHP.value < 0) {
 					gameState.playerHP.value = 0;
 				}
 			}
 			// Удаляем врага после столкновения
 			engine.enemies.splice(index, 1);
+			handleEnemyDeathVfx({ enemy, engine })
 
 			// Проверяем, не закончился ли HP у игрока
 			if (gameState.playerHP.value <= 0 && !gameState.isGameOver.value) {
@@ -85,8 +87,23 @@ export function updateBullets(params: TUpdateBulletsParams) {
 			const enemy = bullet.target;
 
 			if (checkCollision(bullet, enemy)) {
-				enemy.hp -= 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
-				engine.bullets.splice(index, 1);
+				// Если у пули есть цель, которую она бробила насквозь
+				if (bullet.penetrateTargetId === enemy._id) return;
+
+				const bulletDamage = calculateBulletDamage({ buff })
+				console.log('bulletDamage', bulletDamage);
+				enemy.hp -= bulletDamage.damage
+
+				if (bulletDamage.isCritical) {
+					handleEnemyCritHitVfx({ enemy, engine })
+				}
+
+				// Проверка сквозного пробития врага
+				if (isThroughPenetration({ buff })) {
+					bullet.penetrateTargetId = enemy._id
+				} else {
+					engine.bullets.splice(index, 1);
+				}
 
 				if (enemy.hp <= 0) {
 					gameState.experience.value += enemy.experience;

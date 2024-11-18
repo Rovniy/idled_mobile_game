@@ -1,5 +1,3 @@
-import {IEnemy, IEngine} from "@/types";
-
 export function getRandomValue(array: any[]) {
 	if (array.length === 0) {
 		throw new Error('Array of arguments cannot be empty');
@@ -8,24 +6,8 @@ export function getRandomValue(array: any[]) {
 	return array[randomIndex];
 }
 
+export function isRandomChance(number: number) {
+	if (number >= 1) return true
 
-type TGetRandomLootParams = {
-	enemy: IEnemy,
-	engine: IEngine
-}
-export function getRandomLoot(params: TGetRandomLootParams) {
-	const { enemy, engine } = params
-
-	const lootTable = enemy.drops;
-	const sortedLootTable = lootTable.sort((a, b) => a.chance - b.chance);
-
-	for (const drop of sortedLootTable) {
-		const dropChance = Math.random();
-
-		if (dropChance <= drop.chance) {
-			return engine.allDrops.find(d => d.id === drop.id);
-		}
-	}
-
-	return null; // Если ничего не выпало
+	return Math.random() < number;
 }

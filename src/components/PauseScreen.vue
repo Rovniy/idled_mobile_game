@@ -40,6 +40,10 @@ function getBuffValue(buffKey: string, value: number) : string {
     return value ? 'Yes' : 'No'
   }
 
+  if (BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE === buffKey) {
+    return value * 100 + '%'
+  }
+
   return value.toString()
 }
 </script>
