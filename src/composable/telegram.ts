@@ -7,9 +7,10 @@ export function useTelegram() {
 
 		const shareText = `I scored ${exp} points in the game! Think you can beat my record? Give it a shot and prove me wrong!`
 
-		if (shareURL.isAvailable()) {
-			shareURL(settings.telegram.appUrl, shareText);
-		}
+		shareURL.ifAvailable(
+			settings.telegram.appUrl,
+			shareText
+		)
 	}
 
 	return {

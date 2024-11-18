@@ -2,7 +2,7 @@ import './assets/style/styles.scss'
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia'
-import { init, isTMA, miniApp  } from '@telegram-apps/sdk-vue';
+import { init, isTMA, miniApp } from '@telegram-apps/sdk-vue';
 
 isTMA()
 	.then(() => {
