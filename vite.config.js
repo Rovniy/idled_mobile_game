@@ -15,6 +15,13 @@ export default defineConfig({
       "@": join(__dirname, "src")
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/assets/style/vars.scss" as *;`
+      },
+    },
+  },
   define: { "process.env": {} },
   server: {
     host: 'testdomain.test', // Настраиваем хост

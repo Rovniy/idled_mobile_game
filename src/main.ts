@@ -4,16 +4,16 @@ import { createApp } from 'vue';
 import { createPinia } from 'pinia'
 import { init, isTMA, miniApp  } from '@telegram-apps/sdk-vue';
 
-if (await isTMA()) {
-	init({
-		acceptCustomStyles: true
-	});
+isTMA()
+	.then(() => {
+		init({
+			acceptCustomStyles: true
+		});
 
-	if (miniApp.mount.isAvailable()) {
-		miniApp.mount();
-	}
-}
-
+		if (miniApp.mount.isAvailable()) {
+			miniApp.mount();
+		}
+	})
 
 import App from './App.vue';
 

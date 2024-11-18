@@ -31,8 +31,6 @@ const hpPercentage = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/style/vars';
-
 $height: 15px;
 
 .hp_bar {

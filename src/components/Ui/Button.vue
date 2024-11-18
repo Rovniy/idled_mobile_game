@@ -24,7 +24,7 @@ function doCallback() {
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/style/vars";
+@use "@/assets/style/vars" as *;
 
 .btn {
   border: none;

@@ -13,8 +13,6 @@ import Button from "@/components/Ui/Button.vue";
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/style/vars';
-
 .start-screen {
   position: absolute;
   top: 0;

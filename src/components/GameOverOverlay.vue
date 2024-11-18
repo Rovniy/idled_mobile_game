@@ -31,8 +31,6 @@ function restartGame() {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/style/vars';
-
 .game_over_overlay {
   position: fixed;
   top: 0;

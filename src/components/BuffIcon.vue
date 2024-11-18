@@ -15,8 +15,6 @@ defineProps({
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/style/vars";
-
 .upgrade-icon-container {
   position: relative;
   width: 40px;

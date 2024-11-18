@@ -22,8 +22,6 @@ const props = defineProps({
 </script>
 
 <style scoped lang="scss">
-@import "@/assets/style/vars";
-
 .card {
   background-color: #abc141;
   color: #000;

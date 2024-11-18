@@ -40,8 +40,6 @@ const userAvatar = computed(() => {
 </template>
 
 <style scoped lang="scss">
-@import '@/assets/style/vars';
-
 $left_indent: 40px;
 $avatar_size: 70px;
 $exp_bar_height: 15px;

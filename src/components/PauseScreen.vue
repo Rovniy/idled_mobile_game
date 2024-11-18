@@ -3,7 +3,7 @@
     <h1 class="title">Pause...</h1>
     <Button text="Resume" :callback="() => $emit('resumeGame')" size="medium" />
 
-    <hs class="stats_title">Stats:</hs>
+    <h2 class="stats_title">Stats:</h2>
 
     <div class="stats_area">
       <div class="stats" v-for="value in statsPreparedList" :key="value.at(0)">
@@ -46,8 +46,6 @@ function getBuffValue(value: number|boolean) : string {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/style/vars';
-
 .pause-screen {
   position: absolute;
   top: 0;
