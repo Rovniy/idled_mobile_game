@@ -48,6 +48,8 @@
 
     <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame"
                  :buffs="buff.selectedUpgradesValue.value"/>
+
+    <DebugMessages />
   </div>
 </template>
 
@@ -67,6 +69,7 @@ import {useBuffManager} from '@/engine/buffManager';
 import {IGameState, IInitGame} from '@/types.js'
 import {useUserStore} from "@/store/user";
 import {useTelegram} from "@/composable/telegram";
+import DebugMessages from "@/components/DebugMessages.vue";
 
 let gameInstance: IInitGame,
     pauseStartTime = null;

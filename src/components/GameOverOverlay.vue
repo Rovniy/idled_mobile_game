@@ -43,7 +43,7 @@ function restartGame() {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  z-index: 2000;
+  z-index: 20;
 
   .title {
     margin-top: 0;
