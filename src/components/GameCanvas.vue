@@ -127,8 +127,6 @@ function handleVisibilityChange() {
 function pauseGame() {
   if (gameState.isPaused.value) return;
 
-  console.log('buff.selectedUpgradesValue', buff.selectedUpgradesValue.value);
-
   gameState.isPaused.value = true;
   showPauseScreen.value = true;
   pauseStartTime = Date.now();

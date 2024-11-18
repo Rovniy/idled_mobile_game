@@ -23,9 +23,6 @@ export function getRandomLoot(params: TGetRandomLootParams) {
 		const dropChance = Math.random();
 
 		if (dropChance <= drop.chance) {
-
-			console.log('engine.drops', drop.id, engine.allDrops);
-
 			return engine.allDrops.find(d => d.id === drop.id);
 		}
 	}

@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import { join } from "path";
+import { join, resolve } from "path";
+import fs from 'fs';
 
 export default defineConfig({
   plugins: [
@@ -11,8 +12,16 @@ export default defineConfig({
   base: "./",
   resolve: {
     alias: {
-      "@": join(__dirname, "src"),
+      "@": join(__dirname, "src")
     },
   },
   define: { "process.env": {} },
+  server: {
+    host: 'testdomain.test', // Настраиваем хост
+    port: 443, // Порт, который хотите использовать
+    https: {
+      key: fs.readFileSync(resolve(__dirname, './cert/testdomain.test-key.pem')),
+      cert: fs.readFileSync(resolve(__dirname, './cert/testdomain.test.pem')),
+    }
+  }
 })

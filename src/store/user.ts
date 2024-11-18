@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { parseInitData } from '@telegram-apps/sdk';
+import { isTMA, useLaunchParams, parseInitData } from '@telegram-apps/sdk-vue';
 
 export const useUserStore = defineStore('user', {
 	state: () => ({
@@ -15,15 +15,18 @@ export const useUserStore = defineStore('user', {
 		getAvatar: (state) => state.photo_url,
 	},
 	actions: {
-		initTelegramData() {
-			const _u = parseInitData();
+		async initTelegramData() {
+			if (!(await isTMA())) return console.log('Run not in Telegram App');
+			const lp = useLaunchParams();
+
+			const _u = lp?.initData?.user
 			if (!_u) return
 
-			this.first_name = _u.first_name
-			this.last_name = _u.last_name || ''
+			this.first_name = _u.firstName
+			this.last_name = _u.lastName || ''
 			this.id = _u.id
-			this.language_code = _u.language_code || ''
-			this.photo_url = _u.photo_url || ''
+			this.language_code = _u.languageCode || ''
+			this.photo_url = _u.photoUrl || ''
 			this.username = _u.username || ''
 		},
 	},
