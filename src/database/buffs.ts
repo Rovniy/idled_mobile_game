@@ -32,6 +32,7 @@ import iconArmorMedium from '@/assets/images/buffs/armor_medium.png';
 import iconArmorHeavy from '@/assets/images/buffs/armor_heavy.png';
 import iconCriticalChance from '@/assets/images/buffs/crit_chance.png';
 import iconCriticalPower from '@/assets/images/buffs/crit_power.png';
+import iconSlowMotion from '@/assets/images/buffs/slow_motion.png';
 
 export const BUFFS_IDS = {
 	SHOOT_SPEED: 'SHOOT_SPEED',
@@ -48,6 +49,7 @@ export const BUFFS_IDS = {
 	PLAYER_BULLET_PENETRATION: 'PLAYER_BULLET_PENETRATION',
 	PLAYER_BULLET_CRITICAL_CHANCE: 'PLAYER_BULLET_CRITICAL_CHANCE',
 	PLAYER_BULLET_CRITICAL_POWER: 'PLAYER_BULLET_CRITICAL_POWER',
+	TIME_SLOW_MOTION: 'TIME_SLOW_MOTION',
 }
 export const BUFF_ICONS = {
 	[BUFFS_IDS.SHOOT_SPEED]: iconAutoGun2,
@@ -64,6 +66,7 @@ export const BUFF_ICONS = {
 	[BUFFS_IDS.PLAYER_BULLET_PENETRATION]: iconRocket1,
 	[BUFFS_IDS.PLAYER_BULLET_CRITICAL_CHANCE]: iconCriticalChance,
 	[BUFFS_IDS.PLAYER_BULLET_CRITICAL_POWER]: iconCriticalPower,
+	[BUFFS_IDS.TIME_SLOW_MOTION]: iconSlowMotion,
 }
 
 export const BUFF_PROP = {
@@ -102,6 +105,7 @@ export const BUFF_PROP_ICONS = {
 	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: iconRocket1,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: iconCriticalChance,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: iconCriticalPower,
+	[BUFF_PROP.TIME_SLOW_MOTION]: iconSlowMotion,
 }
 export const BUFF_PROP_TEXT = {
 	[BUFF_PROP.SHOOT_SPEED]: 'Shoot speed',
@@ -116,9 +120,21 @@ export const BUFF_PROP_TEXT = {
 	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 'Bullet penetration',
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: 'Critical chance',
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: 'Critical hit power',
+	[BUFF_PROP.TIME_SLOW_MOTION]: 'Passing of time',
 }
 
 export default [
+	{
+		id: BUFFS_IDS.TIME_SLOW_MOTION,
+		name: BUFF_PROP_TEXT[BUFF_PROP.TIME_SLOW_MOTION],
+		description: "Slows down the passage of time",
+		icon: BUFF_ICONS[BUFFS_IDS.TIME_SLOW_MOTION],
+		rarity: RARE.ARCANA,
+		effect: {
+			type: BUFF_PROP.TIME_SLOW_MOTION,
+			value: 0.5
+		}
+	},
 	{
 		id: BUFFS_IDS.PLAYER_BULLET_CRITICAL_CHANCE,
 		name: BUFF_PROP_TEXT[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE],
@@ -127,7 +143,7 @@ export default [
 		rarity: RARE.LEGENDARY,
 		effect: {
 			type: BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE,
-			value: 0.1
+			value: 0.05
 		}
 	},
 	{
@@ -160,7 +176,7 @@ export default [
 		rarity: RARE.UNCOMMON,
 		effect: {
 			type: BUFF_PROP.SHOOT_SPEED,
-			value: 1
+			value: 0.2
 		}
 	},
 	{
@@ -168,7 +184,7 @@ export default [
 		name: "Light Armor",
 		description: "Increase armor by 1",
 		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_ARMOR_LIGHT],
-		rarity: RARE.UNCOMMON,
+		rarity: RARE.COMMON,
 		effect: {
 			type: BUFF_PROP.PLAYER_ARMOR,
 			value: 1
@@ -179,7 +195,7 @@ export default [
 		name: "Medium Armor",
 		description: "Increase armor by 2",
 		icon: BUFF_ICONS[BUFFS_IDS.PLAYER_ARMOR_MEDIUM],
-		rarity: RARE.COMMON,
+		rarity: RARE.UNCOMMON,
 		effect: {
 			type: BUFF_PROP.PLAYER_ARMOR,
 			value: 2
@@ -199,12 +215,12 @@ export default [
 	{
 		id: BUFFS_IDS.SHOOT_DAMAGE,
 		name: "Увеличить урон",
-		description: "Увеличивает урон на 5.",
+		description: "Увеличивает урон на 1.",
 		icon: BUFF_ICONS[BUFFS_IDS.SHOOT_DAMAGE],
 		rarity: RARE.COMMON,
 		effect: {
 			type: BUFF_PROP.SHOOT_DAMAGE,
-			value: 5
+			value: 1
 		}
 	},
 	{

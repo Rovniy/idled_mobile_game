@@ -1,4 +1,5 @@
 import {ComputedRef, Ref} from "vue";
+import {TBulletDamageType} from "@/engine/bullet";
 
 export interface IDrop {
     x?: number,
@@ -68,6 +69,7 @@ export interface IBullet {
     angle: number,
     speed: number,
     target?: any,
+    bulletDamage?: TBulletDamageType,
     penetrateTargetId?: number | null
 }
 
@@ -176,6 +178,7 @@ export interface IGameState {
     levelUpOptions: Ref<boolean>,
     playerHP: Ref<number>,
     isGameOver: Ref<boolean>,
+    passingTime: Ref<number>
 }
 
 export interface IProgress {

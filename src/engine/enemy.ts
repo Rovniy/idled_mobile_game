@@ -110,7 +110,7 @@ export function spawnEnemy(params: TSpawnEnemy) {
 		...enemyGrows,
 		x,
 		y,
-		maxHP: enemyType.hp,
+		maxHP: enemyGrows.hp,
 		width: enemyType?.width || DEFAULT_SIZE,
 		height: enemyType?.height || DEFAULT_SIZE,
 	};
@@ -244,4 +244,28 @@ export function getRandomLoot(params: TGetRandomLootParams) {
 	}
 
 	return null; // Если ничего не выпало
+}
+
+
+type THandleEnemyDropParams = {
+	enemy: any,
+	engine: IEngine
+}
+export function handleEnemyDrop(params: THandleEnemyDropParams) {
+	const { enemy, engine} = params
+	if (!enemy?.drops || enemy.drops.length === 0) return;
+
+	const drop = getRandomLoot({ enemy, engine })
+	if (!drop || !drop?.duration) return;
+
+	engine.drops.push({
+		id: drop.id,
+		x: enemy.x,
+		y: enemy.y,
+		iconImage: drop.iconImage,
+		effect: drop.effect,
+		remainingTime: drop.duration * 1000, // Оставшееся время в миллисекундах
+		isBlinking: false, // Флаг мигания
+		pickupText: drop.pickupText,
+	});
 }

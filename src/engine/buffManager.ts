@@ -18,6 +18,7 @@ const SELECTED_UPGRADES_COUNT = {
 	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 0,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: 0,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: 0,
+	[BUFF_PROP.TIME_SLOW_MOTION]: 0,
 }
 const SELECTED_UPGRADES_VALUE = {
 	[BUFF_PROP.SHOOT_SPEED]: 0,
@@ -32,6 +33,7 @@ const SELECTED_UPGRADES_VALUE = {
 	[BUFF_PROP.PLAYER_BULLET_PENETRATION]: 0,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE]: settings.player.baseCriticalChance,
 	[BUFF_PROP.PLAYER_BULLET_CRITICAL_POWER]: settings.player.baseCriticalPower,
+	[BUFF_PROP.TIME_SLOW_MOTION]: settings.engine.passingTime,
 }
 
 export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
@@ -67,6 +69,8 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 		if (selectedUpgrades.value[effect.type] < 0) {
 			selectedUpgrades.value[effect.type] = 0
 		}
+
+		console.log('electedUpgradesValue.value', effect, selectedUpgradesValue.value);
 
 		selectedUpgradesValue.value[effect.type] -= effect.value;
 		if (selectedUpgradesValue.value[effect.type] < 0) {

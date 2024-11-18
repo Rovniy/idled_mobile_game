@@ -61,7 +61,7 @@ const ENEMY = {
 
 export const ENEMY_DEBUG = {
 	enable: false,
-	enemy_id: ENEMY_IDS.RED,
+	enemy_id: 'MOB_OCULA_BLOB',
 	count: 5
 }
 
@@ -92,6 +92,7 @@ export default [
 		experience: 9,
 		image: ENEMY.MOB_OCULA_BLOB,
 		drops: [
+			{ id: DROP_IDS.TIME_SLOW_MOTION, chance: 1 },
 			{ id: DROP_IDS.HEALTH_ELIXIR_SMALL, chance: 0.15 },
 			{ id: DROP_IDS.HEALTH_ELIXIR_SMALL, chance: 0.09 }
 		],

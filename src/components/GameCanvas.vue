@@ -83,6 +83,7 @@ const gameState: IGameState = {
   levelUpOptions: ref(false),
   playerHP: ref(100),
   isGameOver: ref(false),
+  passingTime: ref(1),
 }
 const gameCanvas : Ref<HTMLCanvasElement|null> = ref(null);
 const showStartScreen = ref(true);

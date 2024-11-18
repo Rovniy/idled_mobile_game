@@ -1,9 +1,9 @@
 import { checkCollision } from './collision.js';
-import {IBuffManager, IBullet, IEngine, IGameState} from "@/types";
+import {IBuffManager, IBullet, IEnemy, IEngine, IGameState} from "@/types";
 import {handleEnemyDeathAudio, handleEnemyDeathVfx, getRandomLoot, handleEnemyCritHitVfx} from "@/engine/enemy";
+import { bulletFlight } from "@/engine/bullet";
 import {BUFF_PROP} from "@/database/buffs";
 import { settings } from "@/settings";
-import { isThroughPenetration, calculateBulletDamage } from "@/engine/bullet";
 
 type TUpdateEnemiesParams = {
 	engine: IEngine,
@@ -26,10 +26,10 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 		// enemy.rotate = angle + Math.PI / 2 + wobbleAmount
 		enemy.rotate = angle + (3 * Math.PI) / 2 + wobbleAmount
 
-		enemy.wobble.offset += enemy.wobble.speed;
+		enemy.wobble.offset += (enemy.wobble.speed / buff.selectedUpgradesValue.value[BUFF_PROP.TIME_SLOW_MOTION]);
 
-		enemy.x += Math.cos(angle) * enemy.speed;
-		enemy.y += Math.sin(angle) * enemy.speed;
+		enemy.x += Math.cos(angle) * (enemy.speed / buff.selectedUpgradesValue.value[BUFF_PROP.TIME_SLOW_MOTION]);
+		enemy.y += Math.sin(angle) * (enemy.speed / buff.selectedUpgradesValue.value[BUFF_PROP.TIME_SLOW_MOTION]);
 
 		// Проверка столкновения с игроком
 		if (checkCollision(engine.player, enemy)) {
@@ -68,8 +68,8 @@ export function updateBullets(params: TUpdateBulletsParams) {
 	} = params
 
 	engine.bullets.forEach((bullet : IBullet, index) => {
-		bullet.x += Math.cos(bullet.angle) * bullet.speed;
-		bullet.y += Math.sin(bullet.angle) * bullet.speed;
+		bullet.x += Math.cos(bullet.angle) * (bullet.speed / buff.selectedUpgradesValue.value[BUFF_PROP.TIME_SLOW_MOTION]);
+		bullet.y += Math.sin(bullet.angle) * (bullet.speed / buff.selectedUpgradesValue.value[BUFF_PROP.TIME_SLOW_MOTION]);
 
 		// Удаление пуль, выходящих за пределы экрана
 		if (
@@ -78,6 +78,7 @@ export function updateBullets(params: TUpdateBulletsParams) {
 			bullet.y < 0 ||
 			bullet.y > window.innerHeight
 		) {
+			console.log('delete to far away');
 			engine.bullets.splice(index, 1);
 			return;
 		}
@@ -86,82 +87,29 @@ export function updateBullets(params: TUpdateBulletsParams) {
 		if (bullet.target) {
 			const enemy = bullet.target;
 
-			if (checkCollision(bullet, enemy)) {
-				// Если у пули есть цель, которую она бробила насквозь
-				if (bullet.penetrateTargetId === enemy._id) return;
-
-				const bulletDamage = calculateBulletDamage({ buff })
-				console.log('bulletDamage', bulletDamage);
-				enemy.hp -= bulletDamage.damage
-
-				if (bulletDamage.isCritical) {
-					handleEnemyCritHitVfx({ enemy, engine })
-				}
-
-				// Проверка сквозного пробития врага
-				if (isThroughPenetration({ buff })) {
-					bullet.penetrateTargetId = enemy._id
-				} else {
-					engine.bullets.splice(index, 1);
-				}
-
-				if (enemy.hp <= 0) {
-					gameState.experience.value += enemy.experience;
-					engine.enemies.splice(engine.enemies.indexOf(enemy), 1);
-
-					// Обрабатываем выпадение дропа
-					handleEnemyDrop({ enemy, engine });
-					handleEnemyDeathVfx({ enemy, engine })
-					handleEnemyDeathAudio({ engine })
-				}
-			}
+			bulletFlight({
+				bullet,
+				enemy,
+				engine,
+				buff,
+				index,
+				gameState
+			})
 		} else {
 			// Если у снаряда нет конкретной цели, проверяем столкновение со всеми врагами
 			for (let i = 0; i < engine.enemies.length; i++) {
 				const enemy = engine.enemies[i];
 
-				if (checkCollision(bullet, enemy)) {
-					enemy.hp -= buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
-					engine.bullets.splice(index, 1);
-
-					if (enemy.hp <= 0) {
-						gameState.experience.value += enemy.experience;
-						engine.enemies.splice(i, 1);
-						i--;
-
-						// Обрабатываем выпадение дропа
-						handleEnemyDrop({ enemy, engine });
-						handleEnemyDeathVfx({ enemy, engine })
-						handleEnemyDeathAudio({ engine })
-					}
-					break; // Выходим из цикла после первого столкновения
-				}
+				bulletFlight({
+					bullet,
+					enemy,
+					engine,
+					buff,
+					index,
+					gameState
+				})
 			}
 		}
-	});
-}
-
-
-type THandleEnemyDropParams = {
-	enemy: any,
-	engine: IEngine
-}
-function handleEnemyDrop(params: THandleEnemyDropParams) {
-	const { enemy, engine} = params
-	if (!enemy?.drops || enemy.drops.length === 0) return;
-
-	const drop = getRandomLoot({ enemy, engine })
-	if (!drop || !drop?.duration) return;
-
-	engine.drops.push({
-		id: drop.id,
-		x: enemy.x,
-		y: enemy.y,
-		iconImage: drop.iconImage,
-		effect: drop.effect,
-		remainingTime: drop.duration * 1000, // Оставшееся время в миллисекундах
-		isBlinking: false, // Флаг мигания
-		pickupText: drop.pickupText,
 	});
 }
 

@@ -14,6 +14,7 @@ interface ISettings {
 		shareUrl: string,
 	},
 	engine: {
+		passingTime: number,
 		enemySpawnInterval: number,
 		minEnemySpawnInterval: number,
 	},
@@ -34,7 +35,7 @@ export const settings : ISettings = {
 	player: {
 		attackRadius: 150,
 		shootingSpeed: 3,
-		baseCriticalChance: 0.1,
+		baseCriticalChance: 0.01,
 		baseCriticalPower: 0.1,
 	},
 	drop: {
@@ -46,6 +47,7 @@ export const settings : ISettings = {
 		shareUrl: 'https://t.me/share/url?url=&text='
 	},
 	engine: {
+		passingTime: 1,
 		enemySpawnInterval: 4000,
 		minEnemySpawnInterval: 200
 	},

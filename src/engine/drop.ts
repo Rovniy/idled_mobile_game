@@ -41,9 +41,8 @@ export function applyDropEffect(params : TApplyDropEffectParams) {
 
 	if (drop.effect.buff) {
 		targetBuff = buff.buffs.value.find(i => i.id === drop.effect.buff)
-
-		buff.selectedUpgrades.value[drop.effect.type] += 1;
-		buff.selectedUpgradesValue.value[drop.effect.type] += drop.effect.value;
+		// buff.selectedUpgrades.value[drop.effect.type] += 1;
+		//buff.selectedUpgradesValue.value[drop.effect.type] += drop.effect.value;
 	} else {
 		switch (drop.effect.type) {
 			case DROP_EFFECT.PLAYER_INCREASE_HP:
@@ -58,6 +57,7 @@ export function applyDropEffect(params : TApplyDropEffectParams) {
 
 	if (targetBuff && drop.effect.duration) {
 		targetBuff.duration = drop.effect.duration;
+		targetBuff.effect.value = drop.effect.value;
 		addTemporaryBuff(targetBuff);
 	}
 }

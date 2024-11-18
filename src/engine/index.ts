@@ -146,11 +146,19 @@ function debugSpawnEnemies(params: TDebugSpawnEnemies) {
 
 	if (!must_spawn) return
 
-	setTimeout(() => {
-		for (let i = 0; i < count; i++) {
-			spawnEnemy({ engine, enemy_id, gameState })
-		}
-	}, TIMEOUT)
+	const spawnTimeout = () => {
+		setTimeout(() => {
+			for (let i = 0; i < count; i++) {
+				spawnEnemy({ engine, enemy_id, gameState })
+			}
+		}, TIMEOUT)
+	}
+
+	setTimeout(spawnTimeout)
+	setTimeout(spawnTimeout, 4000)
+	setTimeout(spawnTimeout, 8000)
+	setTimeout(spawnTimeout, 12000)
+
 
 	return true
 }
