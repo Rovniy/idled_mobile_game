@@ -1,6 +1,5 @@
 import dropsData, { DROP_EFFECT } from '@/database/drops';
 import {IBuffManager, IDrop, IEngine, IGameState} from "@/types";
-import {BUFF_PROP, BUFFS_IDS} from "@/database/buffs";
 
 /**
  * Загрузка данных дропа и их иконок
@@ -8,7 +7,8 @@ import {BUFF_PROP, BUFFS_IDS} from "@/database/buffs";
 export function loadDrops() : IDrop[] {
 	return dropsData.map((drop: IDrop)=> {
 		const icon : HTMLImageElement = new Image();
-		icon.src = drop.icon
+
+		icon.src = drop.icon ?? ''
 
 		drop.iconImage = icon;
 

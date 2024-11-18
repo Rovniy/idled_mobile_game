@@ -14,7 +14,6 @@ import iconCrosshair1 from '@/assets/images/buffs/crosshair_1.png';
 import iconCrosshair2 from '@/assets/images/buffs/crosshair_2.png';
 import iconCube from '@/assets/images/buffs/cube.png';
 import iconCubeExplosive from '@/assets/images/buffs/cube_explosive.png';
-import iconDamage from '@/assets/images/buffs/damage_icon.svg';
 import iconExplosive from '@/assets/images/buffs/explosive.png';
 import iconGrenade1 from '@/assets/images/buffs/grenade_1.png';
 import iconGrenade2 from '@/assets/images/buffs/grenade_2.png';

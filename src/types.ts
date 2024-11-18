@@ -11,7 +11,7 @@ export interface IDrop {
     duration?: number,
     effect: {
         type: string,
-        value: number|boolean,
+        value: number,
         buff?: string,
         duration?: number
     },
@@ -36,7 +36,7 @@ type TEnemyDrop = {
 export interface IEnemy {
     x?: number,
     y?: number,
-    id: string,
+    id?: string,
     boss?: boolean,
     name: string,
     hp: number,
@@ -185,6 +185,7 @@ export interface IEngine {
 }
 
 export interface IInitGame {
+    engine: IEngine,
     resetGame: () => void,
     handleClick: (coords: { x: number; y: number }) => void,
 }

@@ -23,7 +23,8 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 		// Вычисляем угол поворота к игроку
 		const angle = Math.atan2(engine.player.y - enemy.y, engine.player.x - enemy.x);
 		const wobbleAmount = Math.sin(enemy.wobble.offset) * enemy.wobble.intensity;
-		enemy.rotate = angle + Math.PI / 2 + wobbleAmount
+		// enemy.rotate = angle + Math.PI / 2 + wobbleAmount
+		enemy.rotate = angle + (3 * Math.PI) / 2 + wobbleAmount
 
 		enemy.wobble.offset += enemy.wobble.speed;
 
@@ -35,7 +36,7 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 			if (!buff.selectedUpgradesValue.value[BUFF_PROP.PLAYER_INVINCIBLE]) {
 				// Отнимаем HP у игрока
 				const finalDamage = enemy.damage * (1 / (1 + Math.log(1 + buff.selectedUpgradesValue.value[BUFF_PROP.PLAYER_ARMOR])));
-				gameState.playerHP.value -= finalDamage;
+				gameState.playerHP.value -= Math.floor(finalDamage);
 				if (gameState.playerHP.value < 0) {
 					gameState.playerHP.value = 0;
 				}
@@ -188,12 +189,7 @@ export function updateDrops(params: TUpdateDropsParams) {
 		if (drop.remainingTime <= 0) {
 			// Удаляем дроп из массива
 			engine.drops.splice(i, 1);
-		} else if (drop.remainingTime <= settings.drop.blinkStartBefore) {
-			// Если до исчезновения осталось меньше или равно 3 секундам, начинаем мигание
-			drop.isBlinking = true;
-		} else {
-			drop.isBlinking = false;
-		}
+		} else drop.isBlinking = drop.remainingTime <= settings.drop.blinkStartBefore;
 	}
 }
 

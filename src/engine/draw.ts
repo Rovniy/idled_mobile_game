@@ -1,5 +1,3 @@
-// src/engine/draw.js
-
 import {IEnemy, IEngine, IFloatingText, IGameState} from "@/types";
 
 type TDrawPlayer = {

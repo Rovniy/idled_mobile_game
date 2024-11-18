@@ -1,4 +1,4 @@
-import bulletImageSrc from '../assets/images/bullet.png';
+import bulletImageSrc from '@/assets/images/bullet.png';
 import { IInitBullets } from "@/types";
 
 export function initBullets() : Promise<IInitBullets> {

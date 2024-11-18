@@ -18,8 +18,8 @@ const VFX_DEATH = [
 
 export function loadEnemiesData() : IEnemy[] {
 	return enemiesData.map((enemy: IEnemy) : IEnemy => {
-		const img = new Image();
-		img.src = enemy.image;
+		const img : HTMLImageElement = new Image();
+		img.src = enemy.image as string ?? '';
 
 		const loadedEnemy : IEnemy = {
 			...enemy,
@@ -47,7 +47,10 @@ export function spawnEnemy(params: TSpawnEnemy) {
 	const enemyType = getEnemy({ engine, enemy_id })
 	const side = Math.floor(Math.random() * 4);
 
-	let x, y;
+	let enemy : IEnemy,
+		x : number,
+		y : number
+
 	if (side === 0) {
 		x = Math.random() * canvas.width;
 		y = 0;
@@ -62,7 +65,9 @@ export function spawnEnemy(params: TSpawnEnemy) {
 		y = Math.random() * canvas.height;
 	}
 
-	const enemy : IEnemy = {
+	if (!enemyType) return
+
+	enemy = {
 		...enemyType,
 		x,
 		y,

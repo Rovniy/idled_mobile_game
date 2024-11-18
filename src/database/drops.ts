@@ -72,7 +72,7 @@ export default [
 		effect: {
 			type: BUFF_PROP.PLAYER_INVINCIBLE,
 			buff: BUFFS_IDS.PLAYER_INVINCIBILITY,
-			value: true,
+			value: 1,
 			duration: 5
 		},
 		pickupText: "Invincibility!"

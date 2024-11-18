@@ -1,7 +1,22 @@
-export const settings = {
+interface ISettings {
 	player: {
-		attackRadius: 500,
-		shootingSpeed: 1
+		attackRadius: number,
+		shootingSpeed: number
+	},
+	drop: {
+		blinkStartBefore: number
+	},
+	telegram: {
+		shareText: string,
+		appUrl: string,
+		shareUrl: string,
+	}
+}
+
+export const settings : ISettings = {
+	player: {
+		attackRadius: 150,
+		shootingSpeed: 3
 	},
 	drop: {
 		blinkStartBefore: 3000
