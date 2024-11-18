@@ -1,4 +1,4 @@
-import { shareURL, openTelegramLink, openLink, isTMA } from '@telegram-apps/sdk';
+import { shareURL, openTelegramLink, openLink, isTMA,  } from '@telegram-apps/sdk';
 import { settings } from "@/settings";
 import {useDebugStore} from "@/store/debug";
 

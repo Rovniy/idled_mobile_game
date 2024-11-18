@@ -6,6 +6,7 @@ const debug = useDebugStore();
 
 <template>
   <div class="debug_window">
+    <div class="msg">111</div>
     <div class="msg" v-for="item in debug.getMessages">{{ item }}</div>
   </div>
 </template>
