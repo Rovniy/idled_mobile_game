@@ -40,7 +40,7 @@
 
     <!-- Оверлей с сообщением об окончании игры -->
     <GameOverOverlay
-        v-if="!gameState.isGameOver.value"
+        v-if="gameState.isGameOver.value"
         :experience="gameState.experience.value"
         @share="shareResult"
         @restart="restartGame"
