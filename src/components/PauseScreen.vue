@@ -1,9 +1,6 @@
 <template>
   <div class="pause-screen">
-    <h1 class="title">Pause...</h1>
-    <Button text="Resume" :callback="() => $emit('resumeGame')" size="medium" />
-
-    <h2 class="stats_title">Stats:</h2>
+    <h1 class="title">Stats:</h1>
 
     <div class="stats_area">
       <div class="stats" v-for="value in statsPreparedList" :key="value.at(0)">
@@ -12,6 +9,8 @@
         <div class="value">{{ value.at(1) }}</div>
       </div>
     </div>
+
+    <Button text="Resume" :callback="() => $emit('resumeGame')" size="small" />
   </div>
 </template>
 
@@ -19,7 +18,7 @@
 import { computed } from 'vue'
 // Нет необходимости в скриптовой части
 import Button from "@/components/Ui/Button.vue";
-import { BUFF_PROP_TEXT } from "@/database/buffs"
+import { BUFF_PROP, BUFF_PROP_TEXT } from "@/database/buffs"
 
 type TProps = {
   buffs: Object,
@@ -30,14 +29,14 @@ const props = withDefaults(defineProps<TProps>(), {
 
 const statsPreparedList = computed(() => {
   return Object.entries(props.buffs)
-      .map(i => [getBuffTitle(i[0]), getBuffValue(i[1])])
+      .map(i => [getBuffTitle(i[0]), getBuffValue(i[0], i[1])])
       .sort((a, b) => a[0].localeCompare(b[0]));
 })
 function getBuffTitle(buffKey: string) : string {
   return BUFF_PROP_TEXT[buffKey] || buffKey
 }
-function getBuffValue(value: number|boolean) : string {
-  if (typeof value === "boolean") {
+function getBuffValue(buffKey: string, value: number) : string {
+  if ([BUFF_PROP.PLAYER_INVINCIBLE, BUFF_PROP.SHOOT_IN_CON_FORWARD].includes(buffKey)) {
     return value ? 'Yes' : 'No'
   }
 

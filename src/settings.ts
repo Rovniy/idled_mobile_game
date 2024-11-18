@@ -1,7 +1,7 @@
 export const settings = {
 	player: {
-		attackRadius: 150,
-		shootingSpeed: 5
+		attackRadius: 500,
+		shootingSpeed: 1
 	},
 	drop: {
 		blinkStartBefore: 3000

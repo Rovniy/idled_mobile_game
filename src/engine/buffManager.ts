@@ -23,7 +23,7 @@ const SELECTED_UPGRADES_VALUE = {
 	[BUFF_PROP.SHOOT_BULLET_SPEED]: 0,
 	[BUFF_PROP.SHOOT_IN_CON_FORWARD]: 0,
 	[BUFF_PROP.SHOOT_ACCURACY]: 0,
-	[BUFF_PROP.PLAYER_INVINCIBLE]: false,
+	[BUFF_PROP.PLAYER_INVINCIBLE]: 0,
 	[BUFF_PROP.PLAYER_ARMOR]: 0,
 }
 
@@ -44,13 +44,8 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 		if (duration) {
 			addTemporaryBuff(buff);
 		} else {
-			selectedUpgrades.value[effect.type] += 1;
-			if (typeof effect.value === 'number') {
-				selectedUpgradesValue.value[effect.type] += effect.value
-			}
-			if (typeof effect.value === 'boolean') {
-				selectedUpgradesValue.value[effect.type] = effect.value
-			}
+			selectedUpgrades.value[effect.type]++;
+			selectedUpgradesValue.value[effect.type] += effect.value
 		}
 	}
 
@@ -60,18 +55,15 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 	function removeBuffEffect(buff : IBuff) {
 		const { effect } = buff;
 
-		selectedUpgrades.value[effect.type] -= 1;
+		selectedUpgrades.value[effect.type]--;
+
 		if (selectedUpgrades.value[effect.type] < 0) {
 			selectedUpgrades.value[effect.type] = 0
 		}
 
-		if (typeof selectedUpgradesValue.value[effect.type] === 'number') {
-			selectedUpgradesValue.value[effect.type] -= effect.value;
-			if (selectedUpgradesValue.value[effect.type] < 0) {
-				selectedUpgradesValue.value[effect.type] = 0
-			}
-		} else if (typeof selectedUpgradesValue.value[effect.type] === 'boolean') {
-			selectedUpgradesValue.value[effect.type] = !effect.value;
+		selectedUpgradesValue.value[effect.type] -= effect.value;
+		if (selectedUpgradesValue.value[effect.type] < 0) {
+			selectedUpgradesValue.value[effect.type] = 0
 		}
 	}
 
@@ -179,6 +171,7 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 				...buff,
 				expirationTime,
 			}
+			selectedUpgradesValue.value[buff.effect.type] += buff.effect.value;
 			activeTemporaryBuffs.value.push(tempBuf);
 		}
 	}

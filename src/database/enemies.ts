@@ -34,7 +34,7 @@ const ENEMY = {
 }
 
 export const ENEMY_DEBUG = {
-	enable: false,
+	enable: true,
 	enemy_id: ENEMY_IDS.RED,
 	count: 5
 }
@@ -45,7 +45,7 @@ export default [
 		name: "Красный враг",
 		hp: 10,
 		damage: 10,
-		speed: 2,
+		speed: 0.2,
 		experience: 11,
 		image: ENEMY.MOB_SIMPLE,
 		drops: [
@@ -73,7 +73,7 @@ export default [
 	{
 		id: "enemy2",
 		name: "Желтый враг",
-		hp: 5,
+		hp: 1,
 		damage: 5,
 		speed: 1,
 		experience: 1,
@@ -107,7 +107,7 @@ export default [
 	{
 		id: "enemy3",
 		name: "Зеленый враг",
-		hp: 4,
+		hp: 1,
 		damage: 20,
 		speed: 0.3,
 		experience: 1,

@@ -1,4 +1,4 @@
-import {IBuffManager, IEnemy, IEngine} from "@/types";
+import {IBuffManager, IBullet, IEnemy, IEngine} from "@/types";
 import {BUFF_PROP} from "@/database/buffs";
 import {settings} from "@/settings";
 
@@ -18,7 +18,7 @@ export function shootBullet(params: TShootBulletParams) {
 
 	// Фильтруем врагов, находящихся в радиусе атаки
 	const enemiesInRange = enemies.filter((enemy) => {
-		if (!enemy?.x || !enemy?.y) return false;
+		if (enemy?.x === undefined || enemy?.y === undefined) return false;
 
 		const dist = Math.hypot(enemy.x - player.x, enemy.y - player.y);
 		return dist <= player.attackRadius;
@@ -52,63 +52,54 @@ export function shootBullet(params: TShootBulletParams) {
 
 	player.angle = angleToTarget;
 
-	player.accuracy = Math.min(1, player.accuracy + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_ACCURACY]);
+	player.accuracy = Math.min(1, player.accuracy + Number(buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_ACCURACY]));
 
 	// Добавляем погрешность к углу стрельбы
 	const accuracy = player.accuracy; // Значение от 0 до 1
 	const maxDeviation = (1 - accuracy) * Math.PI / 4; // Максимальное отклонение (до 45 градусов)
 	const randomDeviation = (Math.random() * 2 - 1) * maxDeviation; // Случайное отклонение
 
-	angleToTarget += randomDeviation;
+	const bulletData : IBullet = {
+		x: player.x,
+		y: player.y,
+		width: 11,
+		height: 22,
+		speed: settings.player.shootingSpeed + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_BULLET_SPEED],
+		angle: 0,
+		color: 'cyan',
+		radius: 5, // Для проверки столкновений
+		// Нет свойства target
+	}
 
-	const totalProjectiles = 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_IN_CON_FORWARD] * 2; // Общее количество снарядов
-	const angleSpread = 0.2 + 0.05 * buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_IN_CON_FORWARD]; // Общий угол разброса в радианах (можно настроить)
-	const angleStep = angleSpread / (totalProjectiles - 1);
+	// Добавляем погрешность к каждому снаряду
+	const deviation = (Math.random() * 2 - 1) * maxDeviation;
 
-	if (buff.selectedUpgrades.value[BUFF_PROP.SHOOT_IN_CON_FORWARD] > 0) {
+	const shootInConBullets = buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_IN_CON_FORWARD]
+
+	if (shootInConBullets > 0) {
+		const totalProjectiles = 1 + shootInConBullets * 2; // Общее количество снарядов
+		const angleSpread = 0.2 + 0.05 * shootInConBullets; // Общий угол разброса в радианах (можно настроить)
+		const angleStep = angleSpread / (totalProjectiles - 1);
+
+		angleToTarget += randomDeviation;
+
 		// Генерируем углы для каждого снаряда
 		const startAngle = angleToTarget - angleSpread / 2;
 
 		for (let i = 0; i < totalProjectiles; i++) {
-			const angle = startAngle + i * angleStep;
+			bulletData.angle = startAngle + i * angleStep + deviation;
 
-			// Добавляем погрешность к каждому снаряду
-			const deviation = (Math.random() * 2 - 1) * maxDeviation;
-			const finalAngle = angle + deviation;
-
-			bullets.push({
-				x: player.x,
-				y: player.y,
-				width: 11,
-				height: 22,
-				speed: settings.player.shootingSpeed + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_BULLET_SPEED],
-				angle: finalAngle,
-				color: 'cyan',
-				radius: 5, // Для проверки столкновений
-				// Нет свойства target
-			});
+			bullets.push(bulletData);
 		}
 	} else {
+
 		targets.forEach((enemy) => {
-			if (!enemy?.x || !enemy?.y) return
+			if (enemy?.x === undefined || enemy?.y === undefined) return
 
-			let angle = Math.atan2(enemy.y - player.y, enemy.x - player.x);
+			bulletData.angle = Math.atan2(enemy.y - player.y, enemy.x - player.x) + deviation;
+			bulletData.target = enemy
 
-			// Добавляем погрешность
-			const deviation = (Math.random() * 2 - 1) * maxDeviation;
-			angle += deviation;
-
-			bullets.push({
-				x: player.x,
-				y: player.y,
-				width: 11,
-				height: 22,
-				speed: settings.player.shootingSpeed + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_BULLET_SPEED],
-				angle,
-				color: 'cyan',
-				radius: 2, // Для проверки столкновений
-				target: enemy,
-			});
+			bullets.push(bulletData);
 		});
 	}
 }

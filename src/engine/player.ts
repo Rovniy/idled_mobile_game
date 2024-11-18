@@ -13,7 +13,7 @@ export function initPlayer(canvas : HTMLCanvasElement) : IPlayer {
 		width: 60,
 		height: 60,
 		color: 'white',
-		shootInterval: 500, // Стреляет каждые 500мс
+		shootInterval: 2000, // Стреляет каждые 500мс
 		lastShotTime: 0,
 		attackRadius: settings.player.attackRadius, // Начальный радиус атаки
 		image: playerImage,

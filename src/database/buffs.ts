@@ -227,7 +227,7 @@ export default [
 		duration: 8,
 		effect: {
 			type: BUFF_PROP.PLAYER_INVINCIBLE,
-			value: true
+			value: 1
 		}
 	}
 ]

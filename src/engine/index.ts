@@ -13,6 +13,7 @@ import { ENEMY_DEBUG } from '@/database/enemies'
 import backgroundImageSrc from '../assets/images/background.png'
 
 type TInitGames = {
+	engine: IEngine,
 	gameCanvas: Ref<HTMLCanvasElement>,
 	gameState: IGameState,
 	buff: IBuffManager
@@ -90,6 +91,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGame> {
 
 	// Возвращаем объект с функцией resetGame
 	return {
+		engine,
 		resetGame() {
 			// Очищаем врагов и пули
 			engine.enemies.length = 0

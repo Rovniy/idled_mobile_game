@@ -1,5 +1,4 @@
 import {ComputedRef, Ref} from "vue";
-import { BUFF_PROP } from "@/database/buffs";
 
 export interface IDrop {
     x?: number,
@@ -96,7 +95,7 @@ export interface IBuff {
     duration?: number,
     effect: {
         type: string,
-        value: number|boolean,
+        value: number,
     },
     expirationTime?: number,
 }
@@ -136,7 +135,7 @@ export interface ISelectedUpgrades {
 }
 
 export interface ISelectedUpgradesValue {
-    [key: string]: number | boolean,
+    [key: string]: number,
 }
 
 export interface IBuffManager {

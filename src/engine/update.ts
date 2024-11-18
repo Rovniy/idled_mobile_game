@@ -18,7 +18,7 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 	} = params
 
 	engine.enemies.forEach((enemy, index) => {
-		if (!engine.player) return
+		if (!engine.player || !enemy?.wobble || enemy?.y === undefined || enemy?.x === undefined) return
 
 		// Вычисляем угол поворота к игроку
 		const angle = Math.atan2(engine.player.y - enemy.y, engine.player.x - enemy.x);
@@ -82,7 +82,8 @@ export function updateBullets(params: TUpdateBulletsParams) {
 		// Если у снаряда есть конкретная цель
 		if (bullet.target) {
 			const enemy = bullet.target;
-			if (enemy && checkCollision(bullet, enemy)) {
+
+			if (checkCollision(bullet, enemy)) {
 				enemy.hp -= 1 + buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
 				engine.bullets.splice(index, 1);
 
@@ -100,6 +101,7 @@ export function updateBullets(params: TUpdateBulletsParams) {
 			// Если у снаряда нет конкретной цели, проверяем столкновение со всеми врагами
 			for (let i = 0; i < engine.enemies.length; i++) {
 				const enemy = engine.enemies[i];
+
 				if (checkCollision(bullet, enemy)) {
 					enemy.hp -= buff.selectedUpgradesValue.value[BUFF_PROP.SHOOT_DAMAGE];
 					engine.bullets.splice(index, 1);
@@ -131,7 +133,7 @@ function handleEnemyDrop(params: THandleEnemyDropParams) {
 	if (!enemy?.drops || enemy.drops.length === 0) return;
 
 	const drop = getRandomLoot({ enemy, engine })
-	if (!drop) return;
+	if (!drop || !drop?.duration) return;
 
 	engine.drops.push({
 		id: drop.id,
