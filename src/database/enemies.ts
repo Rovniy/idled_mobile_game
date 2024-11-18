@@ -71,7 +71,7 @@ export default [
 		name: 'Flame Gremlin',
 		hp: 6,
 		damage: 5,
-		speed: 0.6,
+		speed: 0.3,
 		experience: 12,
 		image: ENEMY.MOB_FLAME_GREMLIN,
 		drops: [
@@ -88,7 +88,7 @@ export default [
 		name: 'Ocula Blob',
 		hp: 4,
 		damage: 3,
-		speed: 0.5,
+		speed: 0.25,
 		experience: 9,
 		image: ENEMY.MOB_OCULA_BLOB,
 		drops: [
@@ -103,7 +103,7 @@ export default [
 		name: 'Horned Brawler',
 		hp: 7,
 		damage: 6,
-		speed: 0.7,
+		speed: 0.35,
 		experience: 13,
 		image: ENEMY.MOB_HORNED_BRAWLER,
 		drops: [
@@ -119,7 +119,7 @@ export default [
 		name: 'Mossy Beast',
 		hp: 30,
 		damage: 80,
-		speed: 0.1,
+		speed: 0.05,
 		experience: 500,
 		image: ENEMY.BOSS_MOSSY_BEAST,
 		drops: [
@@ -136,7 +136,7 @@ export default [
 		name: 'Ember Creeper',
 		hp: 5,
 		damage: 5,
-		speed: 0.8,
+		speed: 0.4,
 		experience: 10,
 		image: ENEMY.MOB_EMBER_CREEPER,
 		drops: [
@@ -153,7 +153,7 @@ export default [
 		name: 'Dark Hornet',
 		hp: 7,
 		damage: 7,
-		speed: 0.5,
+		speed: 0.25,
 		experience: 15,
 		image: ENEMY.MOB_DARK_HORNET,
 		drops: [
@@ -171,7 +171,7 @@ export default [
 		name: 'Frost Imp',
 		hp: 25,
 		damage: 60,
-		speed: 0.15,
+		speed: 0.075,
 		experience: 500,
 		image: ENEMY.BOSS_FROST_IMP,
 		drops: [
@@ -185,7 +185,7 @@ export default [
 		name: 'Shadow Demon',
 		hp: 8,
 		damage: 8,
-		speed: 0.4,
+		speed: 0.2,
 		experience: 17,
 		image: ENEMY.MOB_SHADOW_DEMON,
 		drops: [
@@ -202,7 +202,7 @@ export default [
 		name: 'Tentacle Bob',
 		hp: 4,
 		damage: 3,
-		speed: 0.7,
+		speed: 0.35,
 		experience: 9,
 		image: ENEMY.MOB_TENTACLE_BOB,
 		drops: [
@@ -217,7 +217,7 @@ export default [
 		name: 'Rainbow Stinger',
 		hp: 5,
 		damage: 4,
-		speed: 0.8,
+		speed: 0.4,
 		experience: 10,
 		image: ENEMY.MOB_RAINBOW_STINGER,
 		drops: [
@@ -231,7 +231,7 @@ export default [
 		name: 'Twisted Claw',
 		hp: 6,
 		damage: 5,
-		speed: 0.7,
+		speed: 0.35,
 		experience: 12,
 		image: ENEMY.MOB_TWISTED_CLAW,
 		drops: [
@@ -245,7 +245,7 @@ export default [
 		name: 'Tiny Terror',
 		hp: 5,
 		damage: 5,
-		speed: 0.5,
+		speed: 0.25,
 		experience: 11,
 		image: ENEMY.MOB_TINY_TERROR,
 		drops: [
@@ -261,7 +261,7 @@ export default [
 		name: 'Gooey Maw',
 		hp: 30,
 		damage: 70,
-		speed: 0.2,
+		speed: 0.1,
 		experience: 500,
 		image: ENEMY.BOSS_GOOEY_MAW,
 		drops: [
@@ -277,7 +277,7 @@ export default [
 		name: 'Hell Ram',
 		hp: 9,
 		damage: 7,
-		speed: 0.5,
+		speed: 0.25,
 		experience: 16,
 		image: ENEMY.MOB_HELL_RAM,
 		drops: [
@@ -294,7 +294,7 @@ export default [
 		name: 'Flame Crawler',
 		hp: 1,
 		damage: 6,
-		speed: 0.7,
+		speed: 0.35,
 		experience: 11,
 		image: ENEMY.MOB_FLAME_CRAWLER,
 		drops: [
@@ -310,7 +310,7 @@ export default [
 		name: 'Spora Warrior',
 		hp: 30,
 		damage: 75,
-		speed: 0.25,
+		speed: 0.15,
 		experience: 500,
 		image: ENEMY.BOSS_SPORE_WARRIOR,
 		drops: [
@@ -325,7 +325,7 @@ export default [
 		name: 'Minotaur Mimic',
 		hp: 9,
 		damage: 8,
-		speed: 0.4,
+		speed: 0.2,
 		experience: 18,
 		image: ENEMY.MOB_MINOTAUR_MIMIC,
 		drops: [
@@ -341,7 +341,7 @@ export default [
 		name: 'Blue Wisp',
 		hp: 3,
 		damage: 4,
-		speed: 0.8,
+		speed: 0.4,
 		experience: 7,
 		image: ENEMY.MOB_ORANGE_WISP,
 		drops: [
@@ -359,7 +359,7 @@ export default [
 		name: 'Red Fang',
 		hp: 30,
 		damage: 75,
-		speed: 0.15,
+		speed: 0.07,
 		experience: 500,
 		image: ENEMY.BOSS_RED_FANG,
 		drops: [
@@ -376,7 +376,7 @@ export default [
 		name: 'Copper Jugger',
 		hp: 7,
 		damage: 6,
-		speed: 0.4,
+		speed: 0.2,
 		experience: 14,
 		image: ENEMY.MOB_COPPER_JUGGER,
 		drops: [
@@ -390,7 +390,7 @@ export default [
 		name: 'Fiery Orb',
 		hp: 3,
 		damage: 7,
-		speed: 1.0,
+		speed: 0.5,
 		experience: 10,
 		image: ENEMY.MOB_FIERY_ORB,
 		drops: [
@@ -405,7 +405,7 @@ export default [
 		name: 'Molten Skull',
 		hp: 4,
 		damage: 6,
-		speed: 0.6,
+		speed: 0.3,
 		experience: 11,
 		image: ENEMY.MOB_MOLTEN_SKULL,
 		drops: [
@@ -420,7 +420,7 @@ export default [
 		name: 'Sticky Blob',
 		hp: 8,
 		damage: 4,
-		speed: 0.3,
+		speed: 0.15,
 		experience: 13,
 		image: ENEMY.MOB_STICKY_BLOB,
 		drops: [
@@ -437,7 +437,7 @@ export default [
 		name: 'Twinkle Eye',
 		hp: 5,
 		damage: 3,
-		speed: 0.8,
+		speed: 0.4,
 		experience: 9,
 		image: ENEMY.MOB_TWINKLE_EYE,
 		drops: [

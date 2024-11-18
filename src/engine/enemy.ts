@@ -1,5 +1,5 @@
 import enemiesData from '../database/enemies';
-import {IEnemy, IEngine} from "@/types";
+import {IEnemy, IEngine, IGameState} from "@/types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
 
@@ -8,6 +8,7 @@ import poofVfx1 from '@/assets/images/vfx/poof_1.png';
 import poofVfx2 from '@/assets/images/vfx/poof_2.png';
 import poofVfx3 from '@/assets/images/vfx/poof_3.png';
 import poofVfx4 from '@/assets/images/vfx/poof_4.png';
+import {settings} from "@/settings";
 
 const VFX_DEATH = [
 	poofVfx1,
@@ -37,11 +38,12 @@ export function loadEnemiesData() : IEnemy[] {
 
 type TSpawnEnemy = {
 	engine: IEngine,
+	gameState: IGameState,
 	enemy_id?: string
 }
 export function spawnEnemy(params: TSpawnEnemy) {
 	const DEFAULT_SIZE = 40;
-	const { engine, enemy_id } = params
+	const { engine, enemy_id, gameState } = params
 	const { enemies, canvas } = engine
 
 	const enemyType = getEnemy({ engine, enemy_id })
@@ -67,8 +69,11 @@ export function spawnEnemy(params: TSpawnEnemy) {
 
 	if (!enemyType) return
 
+	const enemyGrows = growEnemyByLevel(enemyType, gameState.level.value)
+
 	enemy = {
 		...enemyType,
+		...enemyGrows,
 		x,
 		y,
 		width: enemyType?.width || DEFAULT_SIZE,
@@ -76,6 +81,34 @@ export function spawnEnemy(params: TSpawnEnemy) {
 	};
 
 	enemies.push(enemy);
+}
+
+/**
+ * Изменение характеристик моба в зависимости от Level ГГ
+ */
+function growEnemyByLevel(enemy: IEnemy, level: number) {
+	const _SE = settings.progress.enemy
+
+	return {
+		hp:         scaleParams(enemy.hp,           level, _SE.hpMultiplex),
+		damage:     scaleParams(enemy.damage,       level, _SE.damageMultiplex),
+		experience: scaleParams(enemy.experience,   level, _SE.expMultiplex),
+		speed:      scaleParams(enemy.speed,        level, _SE.speedMultiplex)
+	}
+}
+
+/**
+ * Чем выше значение growthRate, тем сильнее будет увеличение.
+ * @param baseValue
+ * @param playerLevel
+ * @param rate
+ */
+function scaleParams(baseValue: number, playerLevel: number, rate: number) {
+	// Вычисляем множитель для увеличения HP на основе уровня игрока
+	const multiplier = Math.pow(rate, playerLevel - 1);
+
+	// Возвращаем увеличенное значение HP
+	return Math.round(baseValue * multiplier);
 }
 
 

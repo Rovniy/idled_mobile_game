@@ -165,6 +165,11 @@ export interface IGameState {
     isGameOver: Ref<boolean>,
 }
 
+export interface IProgress {
+    enemyHP: number,
+    enemyDamage: number
+}
+
 export interface IEngine {
     ctx: CanvasRenderingContext2D|null
     canvas: HTMLCanvasElement,
@@ -177,14 +182,16 @@ export interface IEngine {
     bulletImage: HTMLImageElement,
     bulletImageLoaded: boolean,
     loadedEnemies: IEnemy[],
+    progress: IProgress,
     spawnInterval: number,
     spawnTimeout: ReturnType<typeof setTimeout>|undefined,
     player: IPlayer|null,
     puffEffects: IPuffEffect[],
+    enemyHPIncreaseCoefficient?: number,
     audioManager: IAudioManager
 }
 
-export interface IInitGame {
+export interface IInitGameResponse {
     engine: IEngine,
     resetGame: () => void,
     handleClick: (coords: { x: number; y: number }) => void,

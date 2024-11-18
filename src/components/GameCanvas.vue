@@ -55,7 +55,7 @@
 
 
 <script setup lang="ts">
-import {onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import {onBeforeUnmount, onMounted, ref, watch, Ref} from 'vue'
 import BuffCard from './BuffCard.vue';
 import BuffIcon from './BuffIcon.vue';
 import GameOverOverlay from './GameOverOverlay.vue';
@@ -66,13 +66,13 @@ import Userplate from './UserPlate.vue';
 import Button from "@/components/Ui/Button.vue";
 import {initGame} from '@/engine';
 import {useBuffManager} from '@/engine/buffManager';
-import {IGameState, IInitGame} from '@/types.js'
+import {IGameState, IInitGameResponse } from '@/types.js'
 import {useUserStore} from "@/store/user";
 import {useTelegram} from "@/composable/telegram";
 import DebugMessages from "@/components/DebugMessages.vue";
 
-let gameInstance: IInitGame,
-    pauseStartTime = null;
+let gameInstance: IInitGameResponse|null,
+    pauseStartTime : number = 0;
 
 
 const gameState: IGameState = {
@@ -84,7 +84,7 @@ const gameState: IGameState = {
   playerHP: ref(100),
   isGameOver: ref(false),
 }
-const gameCanvas = ref(null);
+const gameCanvas : Ref<HTMLCanvasElement|null> = ref(null);
 const showStartScreen = ref(true);
 const showPauseScreen = ref(false);
 
@@ -101,7 +101,7 @@ function shareResult() {
   telegram.shareResult(gameState.experience.value)
 }
 
-function handleSelectUpgrade(buffId) {
+function handleSelectUpgrade(buffId: string) {
   buff.selectUpgrade(buffId);
   gameState.levelUpOptions.value = false;
 }
@@ -170,11 +170,13 @@ watch(gameState.level, () => {
 onMounted(async () => {
   gameState.isPaused.value = true;
 
-  gameInstance = await initGame({
-    gameCanvas,
-    gameState,
-    buff
-  });
+  if (gameCanvas.value) {
+    gameInstance = await initGame({
+      gameCanvas,
+      gameState,
+      buff
+    });
+  }
 
   document.addEventListener('visibilitychange', handleVisibilityChange);
   window.addEventListener('blur', handleWindowBlur);

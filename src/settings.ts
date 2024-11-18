@@ -10,6 +10,14 @@ interface ISettings {
 		shareText: string,
 		appUrl: string,
 		shareUrl: string,
+	},
+	progress: {
+		enemy: {
+			hpMultiplex: number,
+			damageMultiplex: number,
+			expMultiplex: number,
+			speedMultiplex: number,
+		}
 	}
 }
 
@@ -25,5 +33,13 @@ export const settings : ISettings = {
 		shareText: `I scored {exp} points in the game! Think you can beat my record? Give it a shot and prove me wrong!`,
 		appUrl: 'https://t.me/xploitgames_bot/idled_game',
 		shareUrl: 'https://t.me/share/url?url=&text='
+	},
+	progress: {
+		enemy: {
+			hpMultiplex: 1.1,
+			damageMultiplex: 1.2,
+			expMultiplex: 1.2,
+			speedMultiplex: 1.05,
+		}
 	}
 }

@@ -6,21 +6,22 @@ import {watch} from 'vue'
 import {initDrops, loadDrops} from './drop'
 import {handleCanvasClick} from './input'
 import {initAudion} from './audio'
-import {IBuffManager, IEngine, IGameState, IInitGame} from '@/types'
+import {IBuffManager, IEngine, IGameState, IInitGameResponse} from '@/types'
 import { Ref } from 'vue'
 import { ENEMY_DEBUG } from '@/database/enemies'
 
 import backgroundImageSrc from '../assets/images/background.png'
 
 type TInitGames = {
-	engine: IEngine,
-	gameCanvas: Ref<HTMLCanvasElement>,
+	gameCanvas: Ref<HTMLCanvasElement|null>,
 	gameState: IGameState,
 	buff: IBuffManager
 }
-export async function initGame(params: TInitGames) : Promise<IInitGame> {
+export async function initGame(params: TInitGames) : Promise<IInitGameResponse|null> {
 	const { gameCanvas, gameState, buff } = params
 	const { bullets, bulletImage, bulletImageLoaded } = await initBullets()
+
+	if (!gameCanvas.value) return null
 
 	const engine : IEngine = {
 		ctx: null,
@@ -35,8 +36,12 @@ export async function initGame(params: TInitGames) : Promise<IInitGame> {
 		bulletImage,
 		bulletImageLoaded,
 		loadedEnemies: loadEnemiesData(),
-		spawnInterval: 1000,
+		spawnInterval: 2000,
 		spawnTimeout: undefined,
+		progress: {
+			enemyHP: 1,
+			enemyDamage: 1
+		},
 		puffEffects: [],
 		audioManager: initAudion()
 	}
@@ -55,7 +60,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGame> {
 
 	function spawnEnemies() {
 		if (!gameState.isPaused.value && !gameState.isGameOver.value) {
-			spawnEnemy({ engine })
+			spawnEnemy({ engine, gameState })
 		}
 		engine.spawnTimeout = setTimeout(spawnEnemies, engine.spawnInterval)
 	}
@@ -65,6 +70,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGame> {
 	 */
 	const isDebugSpawn = debugSpawnEnemies({
 		engine,
+		gameState,
 		must_spawn: ENEMY_DEBUG.enable,
 		enemy_id: ENEMY_DEBUG.enemy_id,
 		count: ENEMY_DEBUG.count
@@ -120,6 +126,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGame> {
 }
 
 type TDebugSpawnEnemies = {
+	gameState: IGameState,
 	engine: IEngine,
 	must_spawn: boolean,
 	enemy_id: string,
@@ -128,6 +135,7 @@ type TDebugSpawnEnemies = {
 function debugSpawnEnemies(params: TDebugSpawnEnemies) {
 	const {
 		engine,
+		gameState,
 		must_spawn = false,
 		enemy_id = 'boss1',
 		count = 10
@@ -138,7 +146,7 @@ function debugSpawnEnemies(params: TDebugSpawnEnemies) {
 
 	setTimeout(() => {
 		for (let i = 0; i < count; i++) {
-			spawnEnemy({ engine, enemy_id })
+			spawnEnemy({ engine, enemy_id, gameState })
 		}
 	}, TIMEOUT)
 
