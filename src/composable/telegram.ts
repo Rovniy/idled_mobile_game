@@ -1,4 +1,4 @@
-import { shareURL, openTelegramLink, openLink, isTMA,  } from '@telegram-apps/sdk';
+import { shareURL, openTelegramLink, openLink, isTMA } from '@telegram-apps/sdk';
 import { settings } from "@/settings";
 import {useDebugStore} from "@/store/debug";
 
@@ -11,26 +11,29 @@ export function useTelegram() {
 
 		const shareText = `I scored ${exp} points in the game! Think you can beat my record? Give it a shot and prove me wrong!`
 
-		if (shareURL.isAvailable()) {
-			return shareURL(settings.telegram.appUrl, shareText)
-		} else {
-			debug.log('shareURL not available');
-		}
+		shareURL(settings.telegram.appUrl, shareText)
+		return
 
-		if (openTelegramLink.isAvailable()) {
-			return openTelegramLink(settings.telegram.appUrl);
-		} else {
-			debug.log('openTelegramLink not available');
-		}
-
-		if (openLink.isAvailable()) {
-			openLink(settings.telegram.appUrl, {
-				tryBrowser: 'chrome',
-				tryInstantView: true,
-			});
-		} else {
-			debug.log('openLink not available');
-		}
+		// if (shareURL.isAvailable()) {
+		// 	return shareURL(settings.telegram.appUrl, shareText)
+		// } else {
+		// 	debug.log('shareURL not available');
+		// }
+		//
+		// if (openTelegramLink.isAvailable()) {
+		// 	return openTelegramLink(settings.telegram.appUrl);
+		// } else {
+		// 	debug.log('openTelegramLink not available');
+		// }
+		//
+		// if (openLink.isAvailable()) {
+		// 	openLink(settings.telegram.appUrl, {
+		// 		tryBrowser: 'chrome',
+		// 		tryInstantView: true,
+		// 	});
+		// } else {
+		// 	debug.log('openLink not available');
+		// }
 	}
 
 	return {
