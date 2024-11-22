@@ -1,5 +1,5 @@
 import {Ref, ref, computed, ComputedRef} from 'vue';
-import buffsData from '@/database/buffs';
+import buffsData, {BUFF_PROP_TEXT} from '@/database/buffs';
 import {IActiveBuff, IBuff, IBuffManager} from "@/types/engine.types";
 import { RARE_WEIGHT } from '@/database/rare'
 import { BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
@@ -86,6 +86,7 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 			const preparedUpgradeBuff = {
 				id: item,
 				icon: BUFF_PROP_ICONS[item],
+				title: BUFF_PROP_TEXT[item],
 				count: selectedUpgrades.value[item],
 				isTemporary: false,
 			}
@@ -101,6 +102,7 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 			const preparedActiveBuff = {
 				id: buff.id,
 				icon: buff.icon,
+				title: BUFF_PROP_TEXT[buff.id],
 				count: remainingTime,
 				isTemporary: true,
 			}

@@ -1,5 +1,5 @@
 import {initPlayer} from './player'
-import {loadEnemiesData, spawnEnemy} from './enemy'
+import {loadEnemiesData, spawnBossLogic, spawnEnemy} from './enemy'
 import {initBullets} from './bullet'
 import {gameLoop} from './gameLoop'
 import {watch} from 'vue'
@@ -12,6 +12,7 @@ import { ENEMY_DEBUG } from '@/database/enemies'
 
 import backgroundImageSrc from '../assets/images/background.png'
 import {settings} from "@/settings";
+import {TSpawnEnemy} from "@/types/engine/enemy.types";
 
 type TInitGames = {
 	gameCanvas: Ref<HTMLCanvasElement|null>,
@@ -45,7 +46,8 @@ export async function initGame(params: TInitGames) : Promise<IInitGameResponse|n
 		},
 		puffEffects: [],
 		criticalEffect: [],
-		audioManager: initAudion()
+		audioManager: initAudion(),
+		spawnBossLogic,
 	}
 	engine.ctx = engine.canvas.getContext('2d')
 

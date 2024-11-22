@@ -1,16 +1,22 @@
 <template>
   <div>
     <!-- Добавляем StartScreen -->
-    <StartScreen v-if="showStartScreen" @startGame="handleStartGame"/>
+    <StartScreen
+        v-if="showStartScreen"
+        @startGame="handleStartGame" />
 
     <!-- Полоса HP -->
     <HpBar :player-h-p="gameState.playerHP.value"/>
 
     <!-- Кнопка паузы -->
-    <Button text="Stats" :callback="pauseGame" size="small" class="pause_button"/>
+    <Button
+        text="Stats"
+        :callback="pauseGame"
+        size="small"
+        class="pause_button" />
 
     <!-- Иконки бафов под полосой HP -->
-    <div class="upgrades_container">
+    <div class="upgrades_container" @click="showBuffInfoScreen">
       <BuffIcon
           v-for="(upgrade, index) in buff.selectedUpgradeIcons.value"
           :key="index"
@@ -46,8 +52,16 @@
         @restart="restartGame"
     />
 
-    <PauseScreen v-if="showPauseScreen && !gameState.isGameOver.value" @resumeGame="handleResumeGame"
-                 :buffs="buff.selectedUpgradesValue.value"/>
+    <BuffInfoScreen
+        v-if="buffInfoScreenShown"
+        :buff="buff"
+        :gameInstance="gameInstance"
+        @click="hideBuffInfoScreen" />
+
+    <PauseScreen
+        v-if="showPauseScreen && !gameState.isGameOver.value"
+        @resumeGame="handleResumeGame"
+        :buffs="buff.selectedUpgradesValue.value" />
 
     <DebugMessages />
   </div>
@@ -70,6 +84,9 @@ import {IGameState, IInitGameResponse } from '@/types/engine.types'
 import {useUserStore} from "@/store/user";
 import {useTelegram} from "@/composable/telegram";
 import DebugMessages from "@/components/DebugMessages.vue";
+import BuffInfoScreen from "@/components/BuffInfoScreen.vue";
+import {settings} from "@/settings";
+import {spawnBossLogic} from "@/engine/enemy";
 
 let gameInstance: IInitGameResponse|null,
     pauseStartTime : number = 0;
@@ -88,6 +105,7 @@ const gameState: IGameState = {
 const gameCanvas : Ref<HTMLCanvasElement|null> = ref(null);
 const showStartScreen = ref(true);
 const showPauseScreen = ref(false);
+const buffInfoScreenShown = ref(false);
 
 const userStore = useUserStore()
 const telegram = useTelegram()
@@ -109,7 +127,7 @@ function handleSelectUpgrade(buffId: string) {
 
 function restartGame() {
   gameState.isGameOver.value = false;
-  gameState.playerHP.value = 100;
+  gameState.playerHP.value = settings.player.maxHP;
   gameState.level.value = 1;
   gameState.experience.value = 0;
   gameState.experienceToNextLevel.value = 100;
@@ -117,25 +135,41 @@ function restartGame() {
   showStartScreen.value = false;
 
   buff.resetBuffs();
-  gameInstance.resetGame();
+  gameInstance && gameInstance.resetGame();
 
   gameState.isPaused.value = false;
 }
 
-function handleVisibilityChange() {
-  if (document.hidden) {
-    pauseGame()
-  }
-}
-
-function pauseGame() {
+/**
+ * Постановка игры на паузу
+ */
+function pauseGame(withScreen: boolean = true) {
   if (gameState.isPaused.value) return;
 
   gameState.isPaused.value = true;
-  showPauseScreen.value = true;
   pauseStartTime = Date.now();
+
+  if (!withScreen) return;
+  showPauseScreen.value = true;
+}
+/**
+ * Снятие с паузы.
+ */
+function handleResumeGame(withScreen: boolean = true) {
+  if (!gameState.isPaused.value) return;
+
+  gameState.isPaused.value = false;
+  const pauseDuration = Date.now() - pauseStartTime;
+
+  buff.adjustBuffExpirationTimes(pauseDuration);
+
+  if (!withScreen) return
+  showPauseScreen.value = false;
 }
 
+/**
+ * Клик по канвасу. Происходит при попытке поднять дроп
+ */
 function handleCanvasClick(event: MouseEvent) {
   if (!gameCanvas.value || !gameInstance) return;
 
@@ -146,26 +180,30 @@ function handleCanvasClick(event: MouseEvent) {
   gameInstance.handleClick({x, y});
 }
 
-function handleResumeGame() {
-  if (!gameState.isPaused.value) return;
-
-  gameState.isPaused.value = false;
-  showPauseScreen.value = false;
-  const pauseDuration = Date.now() - pauseStartTime;
-
-  buff.adjustBuffExpirationTimes(pauseDuration);
+/**
+ * Открытие экрана со списком доступных бафов
+ */
+function showBuffInfoScreen() {
+  pauseGame(false)
+  buffInfoScreenShown.value = true;
 }
+/**
+ * Закрытие экрана со списком доступных бафов
+ */
+function hideBuffInfoScreen() {
+  buffInfoScreenShown.value = false;
 
-function handleWindowBlur() {
-  pauseGame()
+  handleResumeGame()
 }
 
 watch(gameState.level, () => {
   gameState.isPaused.value = true;
 
   buff.levelUpBuffs.value = buff.getRandomBuffs(2);
-
   gameState.levelUpOptions.value = true;
+
+  // Попытка спавна босса. Вызывается при изменении левела ГГ
+  gameInstance?.engine.spawnBossLogic({ engine: gameInstance?.engine, gameState: gameState })
 });
 
 onMounted(async () => {
@@ -179,14 +217,8 @@ onMounted(async () => {
     });
   }
 
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  window.addEventListener('blur', handleWindowBlur);
-});
-
-onBeforeUnmount(() => {
-  // Удаляем обработчик при размонтировании компонента
-  document.removeEventListener('visibilitychange', handleVisibilityChange);
-  window.removeEventListener('blur', handleWindowBlur);
+  document.addEventListener('visibilitychange', () => { document.hidden && pauseGame() });
+  window.addEventListener('blur', () => pauseGame());
 });
 </script>
 

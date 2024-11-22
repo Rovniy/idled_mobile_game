@@ -7,3 +7,13 @@ $color_white: #FFF;
 
 $shadow: 5px 5px 5px $color_bg;
 $shadow_soft: 3px 3px 10px rgba($color_bg, .5);
+
+@mixin overlay_wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон */
+  z-index: 10;
+}

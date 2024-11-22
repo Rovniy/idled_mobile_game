@@ -4,6 +4,7 @@ interface ISettings {
 		shootingSpeed: number,
 		baseCriticalChance: number,
 		baseCriticalPower: number,
+		maxHP: number,
 	},
 	drop: {
 		blinkStartBefore: number
@@ -40,6 +41,7 @@ export const settings: ISettings = {
 		shootingSpeed: 3,
 		baseCriticalChance: 0.01,
 		baseCriticalPower: 0.1,
+		maxHP: 100
 	},
 	drop: {
 		blinkStartBefore: 3000

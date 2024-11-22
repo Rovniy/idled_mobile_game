@@ -3,6 +3,7 @@ import {IEnemy, IEngine, IGameState} from "@/types/engine.types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
 import {settings} from "@/settings";
+import {TSpawnBossLogic, TSpawnEnemy} from "@/types/engine/enemy.types";
 
 // Enemy vfx
 import poofVfx1 from '@/assets/images/vfx/poof_1.png';
@@ -69,17 +70,17 @@ export function loadEnemiesData() : IEnemy[] {
 	});
 }
 
-type TSpawnEnemy = {
-	engine: IEngine,
-	gameState: IGameState,
-	enemy_id?: string
-}
+/**
+ * Спавн врага.
+ * Если передать enemy_id, то заспавнится конкретный враг
+ * Если передать boss, то заспавнится произвольный Босс
+ */
 export function spawnEnemy(params: TSpawnEnemy) {
 	const DEFAULT_SIZE = 40;
-	const { engine, enemy_id, gameState } = params
+	const { engine, enemy_id, gameState, boss = false } = params
 	const { enemies, canvas } = engine
 
-	const enemyType = getEnemy({ engine, enemy_id })
+	const enemyType = getEnemy({ engine, enemy_id, boss })
 	const side = Math.floor(Math.random() * 4);
 
 	let enemy : IEnemy,
@@ -116,6 +117,21 @@ export function spawnEnemy(params: TSpawnEnemy) {
 	};
 
 	enemies.push(enemy);
+}
+
+/**
+ * Попытка спавна босса. Вызывается при изменении левела ГГ
+ */
+export function spawnBossLogic(params: TSpawnBossLogic) {
+	const { engine, gameState} = params
+
+	if (gameState.level.value % 10 !== 0) return
+
+	spawnEnemy({
+		engine,
+		gameState,
+		boss: true
+	})
 }
 
 /**

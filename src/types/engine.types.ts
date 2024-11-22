@@ -1,5 +1,7 @@
 import {ComputedRef, Ref} from "vue";
 import {TBulletDamageType} from "@/engine/bullet";
+import {TSpawnBossLogic, TSpawnEnemy} from "@/types/engine/enemy.types";
+import {spawnBossLogic} from "@/engine/enemy";
 
 export interface IDrop {
     x?: number,
@@ -113,6 +115,7 @@ export interface IInitBullets {
 }
 
 export interface IActiveBuff {
+    id?: string,
     icon: string,
     count: number,
     isTemporary?: boolean,
@@ -206,7 +209,8 @@ export interface IEngine {
     puffEffects: IPuffEffect[],
     criticalEffect: ICriticalEffect[],
     enemyHPIncreaseCoefficient?: number,
-    audioManager: IAudioManager
+    audioManager: IAudioManager,
+    spawnBossLogic: (params: TSpawnBossLogic) => void,
 }
 
 export interface IInitGameResponse {
