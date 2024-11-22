@@ -174,7 +174,6 @@ type THandleEnemyCritHitVfxParams = {
 	engine: IEngine
 }
 export function handleEnemyCritHitVfx(params: THandleEnemyCritHitVfxParams) {
-	console.log(123);
 	const { enemy, engine} = params
 
 	const image = new Image();

@@ -42,6 +42,7 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 					gameState.playerHP.value = 0;
 				}
 			}
+
 			// Удаляем врага после столкновения
 			engine.enemies.splice(index, 1);
 			handleEnemyDeathVfx({ enemy, engine })
@@ -78,14 +79,12 @@ export function updateBullets(params: TUpdateBulletsParams) {
 			bullet.y < 0 ||
 			bullet.y > window.innerHeight
 		) {
-			console.log('delete to far away');
 			engine.bullets.splice(index, 1);
 			return;
 		}
 
-		// Если у снаряда есть конкретная цель
-		if (bullet.target) {
-			const enemy = bullet.target;
+		for (let i = 0; i < engine.enemies.length; i++) {
+			const enemy = engine.enemies[i];
 
 			bulletFlight({
 				bullet,
@@ -95,20 +94,6 @@ export function updateBullets(params: TUpdateBulletsParams) {
 				index,
 				gameState
 			})
-		} else {
-			// Если у снаряда нет конкретной цели, проверяем столкновение со всеми врагами
-			for (let i = 0; i < engine.enemies.length; i++) {
-				const enemy = engine.enemies[i];
-
-				bulletFlight({
-					bullet,
-					enemy,
-					engine,
-					buff,
-					index,
-					gameState
-				})
-			}
 		}
 	});
 }

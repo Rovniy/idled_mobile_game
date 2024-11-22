@@ -70,8 +70,6 @@ export function useBuffManager(isPaused: Ref<boolean>) : IBuffManager {
 			selectedUpgrades.value[effect.type] = 0
 		}
 
-		console.log('electedUpgradesValue.value', effect, selectedUpgradesValue.value);
-
 		selectedUpgradesValue.value[effect.type] -= effect.value;
 		if (selectedUpgradesValue.value[effect.type] < 0) {
 			selectedUpgradesValue.value[effect.type] = 0

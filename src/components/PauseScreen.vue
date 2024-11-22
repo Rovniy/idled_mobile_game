@@ -41,7 +41,7 @@ function getBuffValue(buffKey: string, value: number) : string {
   }
 
   if (BUFF_PROP.PLAYER_BULLET_CRITICAL_CHANCE === buffKey) {
-    return value * 100 + '%'
+    return (value * 100).toFixed(1) + '%'
   }
 
   return value.toString()
