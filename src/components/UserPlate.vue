@@ -30,7 +30,7 @@
       </svg>
 
       <div class="data_badge">
-        {{ thousands(props.score) }}
+        {{ userScore }}
       </div>
     </div>
   </div>
@@ -76,6 +76,7 @@ const props = withDefaults(defineProps<TProps>(), {
 })
 
 const experienceValue = computed(() => +(props?.experience || 0));
+const userScore = computed(() => props?.score ? thousands(props.score) : 0);
 const expTotalDelta = computed(() => 100 / props.experienceToNextLevel)
 const userAvatar = computed(() => {
   return props?.avatar || DefaultAvatar
