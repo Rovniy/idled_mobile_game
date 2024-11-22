@@ -32,6 +32,7 @@
                :experience-to-next-level="gameState.experienceToNextLevel.value"
                :level="gameState.level.value"
                :username="userStore.getUsername"
+               :score="gameState.score.value"
                :avatar="userStore.getAvatar"/>
 
     <!-- Buff Selection Window -->
@@ -108,6 +109,7 @@ const gameState: IGameState = {
   playerHP: ref(100),
   isGameOver: ref(false),
   passingTime: ref(1),
+  score: ref(1),
 }
 const gameCanvas : Ref<HTMLCanvasElement|null> = ref(null);
 const showStartScreen = ref(true);

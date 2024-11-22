@@ -182,7 +182,8 @@ export interface IGameState {
     levelUpOptions: Ref<boolean>,
     playerHP: Ref<number>,
     isGameOver: Ref<boolean>,
-    passingTime: Ref<number>
+    passingTime: Ref<number>,
+    score: Ref<number>
 }
 
 export interface IProgress {

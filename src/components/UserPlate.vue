@@ -30,7 +30,7 @@
       </svg>
 
       <div class="data_badge">
-        {{ expProgressText }}%
+        {{ thousands(props.score) }}
       </div>
     </div>
   </div>
@@ -38,16 +38,16 @@
 
 <script setup lang="ts">
 import {computed, ref, watch} from 'vue'
-import {animateProgress, describeArc} from '@/utils/helpers'
+import {animateProgress, describeArc, thousands} from '@/utils/helpers'
 
 import DefaultAvatar from '@/assets/images/default_avatar.png'
 
 const EXP_RADIAL = {
   size: 200,
   radius: 100,
-  section_stroke: '#4f7777',
+  section_stroke: '#76a3a3',
   circle_fill: '#102020',
-  highlight_stroke: '#F64904',
+  highlight_stroke: 'rgba(246,73,4,0.48)',
   highlight_width: 30,
   fill_radius: 90,
   x: 100,
@@ -62,6 +62,7 @@ type TProps = {
   level: number,
   username: string,
   experience: number,
+  score: number,
   experienceToNextLevel: number,
   avatar: string,
 }
@@ -69,6 +70,7 @@ const props = withDefaults(defineProps<TProps>(), {
   level: 0,
   username: '',
   experience: 0,
+  score: 0,
   experienceToNextLevel: 0,
   avatar: '',
 })

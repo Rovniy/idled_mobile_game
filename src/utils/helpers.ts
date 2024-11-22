@@ -6,6 +6,22 @@ export function getRandomValue(array: any[]) {
 	return array[randomIndex];
 }
 
+/**
+ * Отделение тысячных знаков
+ * @param val
+ */
+export function thousands(val: string|number) {
+	try {
+		if (typeof val === 'number') {
+			return val.toLocaleString()
+		} else {
+			return parseInt(val).toLocaleString()
+		}
+	} catch (e) {
+		return val
+	}
+}
+
 export function isRandomChance(number: number) {
 	if (number >= 1) return true
 

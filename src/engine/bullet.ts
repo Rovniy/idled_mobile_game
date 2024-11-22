@@ -61,6 +61,8 @@ export function bulletFlight(params: TBulletFlight) {
 
 	if (enemy.hp <= 0) {
 		gameState.experience.value += enemy.experience;
+		gameState.score.value += enemy.experience;
+
 		engine.enemies.splice(engine.enemies.indexOf(enemy), 1);
 
 		// Обрабатываем выпадение дропа
