@@ -7,8 +7,8 @@ export interface IInventory {
 }
 
 export type TInventoryItem = {
-	created_at?: number,
-	updated_at?: number,
+	ca?: number,
+	ua?: number,
 	id: string,
-	count: number
+	c: number
 }

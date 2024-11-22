@@ -28,6 +28,9 @@ interface ISettings {
 			damageMultiplex: number,
 			expMultiplex: number,
 			speedMultiplex: number,
+		},
+		level: {
+			next: number
 		}
 	},
 	slug: {
@@ -65,6 +68,9 @@ export const settings: ISettings = {
 			damageMultiplex: 1.2,
 			expMultiplex: 1.2,
 			speedMultiplex: 1.05,
+		},
+		level: {
+			next: 1.5
 		}
 	},
 	slug: {

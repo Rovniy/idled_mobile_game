@@ -1,58 +1,29 @@
 <template>
   <div class="buff_info_screen" @click="emit('click')">
-    <h2 class="area_title" v-if="isHasActiveBuffs">Active buffs</h2>
+    <ScreenTitle text="Active buffs" v-if="isHasActiveBuffs"/>
 
-    <div class="buff_scroll_wrapper" v-if="isHasActiveBuffs">
-      <div class="buff_info" v-for="item in activeBuffsList" :key="item.id">
-        <div class="avatar_area">
-          <img :src="item.icon" alt="item.id" class="avatar">
-        </div>
-        <div class="meta_area">
-          <span class="title" v-text="getBuffTitle(item)" />
-          <span class="desc" v-text="item.description" />
-        </div>
-      </div>
-    </div>
+    <ScreenItemList :list="activeBuffsList" v-if="isHasActiveBuffs" :with-temp="true"/>
 
-    <h2 class="area_title alls_area">All available buffs</h2>
+    <ScreenTitle text="All available buffs"/>
 
-    <div class="buff_scroll_wrapper">
-      <div class="buff_info" v-for="item in buffsList" :key="item.id">
-        <div class="avatar_area">
-          <img :src="item.icon" alt="item.id" class="avatar">
-        </div>
-        <div class="meta_area">
-          <span class="title" v-text="item.name" />
-          <span class="desc" v-text="item.description" />
-        </div>
-      </div>
-    </div>
+    <ScreenItemList :list="buffsList" />
 
-    <h2 class="area_title alls_area">All available loot</h2>
+    <ScreenTitle text="All available loot"/>
 
-    <div class="buff_scroll_wrapper">
-      <div class="buff_info" v-for="item in lootList" :key="item.id">
-        <div class="avatar_area">
-          <img :src="item.icon" alt="item.id" class="avatar">
-        </div>
-        <div class="meta_area">
-          <span class="title" v-text="item.name" />
-          <span class="desc" v-text="item.description" />
-        </div>
-      </div>
-    </div>
-
+    <ScreenItemList :list="lootList" />
   </div>
 </template>
 
 <script setup lang="ts">
 import {computed, onMounted} from 'vue'
-import {IBuff, IBuffManager, IDrop, IEngine, IGameState, IInitGameResponse} from "@/types/engine.types";
+import {IBuff, IBuffManager, IDrop, IInitGameResponse} from "@/types/engine.types";
+import ScreenTitle from "@/components/Ui/ScreenTitle.vue";
+import ScreenItemList from "@/components/Ui/ScreenItemList.vue";
 
-const emit = defineEmits([ 'click' ])
+const emit = defineEmits(['click'])
 type TProps = {
-  buff: IBuffManager|null,
-  gameInstance: IInitGameResponse|null,
+  buff: IBuffManager | null,
+  gameInstance: IInitGameResponse | null,
 }
 const props = withDefaults(defineProps<TProps>(), {
   buff: null,
@@ -87,9 +58,11 @@ const lootList = computed(() => {
     return a.name.localeCompare(b.name)
   })
 })
+
 function getBuffTitle(item: any) {
   return item?.temp ? item.name + ' (Temp)' : item.name
 }
+
 onMounted(() => {
   console.log('props.buff', props.buff);
 })
@@ -117,7 +90,6 @@ onMounted(() => {
   }
 
   .buff_scroll_wrapper {
-    margin: 10px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -157,6 +129,7 @@ onMounted(() => {
           font: 500 18px/24px $main_font;
           color: $color_white;
         }
+
         .desc {
           font: 500 14px/18px $main_font;
           color: rgba($color_white, .8);

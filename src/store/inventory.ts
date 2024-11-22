@@ -23,7 +23,7 @@ export const useInventoryStore = defineStore('inventory', {
 			const storage = useTelegram().storage
 			const exist = await storage.getItem(settings.slug.inventory)
 
-			if (exist) return
+			if (exist) return this.getContents()
 
 			await storage.setItem(settings.slug.inventory, {})
 
@@ -40,14 +40,14 @@ export const useInventoryStore = defineStore('inventory', {
 			const storage = useTelegram().storage
 
 			if (this.inventory[item_id]) {
-				this.inventory[item_id].count += count
+				this.inventory[item_id].c += count
 
 			} else {
 				payload = {
-					created_at: Date.now(),
-					updated_at: Date.now(),
+					ca: Date.now(),
+					ua: Date.now(),
 					id: item_id,
-					count
+					c: count
 				}
 
 				this.inventory[item_id] = payload
@@ -75,14 +75,14 @@ export const useInventoryStore = defineStore('inventory', {
 		 * @param item
 		 */
 		async use(item: TInventoryItem): Promise<IInventory> {
-			if (!this.inventory[item.id] || item.count === 0)
+			if (!this.inventory[item.id] || item.c === 0)
 				throw new Error('Item not found in inventory')
 
 			const storage = useTelegram().storage
 
-			this.inventory[item.id].count--
+			this.inventory[item.id].c--
 
-			if (this.inventory[item.id].count === 0) {
+			if (this.inventory[item.id].c === 0) {
 				delete this.inventory[item.id]
 			}
 

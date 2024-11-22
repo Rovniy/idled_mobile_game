@@ -50,17 +50,11 @@ function getBuffValue(buffKey: string, value: number) : string {
 
 <style scoped lang="scss">
 .pause-screen {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Полупрозрачный черный фон */
+  @include overlay_wrapper;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 10;
   gap: 20px;
 
   .title {

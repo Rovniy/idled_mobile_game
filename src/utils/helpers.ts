@@ -41,25 +41,23 @@ export function describeArc(cx: number, cy: number, radius: number, startAngle: 
 /**
  * Плавное изменение любых значений
  */
-export function animateProgress(startProgress: number, endProgress: number, duration: number, callback: Function) {
+export function animateProgress(currentValue: number, targetValue: number, duration: number, callback: Function) {
 	const startTime = performance.now();
-	let animationFrameId = null;
+	const changeInValue = targetValue - currentValue;
 
-	function animate(time: number) {
-		const elapsed = time - startTime;
-		const progress = Math.min(elapsed / duration, 1);
-		const currentValue = startProgress + (endProgress - startProgress) * progress;
+	function animate(currentTime: number) {
+		const elapsedTime = currentTime - startTime;
+		const progress = Math.min(elapsedTime / duration, 1);
+		const value = currentValue + changeInValue * progress;
 
-		callback(currentValue);
+		callback(value);
 
 		if (progress < 1) {
-			animationFrameId = requestAnimationFrame(animate);
+			requestAnimationFrame(animate);
+		} else {
+			callback(targetValue);
 		}
 	}
 
-	if (animationFrameId === 0) {
-		cancelAnimationFrame(animationFrameId);
-	}
-
-	animationFrameId = requestAnimationFrame(animate);
+	requestAnimationFrame(animate);
 }

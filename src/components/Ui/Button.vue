@@ -2,7 +2,7 @@
 type TProps = {
   text: string,
   callback: () => void,
-  size: 'small' | 'medium' | 'large',
+  size: 'micro' | 'small' | 'medium' | 'large',
   color?: 'default' | 'share'
 }
 const props = withDefaults(defineProps<TProps>(), {
@@ -37,7 +37,12 @@ function doCallback() {
     background: url('@/assets/images/ui/button_share.png') no-repeat 0 0 / cover;
   }
 
-
+  &.micro {
+    width: 89px;
+    height: 37px;
+    font: 500 22px/1 $main_font;
+    background: url('@/assets/images/ui/button_micro.png') no-repeat 0 0 / cover;
+  }
   &.small {
     width: 150px;
     height: 47px;

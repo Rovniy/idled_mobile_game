@@ -53,20 +53,28 @@ const EXP_RADIAL = {
   x: 100,
   y: 100,
   startAngle: 225,
-  totalAngle: 180
+  totalAngle: 180,
 }
 const radialExpProgress = ref('')
 const expProgressText = ref('0')
 
-const props = defineProps({
-  level: Number,
-  username: String,
-  experience: Number,
-  experienceToNextLevel: Number,
-  avatar: String,
+type TProps = {
+  level: number,
+  username: string,
+  experience: number,
+  experienceToNextLevel: number,
+  avatar: string,
+}
+const props = withDefaults(defineProps<TProps>(), {
+  level: 0,
+  username: '',
+  experience: 0,
+  experienceToNextLevel: 0,
+  avatar: '',
 })
 
-const experiencePercentage = computed(() => +(props?.experience || 0));
+const experienceValue = computed(() => +(props?.experience || 0));
+const expTotalDelta = computed(() => 100 / props.experienceToNextLevel)
 const userAvatar = computed(() => {
   return props?.avatar || DefaultAvatar
 })
@@ -74,7 +82,7 @@ const userAvatar = computed(() => {
 /**
  * Анимация изменения опыта игрока
  */
-watch(experiencePercentage, (newVal, oldValue) => {
+watch(experienceValue, (newVal, oldValue) => {
   animateProgress(oldValue, newVal, 1000, updateProgress)
 })
 
@@ -83,10 +91,11 @@ watch(experiencePercentage, (newVal, oldValue) => {
  * Заполнение полосы
  */
 function updateProgress(progress: number) {
-  const filledAngle = (progress / 100) * EXP_RADIAL.totalAngle;
+  const percentage = expTotalDelta.value * progress
+  const filledAngle = (percentage / 100) * EXP_RADIAL.totalAngle;
   const endAngle = (EXP_RADIAL.startAngle + filledAngle) % 360;
 
-  expProgressText.value = progress.toFixed(0)
+  expProgressText.value = percentage.toFixed(0)
   radialExpProgress.value = describeArc(EXP_RADIAL.x, EXP_RADIAL.y, EXP_RADIAL.fill_radius, EXP_RADIAL.startAngle, endAngle);
 }
 

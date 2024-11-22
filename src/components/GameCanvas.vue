@@ -44,6 +44,10 @@
       />
     </div>
 
+    <InventoryButton @open="openInventory" />
+
+    <InventoryScreen v-if="inventoryScreenShown" :buff="buff" @hide="closeInventory" />
+
     <!-- Оверлей с сообщением об окончании игры -->
     <GameOverOverlay
         v-if="gameState.isGameOver.value"
@@ -87,6 +91,9 @@ import DebugMessages from "@/components/DebugMessages.vue";
 import BuffInfoScreen from "@/components/BuffInfoScreen.vue";
 import {settings} from "@/settings";
 import {spawnBossLogic} from "@/engine/enemy";
+import Inventory from "@/components/Inventory.vue";
+import InventoryButton from "@/components/InventoryButton.vue";
+import InventoryScreen from "@/components/InventoryScreen.vue";
 
 let gameInstance: IInitGameResponse|null,
     pauseStartTime : number = 0;
@@ -106,6 +113,7 @@ const gameCanvas : Ref<HTMLCanvasElement|null> = ref(null);
 const showStartScreen = ref(true);
 const showPauseScreen = ref(false);
 const buffInfoScreenShown = ref(false);
+const inventoryScreenShown = ref(false);
 
 const userStore = useUserStore()
 const telegram = useTelegram()
@@ -194,6 +202,21 @@ function hideBuffInfoScreen() {
   buffInfoScreenShown.value = false;
 
   handleResumeGame()
+}
+
+/**
+ * Открытие инвентаря пользователя
+ */
+function openInventory() {
+  pauseGame(false)
+  inventoryScreenShown.value = true;
+}
+/**
+ * Закрытие инвентаря
+ */
+function closeInventory() {
+  handleResumeGame()
+  inventoryScreenShown.value = false;
 }
 
 watch(gameState.level, () => {

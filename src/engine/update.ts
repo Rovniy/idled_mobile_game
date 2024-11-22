@@ -107,7 +107,7 @@ export function checkLevelUp(params: TCheckLevelUpParams) {
 	while (gameState.experience.value >= gameState.experienceToNextLevel.value) {
 		gameState.experience.value -= gameState.experienceToNextLevel.value;
 		gameState.level.value += 1;
-		gameState.experienceToNextLevel.value = Math.floor(gameState.experienceToNextLevel.value * 1.5);
+		gameState.experienceToNextLevel.value = Math.floor(gameState.experienceToNextLevel.value * settings.progress.level.next);
 	}
 }
 
