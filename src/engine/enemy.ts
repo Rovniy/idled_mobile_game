@@ -1,5 +1,5 @@
 import enemiesData from '../database/enemies';
-import {IEnemy, IEngine, IGameState} from "@/types";
+import {IEnemy, IEngine, IGameState} from "@/types/engine.types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
 import {settings} from "@/settings";

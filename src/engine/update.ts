@@ -1,5 +1,5 @@
 import { checkCollision } from './collision.js';
-import {IBuffManager, IBullet, IEnemy, IEngine, IGameState} from "@/types";
+import {IBuffManager, IBullet, IEnemy, IEngine, IGameState} from "@/types/engine.types";
 import {handleEnemyDeathAudio, handleEnemyDeathVfx, getRandomLoot, handleEnemyCritHitVfx} from "@/engine/enemy";
 import { bulletFlight } from "@/engine/bullet";
 import {BUFF_PROP} from "@/database/buffs";

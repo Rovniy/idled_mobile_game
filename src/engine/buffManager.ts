@@ -1,6 +1,6 @@
 import {Ref, ref, computed, ComputedRef} from 'vue';
 import buffsData from '@/database/buffs';
-import {IActiveBuff, IBuff, IBuffManager} from "@/types";
+import {IActiveBuff, IBuff, IBuffManager} from "@/types/engine.types";
 import { RARE_WEIGHT } from '@/database/rare'
 import { BUFF_PROP, BUFF_PROP_ICONS } from '@/database/buffs'
 import {settings} from "@/settings";

@@ -1,4 +1,4 @@
-import {IEnemy, IEngine, IFloatingText, IGameState} from "@/types";
+import {IEnemy, IEngine, IFloatingText, IGameState} from "@/types/engine.types";
 
 type TDrawPlayer = {
 	engine: IEngine,

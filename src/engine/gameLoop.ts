@@ -11,7 +11,7 @@ import {
 	drawPlayer,
 	drawPuffEffect
 } from './draw.js';
-import {IBuffManager, IEngine, IGameState} from "@/types";
+import {IBuffManager, IEngine, IGameState} from "@/types/engine.types";
 import {BUFF_PROP} from "@/database/buffs";
 import {settings} from "@/settings";
 

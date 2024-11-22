@@ -1,5 +1,5 @@
 import playerImageSrc from '../assets/images/player.png';
-import {IPlayer} from "@/types";
+import {IPlayer} from "@/types/engine.types";
 import {settings} from "@/settings";
 
 export function initPlayer(canvas : HTMLCanvasElement) : IPlayer {

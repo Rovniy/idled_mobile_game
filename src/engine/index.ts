@@ -6,7 +6,7 @@ import {watch} from 'vue'
 import {initDrops, loadDrops} from './drop'
 import {handleCanvasClick} from './input'
 import {initAudion} from './audio'
-import {IBuffManager, IEngine, IGameState, IInitGameResponse} from '@/types'
+import {IBuffManager, IEngine, IGameState, IInitGameResponse} from '@/types/engine.types'
 import { Ref } from 'vue'
 import { ENEMY_DEBUG } from '@/database/enemies'
 

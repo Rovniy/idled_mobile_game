@@ -1,4 +1,4 @@
-import {IBuffManager, IBullet, IEnemy, IEngine} from "@/types";
+import {IBuffManager, IBullet, IEnemy, IEngine} from "@/types/engine.types";
 import {BUFF_PROP} from "@/database/buffs";
 import {settings} from "@/settings";
 

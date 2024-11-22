@@ -1,5 +1,5 @@
 import bulletImageSrc from '@/assets/images/bullet.png';
-import {IBuffManager, IBullet, IEnemy, IEngine, IGameState, IInitBullets} from "@/types";
+import {IBuffManager, IBullet, IEnemy, IEngine, IGameState, IInitBullets} from "@/types/engine.types";
 import {BUFF_PROP} from "@/database/buffs";
 import {isRandomChance} from "@/utils/helpers";
 import {checkCollision} from "@/engine/collision";

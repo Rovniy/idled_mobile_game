@@ -66,7 +66,7 @@ import Userplate from './UserPlate.vue';
 import Button from "@/components/Ui/Button.vue";
 import {initGame} from '@/engine';
 import {useBuffManager} from '@/engine/buffManager';
-import {IGameState, IInitGameResponse } from '@/types.js'
+import {IGameState, IInitGameResponse } from '@/types/engine.types'
 import {useUserStore} from "@/store/user";
 import {useTelegram} from "@/composable/telegram";
 import DebugMessages from "@/components/DebugMessages.vue";

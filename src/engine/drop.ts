@@ -1,5 +1,5 @@
 import dropsData, { DROP_EFFECT } from '@/database/drops';
-import {IBuffManager, IDrop, IEngine, IGameState} from "@/types";
+import {IBuffManager, IDrop, IEngine, IGameState} from "@/types/engine.types";
 
 /**
  * Загрузка данных дропа и их иконок

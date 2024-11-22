@@ -28,10 +28,13 @@ interface ISettings {
 			expMultiplex: number,
 			speedMultiplex: number,
 		}
+	},
+	slug: {
+		inventory: string
 	}
 }
 
-export const settings : ISettings = {
+export const settings: ISettings = {
 	player: {
 		attackRadius: 150,
 		shootingSpeed: 3,
@@ -61,5 +64,8 @@ export const settings : ISettings = {
 			expMultiplex: 1.2,
 			speedMultiplex: 1.05,
 		}
+	},
+	slug: {
+		inventory: 'INVENTORY'
 	}
 }

@@ -1,5 +1,5 @@
 import { applyDropEffect, createFloatingText } from './drop.js';
-import {IBuffManager, IEngine, IGameState} from "@/types";
+import {IBuffManager, IEngine, IGameState} from "@/types/engine.types";
 
 type THandleCanvasClickParams = {
 	coords: {

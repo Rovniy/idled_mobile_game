@@ -1,4 +1,4 @@
-import {IAudioManager} from "@/types";
+import {IAudioManager} from "@/types/engine.types";
 
 type TSound = {
 	[key: string]: HTMLAudioElement
