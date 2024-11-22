@@ -3,13 +3,17 @@
     <div class="hp_progress" :style="{ width: hpPercentage + '%', background: hpColor }"></div>
     <div class="hp_text">
       <img src="@/assets/images/ui/icon_hearth.png" alt="HP" class="hp_icon">
-      {{ playerHP }} / 100
+      {{ playerHPValue }} / 100
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {computed} from 'vue'
+import {computed, ref, watch} from 'vue'
+import {animateProgress} from '@/utils/helpers'
+import {settings} from "@/settings";
+
+const playerHPValue = ref(String(settings.player.maxHP))
 
 const props = defineProps({
   playerHP: Number,
@@ -17,7 +21,7 @@ const props = defineProps({
 });
 
 const hpColor = computed(() => {
-  if (hpPercentage.value > 50) {
+  if (hpPercentage.value > 40) {
     return 'green';
   } else if (hpPercentage.value > 25) {
     return 'yellow';
@@ -25,9 +29,22 @@ const hpColor = computed(() => {
     return 'red';
   }
 });
+
 const hpPercentage = computed(() => {
   return ((props?.playerHP || 0) / 100) * 100;
 });
+const playerHP = computed(() => +(props?.playerHP || 0));
+
+/**
+ * Анимация изменения опыта игрока
+ */
+watch(playerHP, (newVal, oldValue) => {
+  animateProgress(oldValue, newVal, 500, updateHp)
+})
+
+function updateHp(value: number) {
+  playerHPValue.value = value.toFixed(0)
+}
 </script>
 
 <style scoped lang="scss">
