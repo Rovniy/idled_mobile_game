@@ -26,11 +26,6 @@ import TinyTerror from '@/assets/images/enemies/tiny_terror.png';
 import TwinkleEye from '@/assets/images/enemies/twinkle_eye.png';
 import TwistedClaw from '@/assets/images/enemies/twisted_claw.png';
 
-
-const ENEMY_IDS = {
-	RED: 'RED',
-}
-
 const ENEMY = {
 	BOSS_FROST_IMP: FrostImp,
 	BOSS_GOOEY_MAW: GooeyMaw,

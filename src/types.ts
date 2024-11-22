@@ -60,6 +60,7 @@ export interface IEnemy {
 }
 
 export interface IBullet {
+    _id?: number,
     x: number,
     y: number,
     width: number,
