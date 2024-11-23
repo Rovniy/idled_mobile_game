@@ -69,6 +69,7 @@ export function bulletFlight(params: TBulletFlight) {
 		handleEnemyDrop({ enemy, engine });
 		handleEnemyDeathVfx({ enemy, engine })
 		handleEnemyDeathAudio({ engine })
+		engine.telegramApi.hapticFeedback('light')
 	}
 }
 

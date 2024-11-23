@@ -17,6 +17,7 @@ const telegram = useTelegram()
 onMounted(async () => {
   try {
     telegram.initApi()
+
     await userStore.initTelegramData()
 
     await inventoryStore.initInventory()

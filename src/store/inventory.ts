@@ -2,6 +2,7 @@ import {defineStore} from 'pinia'
 import {useTelegram} from "@/composable/telegram";
 import {settings} from "@/settings";
 import {IInventory, IState, TInventoryItem} from "@/types/store/inventory.types";
+import {TItemListItem} from "@/types/ui/ScreenItemList.types";
 
 export const useInventoryStore = defineStore('inventory', {
 	state: (): IState => ({
@@ -89,6 +90,17 @@ export const useInventoryStore = defineStore('inventory', {
 			await storage.setItem(settings.slug.inventory, this.inventory)
 
 			return this.inventory
+		},
+		/**
+		 * Покупка предмета из магазина в инвентаре
+		 * @param item
+		 */
+		async buy(item: TItemListItem): Promise<void> {
+			const telegram = useTelegram()
+			const id = item.id
+			const count = item.count
+
+			return telegram.buyThings(id, count)
 		}
 	},
 })

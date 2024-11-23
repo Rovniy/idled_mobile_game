@@ -2,6 +2,7 @@ import {ComputedRef, Ref} from "vue";
 import {TBulletDamageType} from "@/engine/bullet";
 import {TSpawnBossLogic, TSpawnEnemy} from "@/types/engine/enemy.types";
 import {spawnBossLogic} from "@/engine/enemy";
+import {ITelegram} from "@/types/composable/telegram.types";
 
 export interface IDrop {
     x?: number,
@@ -203,6 +204,7 @@ export interface IEngine {
     bulletImage: HTMLImageElement,
     bulletImageLoaded: boolean,
     loadedEnemies: IEnemy[],
+    telegramApi: ITelegram,
     progress: IProgress,
     spawnInterval: number,
     spawnTimeout: ReturnType<typeof setTimeout>|undefined,

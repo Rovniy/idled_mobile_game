@@ -3,7 +3,12 @@ import {IEnemy, IEngine, IGameState} from "@/types/engine.types";
 import { AUDIO } from "./audio";
 import {getRandomValue} from "@/utils/helpers";
 import {settings} from "@/settings";
-import {TSpawnBossLogic, TSpawnEnemy} from "@/types/engine/enemy.types";
+import {
+	TSpawnBossLogic,
+	TSpawnEnemy,
+	THandleEnemyCritHitVfxParams,
+	THandlePoofParams, THandleEnemyDeathAudioParams, TGetRandomEnemyParams, TGetRandomLootParams, THandleEnemyDropParams
+} from "@/types/engine/enemy.types";
 
 // Enemy vfx
 import poofVfx1 from '@/assets/images/vfx/poof_1.png';
@@ -162,11 +167,9 @@ function scaleParams(baseValue: number, playerLevel: number, rate: number) {
 	return +(baseValue * multiplier).toFixed(1)
 }
 
-
-type THandlePoofParams = {
-	enemy: any,
-	engine: IEngine
-}
+/**
+ * Добавление визуальных эффектов при смерти врага
+ */
 export function handleEnemyDeathVfx(params: THandlePoofParams) {
 	const { enemy, engine} = params
 
@@ -184,11 +187,9 @@ export function handleEnemyDeathVfx(params: THandlePoofParams) {
 	});
 }
 
-
-type THandleEnemyCritHitVfxParams = {
-	enemy: any,
-	engine: IEngine
-}
+/**
+ * Добавление визуальных эффектов при критическом попадании
+ */
 export function handleEnemyCritHitVfx(params: THandleEnemyCritHitVfxParams) {
 	const { enemy, engine} = params
 
@@ -206,22 +207,18 @@ export function handleEnemyCritHitVfx(params: THandleEnemyCritHitVfxParams) {
 	});
 }
 
-
-type THandleEnemyDeathAudioParams = {
-	engine: IEngine
-}
+/**
+ * Воспроизведение звука при смерти врага
+ */
 export function handleEnemyDeathAudio(params: THandleEnemyDeathAudioParams) {
 	const { engine} = params
 
 	engine.audioManager.playSound(AUDIO.ENEMY_DEATH)
 }
 
-
-type TGetRandomEnemyParams = {
-	engine: IEngine,
-	boss?: boolean,
-	enemy_id?: string
-}
+/**
+ * Выборка врага из библиотеки
+ */
 function getEnemy(params: TGetRandomEnemyParams) {
 	const { engine, boss, enemy_id } = params
 	const { loadedEnemies } = engine
@@ -239,11 +236,9 @@ function getEnemy(params: TGetRandomEnemyParams) {
 	return mobs[Math.floor(Math.random() * mobs.length)];
 }
 
-
-type TGetRandomLootParams = {
-	enemy: IEnemy,
-	engine: IEngine
-}
+/**
+ * Получение произвольного лута из врага
+ */
 export function getRandomLoot(params: TGetRandomLootParams) {
 	const { enemy, engine } = params
 
@@ -261,11 +256,9 @@ export function getRandomLoot(params: TGetRandomLootParams) {
 	return null; // Если ничего не выпало
 }
 
-
-type THandleEnemyDropParams = {
-	enemy: any,
-	engine: IEngine
-}
+/**
+ * Создание дропа из врага
+ */
 export function handleEnemyDrop(params: THandleEnemyDropParams) {
 	const { enemy, engine} = params
 	if (!enemy?.drops || enemy.drops.length === 0) return;

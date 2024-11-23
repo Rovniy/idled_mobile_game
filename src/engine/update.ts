@@ -45,6 +45,7 @@ export function updateEnemies(params: TUpdateEnemiesParams) {
 
 			// Удаляем врага после столкновения
 			engine.enemies.splice(index, 1);
+			engine.telegramApi.hapticFeedback('heavy')
 			handleEnemyDeathVfx({ enemy, engine })
 
 			// Проверяем, не закончился ли HP у игрока

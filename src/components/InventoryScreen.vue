@@ -103,9 +103,13 @@ async function useItem(item: TItemListItem) {
 }
 
 async function buyItem(item: TItemListItem) {
-  console.log('item', item);
-
-  hideInventory()
+  try {
+    await inventoryStore.buy(item)
+  } catch (e) {
+    console.error(e)
+  } finally {
+    hideInventory()
+  }
 }
 </script>
 

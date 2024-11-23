@@ -9,10 +9,11 @@ import {initAudion} from './audio'
 import {IBuffManager, IEngine, IGameState, IInitGameResponse} from '@/types/engine.types'
 import { Ref } from 'vue'
 import { ENEMY_DEBUG } from '@/database/enemies'
+import {settings} from "@/settings";
+import { useTelegram } from "@/composable/telegram";
+
 
 import backgroundImageSrc from '../assets/images/background.png'
-import {settings} from "@/settings";
-import {TSpawnEnemy} from "@/types/engine/enemy.types";
 
 type TInitGames = {
 	gameCanvas: Ref<HTMLCanvasElement|null>,
@@ -22,6 +23,7 @@ type TInitGames = {
 export async function initGame(params: TInitGames) : Promise<IInitGameResponse|null> {
 	const { gameCanvas, gameState, buff } = params
 	const { bullets, bulletImage, bulletImageLoaded } = await initBullets()
+	const telegramApi = useTelegram()
 
 	if (!gameCanvas.value) return null
 
@@ -44,6 +46,7 @@ export async function initGame(params: TInitGames) : Promise<IInitGameResponse|n
 			enemyHP: 1,
 			enemyDamage: 1
 		},
+		telegramApi,
 		puffEffects: [],
 		criticalEffect: [],
 		audioManager: initAudion(),
